@@ -1,0 +1,64 @@
+package org.halhelper.linkbuilder.methodtemplate;
+
+import com.damnhandy.uri.template.UriTemplate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.halhelper.linkbuilder.argumentresolver.ArgumentResolvers;
+import org.halhelper.linkbuilder.utils.UriTemplateAugmenter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Method;
+import java.util.*;
+
+/**
+ * Created by deinf.osvaldo on 30/11/2015.
+ */
+@Controller
+public class UriTemplateMethodMappings {
+
+    private final Log logger = LogFactory.getLog(getClass());
+
+    @Autowired
+    private RequestMappingHandlerMapping handlerMapping;
+
+    @Autowired
+    private ArgumentResolvers argumentResolvers;
+
+    private Map<Method, UriTemplate> methodTemplateMapping = new HashMap<Method, UriTemplate>();
+
+    private UriTemplateAugmenter.Factory uriTemplateAugmentFactory = new UriTemplateAugmenter.Factory();
+
+    private TemplateGeneratorIntrospector templateGeneratorIntrospector = new TemplateGeneratorIntrospector();
+
+    private TemplateGenerator templateGenerator = new TemplateGenerator();
+
+    @PostConstruct
+    public void init() {
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
+
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
+            Method method = entry.getValue().getMethod();
+            if (templateGeneratorIntrospector.haveToGenerateTemplateFor(method)) {
+
+                UriTemplate uriTemplate = templateGenerator.generate(method, argumentResolvers);
+
+                logger.info("Registered for method:" + method + ", uri template:" + uriTemplate);
+                methodTemplateMapping.put(method, uriTemplate);
+            }
+        }
+    }
+
+    public UriTemplate getTemplateForMethod(Method method) {
+        return methodTemplateMapping.get(method);
+    }
+
+    public UriTemplate createNewTemplateForMethod(String baseUri, Method method) {
+        return UriTemplate.buildFromTemplate(baseUri + getTemplateForMethod(method).getTemplate()).build();
+    }
+
+}
