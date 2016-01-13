@@ -60,4 +60,8 @@
 
     </build>
 
+    <properties>
+        <project.scm.id>github</project.scm.id>
+    </properties>
+
 </project>
