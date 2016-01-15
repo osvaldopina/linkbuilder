@@ -1,4 +1,6 @@
 **/.DS_STORE
 **/*.iml
 .idea
-impl/target
+**/target
+release.properties
+**/*.xml.versionsBackup

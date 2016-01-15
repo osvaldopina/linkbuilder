@@ -2,14 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.github.osvaldopina</groupId>
-		<artifactId>spring-hateoas-linkbuilder-pom</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
-	</parent>
-
-	<artifactId>spring-hateoas-linkbuilder</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <groupId>com.github.osvaldopina</groupId>
+	<artifactId>linkbuilder</artifactId>
+    <version>0.1.2-SNAPSHOT</version>
 	<name>Link Builder</name>
     <description>Link builder for Spring Hateoas projects.</description>
     <url>https://github.com/osvaldopina/linkbuilder</url>
@@ -167,4 +162,9 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <project.scm.id>github</project.scm.id>
+    </properties>
+
 </project>
