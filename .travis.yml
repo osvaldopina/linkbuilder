@@ -1,4 +1,4 @@
 language: java
-before_install: sudo apt-get install gpg2
+before_install: sudo apt-get install gnupg2
 install: true
 script: mvn install --settings travis-ci-maven-settings.xml
