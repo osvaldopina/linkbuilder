@@ -1,4 +1,4 @@
 language: java
 before_install: sudo apt-get install gnupg
 install: true
-script: mvn install --settings travis-ci-maven-settings.xml
+script: mvn deploy --settings travis-ci-maven-settings.xml
