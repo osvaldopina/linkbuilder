@@ -10,7 +10,7 @@
         <properties>
             <gpg.executable>gpg</gpg.executable>
             <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
-            <gpg.secretKeyring>~/private.key</gpg.secretKeyring>
+            <gpg.secretKeyring>${env.TRAVIS_BUILD_DIR}/private.key</gpg.secretKeyring>
         </properties>
      </profile>
 </profiles>
