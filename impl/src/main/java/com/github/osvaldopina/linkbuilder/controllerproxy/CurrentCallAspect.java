@@ -24,10 +24,10 @@ public class CurrentCallAspect implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
 
-    @Before("@within(GenerateUriTemplateFor) || " +
-            "@annotation(GenerateUriTemplateFor) ||" +
-            "@within(GenerateUriTemplateFor) || " +
-            "@annotation(GenerateUriTemplateFor)" )
+    @Before("@within(com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor) || " +
+            "@annotation(com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor) ||" +
+            "@within(com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall) || " +
+            "@annotation(com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall)" )
     public void doAccessCheck(JoinPoint jp) {
         CurrentCall currentCall = applicationContext.getBean(CurrentCall.class);
         MethodSignature signature = (MethodSignature) jp.getSignature();

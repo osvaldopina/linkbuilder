@@ -47,7 +47,7 @@ public class UriTemplateMethodMappings {
 
                 UriTemplate uriTemplate = templateGenerator.generate(method, argumentResolvers);
 
-                logger.info("Registered for method:" + method + ", uri template:" + uriTemplate);
+                logger.info("Registered for method:" + method + ", uri template:" + uriTemplate.getTemplate());
                 methodTemplateMapping.put(method, uriTemplate);
             }
         }

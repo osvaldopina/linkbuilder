@@ -8,22 +8,23 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by osvaldopina on 1/4/16.
  */
-public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport {
+public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
 
     @TestSubject
-    private RequestParamAnnotationArgumentResolver requestParamAnnotationArgumentResolver = new RequestParamAnnotationArgumentResolver();
+    private PathVariableAnnotationArgumentResolver pathVariableAnnotationArgumentResolver = new PathVariableAnnotationArgumentResolver();
 
     private UriTemplateBuilder uriTemplateBuilder;
 
@@ -40,7 +41,7 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
     private UriTemplateAugmenter uriTemplateAugmenter;
 
     @Mock
-    private RequestParam requestParam;
+    private PathVariable pathVariable;
 
     @Mock
     private List<String> templatedParamNames;
@@ -56,11 +57,11 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
     @Test
     public void resolveForAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(methodParameter.hasParameterAnnotation(RequestParam.class)).andReturn(true);
+        EasyMock.expect(methodParameter.hasParameterAnnotation(PathVariable.class)).andReturn(true);
 
         replayAll();
 
-        assertTrue(requestParamAnnotationArgumentResolver.resolveFor(methodParameter));
+        assertTrue(pathVariableAnnotationArgumentResolver.resolveFor(methodParameter));
 
         verifyAll();
 
@@ -69,11 +70,11 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
     @Test
     public void resolveForNonAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(methodParameter.hasParameterAnnotation(RequestParam.class)).andReturn(false);
+        EasyMock.expect(methodParameter.hasParameterAnnotation(PathVariable.class)).andReturn(false);
 
         replayAll();
 
-        assertFalse(requestParamAnnotationArgumentResolver.resolveFor(methodParameter));
+        assertFalse(pathVariableAnnotationArgumentResolver.resolveFor(methodParameter));
 
         verifyAll();
 
@@ -83,14 +84,9 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
     public void augmentTemplate() throws Exception {
         String varName = "var1";
 
-        EasyMock.expect(methodParameter.getParameterAnnotation(RequestParam.class)).andReturn(requestParam);
-        EasyMock.expect(requestParam.value()).andReturn(varName);
-        uriTemplateAugmenter.addToQuery(varName);
-        EasyMock.expectLastCall();
-
         replayAll();
 
-        requestParamAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
+        pathVariableAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
 
         verifyAll();
 
@@ -103,15 +99,15 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(requestParam.value()).andReturn(varName);
+        EasyMock.expect(pathVariable.value()).andReturn(varName);
         EasyMock.expect(templatedParamNames.contains("var1")).andReturn(false);
-        EasyMock.expect(methodParameter.getParameterAnnotation(RequestParam.class)).andReturn(requestParam);
-        EasyMock.expect(requestParam.value()).andReturn(varName);
+        EasyMock.expect(methodParameter.getParameterAnnotation(PathVariable.class)).andReturn(pathVariable);
+        EasyMock.expect(pathVariable.value()).andReturn(varName);
         EasyMock.expect(uriTemplate.set(varName, value)).andReturn(uriTemplate);
 
         replayAll();
 
-        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
 
         verifyAll();
 
@@ -122,13 +118,13 @@ public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(methodParameter.getParameterAnnotation(RequestParam.class)).andReturn(requestParam);
-        EasyMock.expect(requestParam.value()).andReturn(varName);
+        EasyMock.expect(methodParameter.getParameterAnnotation(PathVariable.class)).andReturn(pathVariable);
+        EasyMock.expect(pathVariable.value()).andReturn(varName);
         EasyMock.expect(templatedParamNames.contains("var1")).andReturn(true);
 
         replayAll();
 
-        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
 
         verifyAll();
 

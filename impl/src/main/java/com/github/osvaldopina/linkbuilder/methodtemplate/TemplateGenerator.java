@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate;
 
 import com.damnhandy.uri.template.UriTemplate;
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
@@ -31,7 +32,6 @@ public class TemplateGenerator {
         ArgumentResolver argumentResolver;
         for(MethodParameter methodParameter:methodParameters.getParameters()) {
             argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
-
             argumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
         }
 

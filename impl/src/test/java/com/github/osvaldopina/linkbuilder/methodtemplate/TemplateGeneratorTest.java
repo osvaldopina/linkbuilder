@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate;
 
 import com.damnhandy.uri.template.UriTemplate;
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.easymock.*;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
@@ -82,6 +83,23 @@ public class TemplateGeneratorTest  extends EasyMockSupport {
 
     }
 
+    @Test(expected = LinkBuilderException.class)
+    public void generateArgumentResolverNull() throws Exception {
+        EasyMock.expect(uriTemplateAugmenterFactory.create()).andReturn(uriTemplateAugmenter);
+        templatePathDiscover.augmentPath(uriTemplateAugmenter, method);
+        EasyMock.expectLastCall();
+        EasyMock.expect(methodParametersFactory.create(method)).andReturn(methodParameters);
+        EasyMock.expect(methodParameters.getParameters()).andReturn(Arrays.asList(methodParameter));
+        EasyMock.expect(argumentResolvers.getArgumentResolverFor(methodParameter)).andThrow(new LinkBuilderException("Error"));
+
+        replayAll();
+
+
+        assertSame(uriTemplate, templateGenerator.generate(method, argumentResolvers));
+
+        verifyAll();
+
+    }
 
     public static class Request {
 

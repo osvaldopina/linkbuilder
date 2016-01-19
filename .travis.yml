@@ -1,4 +1,7 @@
 language: java
-before_install: sudo apt-get install gnupg
+before_install:
+- openssl aes-256-cbc -K $encrypted_496323b4834c_key -iv $encrypted_496323b4834c_iv
+  -in private.key.enc -out private.key -d
+- sudo apt-get install gnupg
 install: true
-script: mvn deploy --settings travis-ci-maven-settings.xml
+script: mvn install --settings travis-ci-maven-settings.xml

@@ -2,7 +2,6 @@ package com.github.osvaldopina.linkbuilder.argumentresolver;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
-import org.omg.CORBA.Request;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -16,22 +15,15 @@ import java.util.List;
  * Created by deinf.osvaldo on 23/12/2015.
  */
 @Component
-public class RequestParamAnnotationArgumentResolver implements  ArgumentResolver {
+public class PathVariableAnnotationArgumentResolver implements  ArgumentResolver {
 
     @Override
     public boolean resolveFor(MethodParameter methodParameter) {
-        return methodParameter.hasParameterAnnotation(RequestParam.class);
+        return methodParameter.hasParameterAnnotation(PathVariable.class);
     }
 
     @Override
     public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, MethodParameter methodParameter) {
-        Assert.notNull(uriTemplateAugmenter);
-        Assert.notNull(methodParameter);
-
-        RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
-
-        uriTemplateAugmenter.addToQuery(requestParam.value());
-
     }
 
 
@@ -41,10 +33,10 @@ public class RequestParamAnnotationArgumentResolver implements  ArgumentResolver
         Assert.notNull(template);
         Assert.notNull(methodParameter);
 
-        RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+        PathVariable pathVariable = methodParameter.getParameterAnnotation(PathVariable.class);
 
-        if (! templatedParamNames.contains(requestParam.value())) {
-            template.set(requestParam.value(), parameter);
+        if (! templatedParamNames.contains(pathVariable.value())) {
+            template.set(pathVariable.value(), parameter);
         }
 
     }
