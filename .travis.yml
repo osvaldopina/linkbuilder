@@ -4,4 +4,6 @@ before_install:
   -in private.key.enc -out private.key -d
 - sudo apt-get install gnupg
 install: true
-script: mvn install --settings travis-ci-maven-settings.xml
+script:
+  echo $TRAVIS_BUILD_DIR
+  mvn install --settings travis-ci-maven-settings.xml
