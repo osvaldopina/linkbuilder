@@ -5,4 +5,4 @@ before_install:
 - sudo apt-get install gnupg
 install: true
 script:
-  script: mvn install --settings travis-ci-maven-settings.xml
+  mvn install --settings travis-ci-maven-settings.xml
