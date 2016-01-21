@@ -46,7 +46,7 @@ isPullRequest() {
   fi
 }
 
-export SKIP_SIGN=true
+export SKIP_SIGN="true"
 
 if isPullRequest
 then
@@ -73,7 +73,7 @@ then
     echo "deploying snapshot..."
     echo ""
     echo "*********************"
-    export SKIP_SIGN=false
+    export SKIP_SIGN="false"
     mvn deploy --settings travis-ci-maven-settings.xml
 else
     echo "**************************************"
