@@ -46,21 +46,40 @@ isPullRequest() {
   fi
 }
 
+export SKIP_SIGN=true
+
 if isPullRequest
 then
     if isFinalVersion
     then
+        echo "************************************************************"
+        echo ""
         echo "Pull Request should never have final versions in pom.xml!!!!"
+        echo ""
+        echo "************************************************************"
         exit -1
     else
+        echo "************************************************************"
+        echo ""
         echo "executing tests for pull request ${TRAVIS_PULL_REQUEST}..."
+        echo ""
+        echo "************************************************************"
         mvn test --settings travis-ci-maven-settings.xml
     fi
 elif isSnapshotVersion
 then
-  echo "deploying snapshot..."
-  mvn deploy --settings travis-ci-maven-settings.xml
+    echo "*********************"
+    echo ""
+    echo "deploying snapshot..."
+    echo ""
+    echo "*********************"
+    export SKIP_SIGN=false
+    mvn deploy --settings travis-ci-maven-settings.xml
 else
-  echo "executing tests for a final version..."
-  mvn test --settings travis-ci-maven-settings.xml
+    echo "**************************************"
+    echo ""
+    echo "executing tests for a final version..."
+    echo ""
+    echo "**************************************"
+    mvn test --settings travis-ci-maven-settings.xml
 fi
