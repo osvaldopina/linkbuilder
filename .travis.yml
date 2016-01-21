@@ -1,4 +1,4 @@
 language: java
 install: true
 script:
-  ./travis.shmvn install
+  ./travis.sh
