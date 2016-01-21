@@ -73,7 +73,7 @@ then
     echo "deploying snapshot..."
     echo ""
     echo "*********************"
-    mvn deploy --settings travis-ci-maven-settings.xml
+    mvn deploy -X --settings travis-ci-maven-settings.xml
 else
     echo "**************************************"
     echo ""
