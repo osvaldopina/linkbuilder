@@ -4,3 +4,4 @@
 **/target
 release.properties
 **/*.xml.versionsBackup
+**/*.xml.releaseBackup
