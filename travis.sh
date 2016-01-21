@@ -46,8 +46,6 @@ isPullRequest() {
   fi
 }
 
-export SKIP_SIGN="true"
-
 if isPullRequest
 then
     if isFinalVersion
@@ -73,7 +71,7 @@ then
     echo "deploying snapshot..."
     echo ""
     echo "*********************"
-    mvn deploy -X --settings travis-ci-maven-settings.xml
+    mvn deploy -X --settings travis-ci-maven-settings.xml -Dgpg.skip=true
 else
     echo "**************************************"
     echo ""
