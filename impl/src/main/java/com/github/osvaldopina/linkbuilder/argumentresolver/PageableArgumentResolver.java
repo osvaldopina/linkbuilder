@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder.argumentresolver;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by deinf.osvaldo on 23/12/2015.
  */
 @Component
+@Conditional(PageableClassIsPresent.class)
 public class PageableArgumentResolver implements  ArgumentResolver {
 
     @Override

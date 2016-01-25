@@ -39,6 +39,7 @@ public class UriTemplateMethodMappings {
 
     @PostConstruct
     public void init() {
+
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
 
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
@@ -60,5 +61,6 @@ public class UriTemplateMethodMappings {
     public UriTemplate createNewTemplateForMethod(String baseUri, Method method) {
         return UriTemplate.buildFromTemplate(baseUri + getTemplateForMethod(method).getTemplate()).build();
     }
+
 
 }
