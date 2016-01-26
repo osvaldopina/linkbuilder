@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by deinf.osvaldo on 15/12/2015.
+ * Builder for Links. This builder should be used to create a list of <code>Link</code>. The method <code>link</code>
+ * should be used to create a builder for a link.
  */
 public class LinksBuilder {
 
@@ -17,17 +18,27 @@ public class LinksBuilder {
 
     private ApplicationContext applicationContext;
 
-    public LinksBuilder(ApplicationContext applicationContext) {
+    protected LinksBuilder(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Creates a new link builder. The linkBuilder should be used to customize the link.
+     *
+     * @see LinkBuilder
+     * @return LinkBuilder Builder to customize the link.
+     */
     public LinkBuilder link() {
         LinkBuilderImpl linkBuilder = new LinkBuilderImpl(applicationContext, this);
         linkBuilders.add(linkBuilder);
         return linkBuilder;
     }
 
-
+    /**
+     * Creates the list of all links created by <code>link()</code>.
+     *
+     * @return List of all links.
+     */
     public List<Link> buildAll() {
         List<Link> links = new ArrayList<Link>();
         for(LinkBuilderImpl linkBuilder:linkBuilders) {

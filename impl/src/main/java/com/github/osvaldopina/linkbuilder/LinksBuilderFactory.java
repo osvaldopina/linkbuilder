@@ -6,13 +6,20 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by deinf.osvaldo on 15/12/2015.
+ * Factory for LinksBuilder creation. This is the entry point forlinkbuilder framework entry point.
+ * Just inject it by using <code>@Autowired</code>
  */
 @Component
 public class LinksBuilderFactory implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    /**
+     * Creates a new LinksBuilder
+     *
+     * @see LinksBuilder
+     * @return New LinksBuilder
+     */
     public LinksBuilder create() {
         return new LinksBuilder(applicationContext);
     }

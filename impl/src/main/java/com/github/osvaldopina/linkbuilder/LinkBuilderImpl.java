@@ -34,7 +34,6 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     private String rel;
     private boolean fromCurrentCall;
-    private boolean asTemplate;
     private Method method;
     private Object[] parameters;
     private ApplicationContext applicationContext;
@@ -82,12 +81,6 @@ public class LinkBuilderImpl implements LinkBuilder {
     @Override
     public LinkBuilder fromCurrentCall() {
         this.fromCurrentCall = true;
-        return this;
-    }
-
-    @Override
-    public LinkBuilder asTemplate() {
-        this.asTemplate = true;
         return this;
     }
 
@@ -185,7 +178,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     private boolean isTemplated() {
-        return asTemplate || allParamsAsTemplate || !templatedParamNames.isEmpty() || !templatedParamNumbers.isEmpty();
+        return allParamsAsTemplate || !templatedParamNames.isEmpty() || !templatedParamNumbers.isEmpty();
     }
 
 
