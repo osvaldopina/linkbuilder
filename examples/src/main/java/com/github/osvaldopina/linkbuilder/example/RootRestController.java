@@ -5,16 +5,7 @@ import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RootRestController {
@@ -29,9 +20,31 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        payload.add(linksBuilderFactory.create().link().withSelfRel().fromCurrentCall().build());
+        LinksBuilder linksBuilder = linksBuilderFactory.create();
+
+        linksBuilder.link().withSelfRel().fromCurrentCall();
+        linksBuilder.link().withRel("no-query-parameter").
+                fromControllerCall(RootRestController.class).methodWithoutQueryParameter("value", null);
+
+        linksBuilder.link().withRel("user-defined-type").
+                fromControllerCall(RootRestController.class).queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+
+        payload.add(linksBuilder.buildAll());
 
         return payload;
     }
+
+    @RequestMapping("/no-query-parameter/{id}")
+    @EnableSelfFromCurrentCall
+    public void methodWithoutQueryParameter(@PathVariable("id") String id,@RequestBody String payload) {
+
+    }
+
+    @RequestMapping("/user-defined-type")
+    @EnableSelfFromCurrentCall
+    public void queryParameterForUserDefinedType(UserDefinedType userDefinedType) {
+
+    }
+
 
 }

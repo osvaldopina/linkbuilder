@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate;
 
 import com.damnhandy.uri.template.UriTemplate;
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.apache.commons.logging.Log;
@@ -55,7 +56,16 @@ public class UriTemplateMethodMappings {
     }
 
     public UriTemplate getTemplateForMethod(Method method) {
-        return methodTemplateMapping.get(method);
+        UriTemplate template = methodTemplateMapping.get(method);
+
+        if (template == null) {
+            throw new LinkBuilderException("Could not find template for method " +
+                    method +
+                    ".\n Was this method annotated with @EnableSelfFromCurrentCall or @GenerateUriTemplateFor?");
+        }
+        else {
+            return template;
+        }
     }
 
     public UriTemplate createNewTemplateForMethod(String baseUri, Method method) {
