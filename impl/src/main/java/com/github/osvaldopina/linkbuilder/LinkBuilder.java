@@ -5,7 +5,7 @@ import org.springframework.hateoas.Link;
 import java.util.List;
 
 /**
- * Created by deinf.osvaldo on 22/12/2015.
+ * Builder to configure and create a <code>Link</code>
  */
 public interface LinkBuilder {
 
@@ -35,7 +35,7 @@ public interface LinkBuilder {
     LinkBuilder fromCurrentCall();
 
     /**
-     * Indicated that the nth method parameter should not be substituted by the parameter value and leaved
+     * Indicates that the nth method parameter should not be substituted by the parameter value and leaved
      * as a template variable. The resulted link will be a template.
      *
      * @param paramNumber The parameter index the should not be substituted
@@ -45,7 +45,7 @@ public interface LinkBuilder {
     LinkBuilder paramAsTemplate(int paramNumber);
 
     /**
-     * Indicated that parameter with this name should not be substituted by the parameter value and leaved
+     * Indicates that parameter with this name should not be substituted by the parameter value and leaved
      * as a template variable. The resulted link will be a template. It is important to note that the parameter
      * name is obtained by <code>RequestParam</code> and <code>PathVariable</code> annotation.
      *
@@ -59,13 +59,41 @@ public interface LinkBuilder {
      */
     LinkBuilder paramAsTemplate(String templateParamName);
 
+    /**
+     * Indicates that all parameters should not be substituted by the parameter value and leaved
+     * as a template variable. The resulted link will be a template.
+     *
+     * @return LinkBuilder link builder.
+     */
     LinkBuilder allParamsAsTemplate();
 
+    /**
+     * Sets the link parameters from a call to a rest controller.
+     *
+     * @param controllerClass Controller class.
+     *
+     * @return LinkBuilder link builder.
+     */
     <T> T fromControllerCall(Class<T> controllerClass);
 
+    /**
+     * Creates a new <code>LinkBuilder</code>.
+     *
+     * @return LinkBuilder new link builder.
+     */
     LinkBuilder link();
 
+    /**
+     * Creates the <code>Link</code>.
+     *
+     * @return Link link.
+     */
     Link build();
 
+    /**
+     * Creates all links configured in the same <code>LinksBuilder</code>.
+     *
+     * @return List of links configured in the same <code>LinksBuilder</code>.
+     */
     List<Link> buildAll();
 }

@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder;
 
 
 
+import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.hateoas.Link;
 

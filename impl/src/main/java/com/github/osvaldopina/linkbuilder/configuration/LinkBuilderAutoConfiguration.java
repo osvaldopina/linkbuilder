@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder;
+package com.github.osvaldopina.linkbuilder.configuration;
 
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import org.springframework.context.annotation.Bean;

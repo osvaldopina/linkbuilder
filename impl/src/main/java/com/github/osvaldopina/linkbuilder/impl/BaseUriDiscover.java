@@ -1,5 +1,6 @@
-package com.github.osvaldopina.linkbuilder;
+package com.github.osvaldopina.linkbuilder.impl;
 
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 

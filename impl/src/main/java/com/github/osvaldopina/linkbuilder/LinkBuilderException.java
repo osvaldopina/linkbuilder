@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder;
 
 /**
- * Created by osvaldopina on 1/8/16.
+ * Exception for any framework problem.
  */
 public class LinkBuilderException extends RuntimeException {
 

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.github.osvaldopina.linkbuilder.LinkBuilderAutoConfiguration
+com.github.osvaldopina.linkbuilder.configuration.LinkBuilderAutoConfiguration

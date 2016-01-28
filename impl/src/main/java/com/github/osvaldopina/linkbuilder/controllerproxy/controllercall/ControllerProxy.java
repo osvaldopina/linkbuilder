@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilderImpl;
+import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;

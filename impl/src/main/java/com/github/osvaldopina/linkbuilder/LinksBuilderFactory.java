@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * Factory for LinksBuilder creation. This is the entry point forlinkbuilder framework entry point.
+ * Factory for <code>LinksBuilder</code> creation. This is the entry point for linkbuilder framework.
  * Just inject it by using <code>@Autowired</code>
  */
 @Component

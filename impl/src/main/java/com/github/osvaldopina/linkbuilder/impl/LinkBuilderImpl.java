@@ -1,6 +1,9 @@
-package com.github.osvaldopina.linkbuilder;
+package com.github.osvaldopina.linkbuilder.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
+import com.github.osvaldopina.linkbuilder.LinkBuilder;
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
+import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
@@ -16,14 +19,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by deinf.osvaldo on 15/12/2015.

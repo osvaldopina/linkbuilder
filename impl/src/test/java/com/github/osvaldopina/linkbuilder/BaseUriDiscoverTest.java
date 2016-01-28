@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder;
 
+import com.github.osvaldopina.linkbuilder.impl.BaseUriDiscover;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;
