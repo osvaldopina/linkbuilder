@@ -2,6 +2,8 @@ package com.github.osvaldopina.linkbuilder.example;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
+import com.github.osvaldopina.linkbuilder.LinksBuilder;
+import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
@@ -20,7 +22,7 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create();
+        LinksBuilder  linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
         linksBuilder.link().withRel("no-query-parameter").

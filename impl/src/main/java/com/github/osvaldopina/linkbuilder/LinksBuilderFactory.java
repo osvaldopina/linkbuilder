@@ -1,18 +1,10 @@
 package com.github.osvaldopina.linkbuilder;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
-
 /**
  * Factory for <code>LinksBuilder</code> creation. This is the entry point for linkbuilder framework.
  * Just inject it by using <code>@Autowired</code>
  */
-@Component
-public class LinksBuilderFactory implements ApplicationContextAware {
-
-    private ApplicationContext applicationContext;
+public interface LinksBuilderFactory {
 
     /**
      * Creates a new LinksBuilder
@@ -20,12 +12,5 @@ public class LinksBuilderFactory implements ApplicationContextAware {
      * @see LinksBuilder
      * @return New LinksBuilder
      */
-    public LinksBuilder create() {
-        return new LinksBuilder(applicationContext);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+    LinksBuilder create();
 }

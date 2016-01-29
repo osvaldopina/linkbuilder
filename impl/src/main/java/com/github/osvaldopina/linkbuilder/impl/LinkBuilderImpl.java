@@ -3,7 +3,6 @@ package com.github.osvaldopina.linkbuilder.impl;
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
@@ -29,13 +28,12 @@ import java.util.List;
 public class LinkBuilderImpl implements LinkBuilder {
 
 
-
     private String rel;
     private boolean fromCurrentCall;
     private Method method;
     private Object[] parameters;
     private ApplicationContext applicationContext;
-    private LinksBuilder linksBuilder;
+    private LinksBuilderImpl linksBuilderImpl;
     private List<Integer> templatedParamNumbers = new ArrayList<Integer>();
     private List<String> templatedParamNames = new ArrayList<String>();
     private boolean allParamsAsTemplate;
@@ -43,9 +41,9 @@ public class LinkBuilderImpl implements LinkBuilder {
     private BaseUriDiscover baseUriDiscover = new BaseUriDiscover();
 
 
-    public LinkBuilderImpl(ApplicationContext applicationContext, LinksBuilder linksBuilder) {
+    public LinkBuilderImpl(ApplicationContext applicationContext, LinksBuilderImpl linksBuilderImpl) {
         this.applicationContext = applicationContext;
-        this.linksBuilder = linksBuilder;
+        this.linksBuilderImpl = linksBuilderImpl;
     }
 
     public void setMethod(Method method) {
@@ -107,7 +105,7 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     @Override
     public LinkBuilder link() {
-        return linksBuilder.link();
+        return linksBuilderImpl.link();
     }
 
     @Override
@@ -172,7 +170,7 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     @Override
     public List<Link> buildAll() {
-        return linksBuilder.buildAll();
+        return linksBuilderImpl.buildAll();
     }
 
     private boolean isTemplated() {
