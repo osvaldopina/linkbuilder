@@ -18,7 +18,7 @@ Add the following dependency to your project:
 
 ### Annotate controller methods 
 
-```java @EnableSelfFromCurrentCall``` If you want to use the current call to generate a self link:
+```@EnableSelfFromCurrentCall``` If you want to use the current call to generate a self link:
 
 ```java
 @RestController
@@ -34,7 +34,7 @@ public class RootRestController {
 
 ```
 
-Or ```java @GenerateUriTemplateFor``` if you just want to If you want to use the current call to generate a self link:
+Or ```@GenerateUriTemplateFor``` if you just want to If you want to use the current call to generate a self link:
 
 ```java
 @RestController
@@ -50,7 +50,7 @@ public class RootRestController {
 
 ```
 
-### Inject ```java LinksBuilderFactory ```
+### Inject ```LinksBuilderFactory```
 
 ```java 
 
@@ -59,7 +59,7 @@ public class RootRestController {
 
 ```
 
-### Create the ```java LinksBuilder``` than the ```java LinkBuilder```, configure them, and then build the links.
+### Create the ```LinksBuilder``` than the ```LinkBuilder```, configure them, and then build the links.
 
 ```java
         LinksBuilder  linksBuilder = linksBuilderFactory.create();
