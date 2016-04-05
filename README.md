@@ -18,7 +18,7 @@ Add the following dependency to your project:
 
 ### Annotate controller methods 
 
-```@EnableSelfFromCurrentCall``` If you want to use the current call to generate a self link:
+```@EnableSelfFromCurrentCall``` If you want to use the annotated method to generate links, link templates and use the current call to generate a self link:
 
 ```java
 @RestController
@@ -34,7 +34,7 @@ public class RootRestController {
 
 ```
 
-Or ```@GenerateUriTemplateFor``` if you just want to If you want to use the current call to generate a self link:
+Or ```@GenerateUriTemplateFor``` If you just want to use the annotated method to generate links and link templates:
 
 ```java
 @RestController
