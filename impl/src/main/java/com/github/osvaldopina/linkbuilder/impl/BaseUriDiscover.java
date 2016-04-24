@@ -10,9 +10,6 @@ import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by osvaldopina on 1/8/16.
- */
 public class BaseUriDiscover {
 
     private static final Pattern FORWARDED_HOST_PATTERN = Pattern.compile("host=\"?([^;,\"]+)\"?");

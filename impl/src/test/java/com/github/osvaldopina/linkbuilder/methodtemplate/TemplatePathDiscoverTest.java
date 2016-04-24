@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class TemplatePathDiscoverTest extends EasyMockSupport {
 
     @Rule

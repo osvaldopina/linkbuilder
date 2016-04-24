@@ -10,9 +10,6 @@ import org.springframework.hateoas.core.MethodParameters;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class TemplateGenerator {
 
     private TemplatePathDiscover templatePathDiscover = new TemplatePathDiscover();

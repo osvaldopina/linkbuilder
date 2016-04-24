@@ -5,9 +5,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class TemplateGeneratorIntrospector {
 
     public boolean haveToGenerateTemplateFor(Method method) {

@@ -8,9 +8,6 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class TemplateGeneratorIntrospectorTest {
 
     TemplateGeneratorIntrospector templateGeneratorIntrospector;

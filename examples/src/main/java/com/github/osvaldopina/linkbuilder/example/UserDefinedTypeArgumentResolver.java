@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Created by osvaldopina on 1/28/16.
- */
 @Component
 public class UserDefinedTypeArgumentResolver implements ArgumentResolver {
     @Override

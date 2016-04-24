@@ -13,9 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by deinf.osvaldo on 14/12/2015.
- */
 @Aspect
 @Component
 public class CurrentCallAspect implements ApplicationContextAware {

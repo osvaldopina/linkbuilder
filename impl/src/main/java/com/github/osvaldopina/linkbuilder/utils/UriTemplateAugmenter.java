@@ -11,9 +11,6 @@ import org.springframework.util.Assert;
 
 import java.util.Collections;
 
-/**
- * Created by deinf.osvaldo on 28/12/2015.
- */
 public class UriTemplateAugmenter {
 
     private Expression queryExpression;

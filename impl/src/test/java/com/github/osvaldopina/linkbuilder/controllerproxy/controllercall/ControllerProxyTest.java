@@ -8,12 +8,9 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by deinf.osvaldo on 28/12/2015.
- */
 public class ControllerProxyTest {
 
-    private LinkBuilderImpl linkBuilderImpl = new LinkBuilderImpl(null, null);
+    private LinkBuilderImpl linkBuilderImpl = new LinkBuilderImpl(null, null, null);
 
     private Method method;
 

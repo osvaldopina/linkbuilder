@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 
-/**
- * Created by deinf.osvaldo on 23/12/2015.
- */
 @Component
 public class RequestBodyAnnotationArgumentResolver implements  ArgumentResolver {
 

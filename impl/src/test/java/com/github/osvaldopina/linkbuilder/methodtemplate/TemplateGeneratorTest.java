@@ -18,9 +18,6 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class TemplateGeneratorTest  extends EasyMockSupport {
 
     @Rule

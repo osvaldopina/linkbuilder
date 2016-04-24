@@ -13,9 +13,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by deinf.osvaldo on 28/12/2015.
- */
 public class PageableArgumentResolverTest extends EasyMockSupport {
 
     @Rule

@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by osvaldopina on 1/8/16.
- */
 public class BaseUriDiscoverTest  extends EasyMockSupport {
 
     @Rule

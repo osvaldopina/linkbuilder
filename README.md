@@ -12,9 +12,59 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.3</version>
 </dependency>
+
 ```
+
+Or the following dependency for the version in development:
+
+```xml
+<dependency>
+    <groupId>com.github.osvaldopina</groupId>
+    <artifactId>linkbuilder</artifactId>
+    <version>0.1.4-SNAPSHOT</version>
+</dependency>
+
+```
+### New in 0.1.3
+
+## Spel expressions for link conditional rendering
+
+ ```java
+         ResourceSupport payload = new ResourceSupport();
+
+         LinksBuilder  linksBuilder = linksBuilderFactory.create();
+
+         linksBuilder.link()
+                 .withRel("link-for-authenticated-users")
+                 .when("isAuthenticated()" )
+                 .fromControllerCall(ARestController.class)
+                 .someControllerMethod();
+
+         payload.add(linksBuilder.buildAll());
+
+         return payload;
+ ```
+
+## Resource acessible via Spel expressions
+
+ ```java
+         ResourceSupport payload = new ResourceSupport();
+
+         LinksBuilder  linksBuilder = linksBuilderFactory.create(payload);
+
+         linksBuilder.link()
+                 .withRel("link-for-authenticated-users")
+                 .when("payload.someProperty && isAuthenticated()" )
+                 .fromControllerCall(ARestController.class)
+                 .someControllerMethod();
+
+         payload.add(linksBuilder.buildAll());
+
+         return payload;
+ ```
+
 
 ### Annotate controller methods 
 

@@ -16,9 +16,6 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * Created by deinf.osvaldo on 30/11/2015.
- */
 @Controller
 public class UriTemplateMethodMappings {
 

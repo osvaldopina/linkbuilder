@@ -11,9 +11,6 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 
-/**
- * Created by deinf.osvaldo on 23/12/2015.
- */
 @Component
 @Conditional(PageableClassIsPresent.class)
 public class PageableArgumentResolver implements  ArgumentResolver {

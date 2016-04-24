@@ -14,9 +14,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport {
 
     @Rule

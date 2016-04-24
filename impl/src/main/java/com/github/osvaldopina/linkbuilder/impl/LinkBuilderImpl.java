@@ -3,10 +3,11 @@ package com.github.osvaldopina.linkbuilder.impl;
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
+import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
 import com.github.osvaldopina.linkbuilder.controllerproxy.controllercall.ControllerProxy;
+import com.github.osvaldopina.linkbuilder.impl.spel.ExpressionVerifier;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
@@ -22,11 +23,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by deinf.osvaldo on 15/12/2015.
- */
 public class LinkBuilderImpl implements LinkBuilder {
-
 
     private String rel;
     private boolean fromCurrentCall;
@@ -37,29 +34,34 @@ public class LinkBuilderImpl implements LinkBuilder {
     private List<Integer> templatedParamNumbers = new ArrayList<Integer>();
     private List<String> templatedParamNames = new ArrayList<String>();
     private boolean allParamsAsTemplate;
+    private Object payload;
 
     private BaseUriDiscover baseUriDiscover = new BaseUriDiscover();
+    private ExpressionVerifier expressionVerifier =
+            new ExpressionVerifier();
 
+    private String expression;
 
-    public LinkBuilderImpl(ApplicationContext applicationContext, LinksBuilderImpl linksBuilderImpl) {
+    public LinkBuilderImpl(ApplicationContext applicationContext, LinksBuilderImpl linksBuilderImpl, Object payload) {
         this.applicationContext = applicationContext;
         this.linksBuilderImpl = linksBuilderImpl;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
+        this.payload = payload;
     }
 
     public Method getMethod() {
         return method;
     }
 
-    public void setParameters(Object[] parameters) {
-        this.parameters = parameters;
+    public void setMethod(Method method) {
+        this.method = method;
     }
 
     public Object[] getParameters() {
         return parameters;
+    }
+
+    public void setParameters(Object[] parameters) {
+        this.parameters = parameters;
     }
 
     @Override
@@ -71,6 +73,18 @@ public class LinkBuilderImpl implements LinkBuilder {
     @Override
     public LinkBuilder withRel(String rel) {
         this.rel = rel;
+        return this;
+    }
+
+    @Override
+    public LinkBuilder setExpressionPayload(Object payload) {
+        this.payload = payload;
+        return this;
+    }
+
+    @Override
+    public LinkBuilder when(String expression) {
+        this.expression = expression;
         return this;
     }
 
@@ -121,7 +135,6 @@ public class LinkBuilderImpl implements LinkBuilder {
         UriTemplateMethodMappings uriTemplateMethodMappings =
                 applicationContext.getBean(UriTemplateMethodMappings.class);
 
-
         UriTemplate template = uriTemplateMethodMappings.createNewTemplateForMethod(
                 baseUriDiscover.getBaseUri(getCurrentRequest(), applicationContext),
                 method);
@@ -130,12 +143,10 @@ public class LinkBuilderImpl implements LinkBuilder {
 
         MethodParameters methodParameters = new MethodParameters(method);
 
-
-
         if (!allParamsAsTemplate) {
 
             ArgumentResolver argumentResolver;
-            for (MethodParameter methodParameter:methodParameters.getParameters()) {
+            for (MethodParameter methodParameter : methodParameters.getParameters()) {
                 if (!templatedParamNumbers.contains(methodParameter.getParameterIndex())) {
                     checkIfParameterIsPresent(methodParameter.getParameterIndex());
 
@@ -151,6 +162,14 @@ public class LinkBuilderImpl implements LinkBuilder {
         return new Link(isTemplated() ? template.expandPartial() : template.expand(), rel);
     }
 
+    public boolean whenExpressionIsTrue() {
+        if (expression != null) {
+            return expressionVerifier.isTrue(expression, applicationContext, payload);
+        } else {
+            return true;
+        }
+
+    }
 
     private void checkIfMethodIsPresent() {
         if (method == null) {
@@ -162,11 +181,10 @@ public class LinkBuilderImpl implements LinkBuilder {
         if (parameters == null || parameters.length < parameterIndex) {
             throw new LinkBuilderException("Tried to get parameter index " + parameterIndex + " for call on method " +
                     method.getName() + " but parameters " +
-                    (parameters==null?" is null":"have length " + parameters.length));
+                    (parameters == null ? " is null" : "have length " + parameters.length));
         }
 
     }
-
 
     @Override
     public List<Link> buildAll() {
@@ -177,7 +195,6 @@ public class LinkBuilderImpl implements LinkBuilder {
         return allParamsAsTemplate || !templatedParamNames.isEmpty() || !templatedParamNumbers.isEmpty();
     }
 
-
     private HttpServletRequest getCurrentRequest() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         Assert.state(requestAttributes != null, "Could not find current request via RequestContextHolder");
@@ -186,7 +203,5 @@ public class LinkBuilderImpl implements LinkBuilder {
         Assert.state(servletRequest != null, "Could not find current HttpServletRequest");
         return servletRequest;
     }
-
-
 
 }

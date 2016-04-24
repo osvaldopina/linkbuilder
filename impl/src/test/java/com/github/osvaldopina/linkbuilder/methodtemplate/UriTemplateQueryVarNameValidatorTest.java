@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by osvaldopina on 1/7/16.
- */
 public class UriTemplateQueryVarNameValidatorTest {
 
     @Test

@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by deinf.osvaldo on 16/12/2015.
- */
 @Controller
 @Scope("request")
 public class CurrentCall {

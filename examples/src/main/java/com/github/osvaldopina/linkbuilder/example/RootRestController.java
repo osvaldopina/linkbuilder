@@ -2,8 +2,6 @@ package com.github.osvaldopina.linkbuilder.example;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.LinksBuilder;
-import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
@@ -17,19 +15,51 @@ public class RootRestController {
 
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
-    public ResourceSupport root(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+    public ResourceSupport root() {
 
-        ResourceSupport payload = new ResourceSupport();
+        Payload payload = new Payload();
 
         LinksBuilder  linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
-        linksBuilder.link().withRel("no-query-parameter").
-                fromControllerCall(RootRestController.class).methodWithoutQueryParameter("value", null);
 
-        linksBuilder.link().withRel("user-defined-type").
-                fromControllerCall(RootRestController.class).queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+        linksBuilder.link()
+                .setExpressionPayload(payload)
+                .withRel("a-link-with-spel-payload-check")
+                .when("#payload.awaysTrueProperty")
+                .fromControllerCall(RootRestController.class)
+                .root();
+
+
+        linksBuilder.link()
+                .withRel("no-query-parameter")
+                .fromControllerCall(RootRestController.class)
+                .methodWithoutQueryParameter("value", null);
+
+        linksBuilder.link()
+                .withRel("user-defined-type-for-authenticated")
+                .when("isAuthenticated()" )
+                .fromControllerCall(RootRestController.class)
+                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+
+        linksBuilder.link()
+                .withRel("using-bean-in-expression-always-true")
+                .when("@anyBean.isAlwaysTrue()" )
+                .fromControllerCall(RootRestController.class)
+                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+
+        linksBuilder.link()
+                .withRel("using-bean-in-expression-always-false")
+                .when("@anyBean.isAlwaysFalse()" )
+                .fromControllerCall(RootRestController.class)
+                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+
+
+        linksBuilder.link()
+                .withRel("user-defined-type-for-non-authenticated")
+                .when("not isAuthenticated()")
+                .fromControllerCall(RootRestController.class)
+                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
         payload.add(linksBuilder.buildAll());
 

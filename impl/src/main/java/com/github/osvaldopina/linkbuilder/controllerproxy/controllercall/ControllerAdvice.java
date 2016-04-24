@@ -4,9 +4,6 @@ import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-/**
- * Created by deinf.osvaldo on 15/12/2015.
- */
 public class ControllerAdvice implements MethodInterceptor {
 
 

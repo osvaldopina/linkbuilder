@@ -26,6 +26,24 @@ public interface LinkBuilder {
     LinkBuilder withRel(String rel);
 
     /**
+     * Sets the payload variable in spel expression context so it can be used in expressions
+     *
+     * @param payload Object to be setted as 'payload' variable in spel context
+     *
+     * @return LinkBuilder link builder.
+     */
+    LinkBuilder setExpressionPayload(Object payload);
+
+    /**
+     * Defines spel condition expression for link rendering. If expression evaluates to true the link will
+     * be rendered in buildAll()
+     *
+     * @param expression Spel expression
+     *
+     * @return linkBuilder link builder.
+     */
+    LinkBuilder when(String expression);
+    /**
      * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
      * are changed with a aspect that records the method and the list of parameters.
      *
@@ -71,6 +89,7 @@ public interface LinkBuilder {
      * Sets the link parameters from a call to a rest controller.
      *
      * @param controllerClass Controller class.
+     * @param <T> Controller type
      *
      * @return LinkBuilder link builder.
      */

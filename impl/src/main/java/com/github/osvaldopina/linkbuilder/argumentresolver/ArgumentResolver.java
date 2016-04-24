@@ -6,9 +6,6 @@ import org.springframework.core.MethodParameter;
 
 import java.util.List;
 
-/**
- * Created by deinf.osvaldo on 23/12/2015.
- */
 public interface ArgumentResolver {
 
     boolean resolveFor(MethodParameter methodParameter);

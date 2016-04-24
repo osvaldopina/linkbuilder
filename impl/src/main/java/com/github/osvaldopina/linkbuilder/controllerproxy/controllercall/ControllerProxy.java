@@ -8,9 +8,6 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.BeanUtils;
 
-/**
- * Created by deinf.osvaldo on 15/12/2015.
- */
 public class ControllerProxy {
 
     public static <T> T createProxy(Class<T> clazz, LinkBuilderImpl builder) {

@@ -5,9 +5,6 @@ import org.springframework.util.Assert;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by deinf.osvaldo on 03/12/2015.
- */
 public class UriTemplateQueryVarNameValidator {
 
     private static final Pattern VARNAME_REGEX = Pattern.compile("([\\w\\_\\.]|%[A-Fa-f0-9]{2})+");

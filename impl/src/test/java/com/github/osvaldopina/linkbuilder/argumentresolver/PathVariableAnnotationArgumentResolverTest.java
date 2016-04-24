@@ -15,9 +15,6 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by osvaldopina on 1/4/16.
- */
 public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport {
 
     @Rule

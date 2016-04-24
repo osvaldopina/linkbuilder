@@ -7,9 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
-/**
- * Created by osvaldopina on 1/22/16.
- */
 @SpringBootApplication
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class TestApplication {

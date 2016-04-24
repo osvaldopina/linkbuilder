@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by deinf.osvaldo on 23/12/2015.
- */
 @Component
 public class ArgumentResolvers {
 
