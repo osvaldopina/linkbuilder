@@ -18,9 +18,9 @@ public class HalExpectationsHelper {
 
     public boolean hasLinkWithRel(String rel) {
         try {
-            jsonPathExpectationsHelper = new JsonPathExpectationsHelper("$._links[' ]");
+            jsonPathExpectationsHelper = new JsonPathExpectationsHelper("$._links");
 
-            jsonPathExpectationsHelper.assertValue(jsonHal,"rel");
+            jsonPathExpectationsHelper. assertValue(jsonHal,"rel");
 
         } catch (ParseException e) {
             return false;

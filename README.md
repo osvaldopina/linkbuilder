@@ -17,7 +17,7 @@ Add the following dependency to your project:
 
 ```
 
-Or the following dependency for the version in development:
+Or the following dependency for the version under development:
 
 ```xml
 <dependency>
