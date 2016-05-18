@@ -29,7 +29,9 @@ public class TemplateGenerator {
         ArgumentResolver argumentResolver;
         for(MethodParameter methodParameter:methodParameters.getParameters()) {
             argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
-            argumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
+            if (argumentResolver != null) {
+                argumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
+            }
         }
 
         return uriTemplateAugmenter.getUriTemplate();

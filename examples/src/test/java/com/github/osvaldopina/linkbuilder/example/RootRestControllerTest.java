@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {Application.class})
-@Ignore
 public class RootRestControllerTest {
 
     @Autowired
@@ -33,6 +32,7 @@ public class RootRestControllerTest {
 
     }
 
+    @Ignore
     @Test
     @WithMockUser(username = "user-1", roles = "ROLE-1")
     public void root() throws Exception {

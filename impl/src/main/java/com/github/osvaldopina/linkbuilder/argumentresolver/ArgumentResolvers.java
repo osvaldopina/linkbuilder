@@ -30,9 +30,10 @@ public class ArgumentResolvers {
                 return argumentResolver;
             }
         }
-        throw new LinkBuilderException("Could not find a argument resolver for parameter # " +
-                methodParameter.getParameterIndex() + " type " + methodParameter.getParameterType() +
-                " on method " + methodParameter.getMethod());
+        return null;
+//        throw new LinkBuilderException("Could not find a argument resolver for parameter # " +
+//                methodParameter.getParameterIndex() + " type " + methodParameter.getParameterType() +
+//                " on method " + methodParameter.getMethod());
     }
 
 }

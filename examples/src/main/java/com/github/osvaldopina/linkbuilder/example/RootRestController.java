@@ -30,7 +30,6 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .root();
 
-
         linksBuilder.link()
                 .withRel("no-query-parameter")
                 .fromControllerCall(RootRestController.class)
