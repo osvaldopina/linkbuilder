@@ -40,16 +40,16 @@ public class ArgumentResolversTest  extends EasyMockSupport {
 
     }
 
-    @Test(expected = LinkBuilderException.class)
+    @Test
     public void getArgumentResolverForWithoutArgumentResolver() throws Exception {
 
         argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 
         EasyMock.expect(argumentResolver.resolveFor(methodParameter)).andReturn(false);
         // Information for throwing exception
-        EasyMock.expect(methodParameter.getParameterIndex()).andReturn(1);
-        EasyMock.expect(methodParameter.getParameterType()).andReturn((Class) String.class);
-        EasyMock.expect(methodParameter.getMethod()).andReturn(ArgumentResolversTest.class.getMethod("getArgumentResolverForWithoutArgumentResolver"));
+//        EasyMock.expect(methodParameter.getParameterIndex()).andReturn(1);
+//        EasyMock.expect(methodParameter.getParameterType()).andReturn((Class) String.class);
+//        EasyMock.expect(methodParameter.getMethod()).andReturn(ArgumentResolversTest.class.getMethod("getArgumentResolverForWithoutArgumentResolver"));
 
         replayAll();
 
