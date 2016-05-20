@@ -12,7 +12,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
 </dependency>
 
 ```
@@ -23,7 +23,7 @@ Or the following dependency for the version under development:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.5-SNAPSHOT</version>
 </dependency>
 
 ```
