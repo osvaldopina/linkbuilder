@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/osvaldopina/linkbuilder.svg?branch=master)](https://travis-ci.org/osvaldopina/linkbuilder)
 
+## Up Next
+
+Annotations only...
+
 ## How to use it.
 
 ### Include the dependency
@@ -12,7 +16,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
 </dependency>
 
 ```
@@ -23,7 +27,7 @@ Or the following dependency for the version under development:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.5-SNAPSHOT</version>
+    <version>0.1.6-SNAPSHOT</version>
 </dependency>
 
 ```
@@ -114,12 +118,22 @@ public class RootRestController {
 ```java
         LinksBuilder  linksBuilder = linksBuilderFactory.create();
 
-        linksBuilder.link().withSelfRel().fromCurrentCall();
-        linksBuilder.link().withRel("no-query-parameter").
-                fromControllerCall(RootRestController.class).methodWithoutQueryParameter("value", null);
+        linksBuilder
+              .link()
+              .withSelfRel()
+              .fromCurrentCall();
 
-        linksBuilder.link().withRel("user-defined-type").
-                fromControllerCall(RootRestController.class).queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+        linksBuilder
+              .link()
+              .withRel("no-query-parameter")
+              .fromControllerCall(RootRestController.class)
+              .methodWithoutQueryParameter("value", null);
+
+        linksBuilder
+              .link()
+              .withRel("user-defined-type")
+              .fromControllerCall(RootRestController.class)
+              .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
         payload.add(linksBuilder.buildAll());
  ```
