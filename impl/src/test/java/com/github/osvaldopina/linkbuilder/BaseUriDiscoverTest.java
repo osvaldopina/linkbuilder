@@ -37,8 +37,7 @@ public class BaseUriDiscoverTest  extends EasyMockSupport {
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Host")).andReturn(null);
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Port")).andReturn(null);
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Proto")).andReturn(null);
-        EasyMock.expect(applicationContext.getEnvironment()).andReturn(environment);
-        EasyMock.expect(environment.getProperty("server.contextPath")).andReturn("context-path");
+        EasyMock.expect(httpServletRequest.getContextPath()).andReturn("context-path");
 
         replayAll();
 
@@ -57,12 +56,11 @@ public class BaseUriDiscoverTest  extends EasyMockSupport {
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Host")).andReturn(null);
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Port")).andReturn(null);
         EasyMock.expect(httpServletRequest.getHeader("X-Forwarded-Proto")).andReturn(null);
-        EasyMock.expect(applicationContext.getEnvironment()).andReturn(environment);
-        EasyMock.expect(environment.getProperty("server.contextPath")).andReturn(null);
+        EasyMock.expect(httpServletRequest.getContextPath()).andReturn("/");
 
         replayAll();
 
-        assertEquals("http://localhost:8080", baseUriDiscover.getBaseUri(httpServletRequest, applicationContext));
+        assertEquals("http://localhost:8080/", baseUriDiscover.getBaseUri(httpServletRequest, applicationContext));
 
         verifyAll();
 

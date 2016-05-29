@@ -4,6 +4,7 @@ import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
+import com.github.osvaldopina.linkbuilder.utils.UrlPathContatenator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class UriTemplateMethodMappings {
     private TemplateGeneratorIntrospector templateGeneratorIntrospector = new TemplateGeneratorIntrospector();
 
     private TemplateGenerator templateGenerator = new TemplateGenerator();
+
+    private UrlPathContatenator urlPathContatenator = new UrlPathContatenator();
 
     @PostConstruct
     public void init() {
@@ -66,7 +69,8 @@ public class UriTemplateMethodMappings {
     }
 
     public UriTemplate createNewTemplateForMethod(String baseUri, Method method) {
-        return UriTemplate.buildFromTemplate(baseUri + getTemplateForMethod(method).getTemplate()).build();
+        return UriTemplate.buildFromTemplate(
+                urlPathContatenator.concat(baseUri, getTemplateForMethod(method).getTemplate()) ).build();
     }
 
 

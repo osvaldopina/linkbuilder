@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
+import com.github.osvaldopina.linkbuilder.utils.UrlPathContatenator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 
@@ -16,13 +17,15 @@ public class BaseUriDiscover {
 
     private static final Pattern FORWARDED_PROTO_PATTERN = Pattern.compile("proto=\"?([^;,\"]+)\"?");
 
+    private UrlPathContatenator urlPathContatenator = new UrlPathContatenator();
+
 
     public String getBaseUri(HttpServletRequest request, ApplicationContext applicationContext) {
-        URI uri = null;
+        URI uri;
         try {
             uri = new URI(request.getRequestURL().toString());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            throw new LinkBuilderException("Could not get current request url because " +e,e);
         }
         String scheme = uri.getScheme();
         String host = uri.getHost();
@@ -86,29 +89,14 @@ public class BaseUriDiscover {
             port = -1;
         }
 
-        URI baseUri = null;
+        URI baseUri;
         try {
             baseUri = new URI(scheme,null, host, port, null, null, null);
         } catch (URISyntaxException e) {
             throw new LinkBuilderException("Could not discover base uri because " +e,e);
         }
 
-        return baseUri.toString() + getContextPath(applicationContext);
-
-    }
-
-    public String getContextPath(ApplicationContext applicationContext) {
-        String contextPath = applicationContext.getEnvironment().getProperty("server.contextPath");
-
-        if (contextPath != null && (!contextPath.trim().equals(""))) {
-            return contextPath.startsWith("/")?contextPath:"/" + contextPath;
-        }
-        else {
-            return "";
-        }
-
-
-
+        return urlPathContatenator.concat(baseUri.toString(),request.getContextPath());
 
     }
 
