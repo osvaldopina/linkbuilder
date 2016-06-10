@@ -23,7 +23,6 @@ class LinksBuilderImpl implements LinksBuilder {
 
     private ApplicationContext applicationContext;
 
-
     protected LinksBuilderImpl(ApplicationContext applicationContext) {
         this(applicationContext, null);
     }

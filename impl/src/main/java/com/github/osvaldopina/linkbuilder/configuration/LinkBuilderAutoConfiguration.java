@@ -1,16 +1,136 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
+import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
+import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
+import com.github.osvaldopina.linkbuilder.argumentresolver.basic.PathVariableAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestBodyAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestParamAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableClassIsPresent;
+import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
+import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCallAspect;
+import com.github.osvaldopina.linkbuilder.direct.DirectLinkTargetBeanPostProcessor;
+import com.github.osvaldopina.linkbuilder.impl.LinksBuilderFactoryImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.impl.TemplateGeneratorImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.impl.UriTemplateMethodMappingsImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.RequestPartsFactoryListImpl;
+import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.spel.impl.SpelExecutorImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import javax.annotation.PostConstruct;
-
 @Configuration
-@ComponentScan("com.github.osvaldopina.linkbuilder")
 @EnableAspectJAutoProxy
 public class LinkBuilderAutoConfiguration {
+
+    @Autowired(required = false)
+    private LinkBuilderConfigurer customLinkBuilderConfigurer;
+
+    private DefaultLinkBuilderConfigurer defaultLinkBuilderConfigurer = new DefaultLinkBuilderConfigurer();
+
+    @Bean
+    public LinksBuilderFactory linksBuilderFactory() {
+        return new LinksBuilderFactoryImpl();
+    }
+
+    @Bean
+    public UriTemplateMethodMappings uriTemplateMethodMappings() {
+        return new UriTemplateMethodMappingsImpl();
+    }
+
+    @Bean
+    public TemplateGenerator templateGenerator() {
+        if (customLinkBuilderConfigurer != null) {
+            TemplateGenerator templateGenerator = customLinkBuilderConfigurer.templateGenerator();
+            if (templateGenerator != null) {
+                return templateGenerator;
+            }
+        }
+        return defaultLinkBuilderConfigurer.templateGenerator();
+    }
+
+    @Bean
+    public RequestPartsFactoryList requestPartsFactoryList() {
+        if (customLinkBuilderConfigurer != null) {
+            RequestPartsFactoryList requestPartsFactoryList  = customLinkBuilderConfigurer.requestPartsFactoryList();
+            if (requestPartsFactoryList != null) {
+                return requestPartsFactoryList;
+            }
+        }
+        return defaultLinkBuilderConfigurer.requestPartsFactoryList();
+    }
+
+    @Bean
+    public SpelExecutor spelExecutor() {
+        if (customLinkBuilderConfigurer != null) {
+            SpelExecutor spelExecutor = customLinkBuilderConfigurer.spelExecutor();
+            if (spelExecutor != null) {
+                return spelExecutor;
+            }
+        }
+        return defaultLinkBuilderConfigurer.spelExecutor();
+    }
+
+    @Bean
+    public BaseUriDiscover baseUriDiscover() {
+        if (customLinkBuilderConfigurer != null) {
+            BaseUriDiscover baseUriDiscover = customLinkBuilderConfigurer.baseUriDiscover();
+            if (baseUriDiscover != null) {
+                return baseUriDiscover;
+            }
+        }
+        return defaultLinkBuilderConfigurer.baseUriDiscover();
+    }
+
+    @Bean
+    public CurrentCallAspect currentCallAspect() {
+        return new CurrentCallAspect();
+    }
+
+    @Bean
+    public CurrentCall currentCall() {
+        return new CurrentCall();
+    }
+
+    @Bean
+    public RequestParamAnnotationArgumentResolver requestParamAnnotationArgumentResolver() {
+        return new RequestParamAnnotationArgumentResolver();
+    }
+
+    @Bean
+    public RequestBodyAnnotationArgumentResolver requestBodyAnnotationArgumentResolver() {
+        return new RequestBodyAnnotationArgumentResolver();
+    }
+
+    @Bean
+    public PathVariableAnnotationArgumentResolver pathVariableAnnotationArgumentResolver() {
+        return new PathVariableAnnotationArgumentResolver();
+    }
+
+    @Bean
+    public ArgumentResolvers argumentResolvers() {
+        return new ArgumentResolvers();
+    }
+
+    @Bean
+    @Conditional(PageableClassIsPresent.class)
+    public PageableArgumentResolver pageableArgumentResolver() {
+        return new PageableArgumentResolver();
+    }
+
+//    @Bean
+//    public static BeanPostProcessor directLinkTargetBeanPostProcessor() {
+//        return new DirectLinkTargetBeanPostProcessor();
+//    }
+
 }
 

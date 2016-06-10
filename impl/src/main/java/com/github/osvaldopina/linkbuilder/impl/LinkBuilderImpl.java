@@ -7,8 +7,11 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
 import com.github.osvaldopina.linkbuilder.controllerproxy.controllercall.ControllerProxy;
-import com.github.osvaldopina.linkbuilder.impl.spel.ExpressionVerifier;
+import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.spel.impl.SpelExecutorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.hateoas.Link;
@@ -36,9 +39,9 @@ public class LinkBuilderImpl implements LinkBuilder {
     private boolean allParamsAsTemplate;
     private Object payload;
 
-    private BaseUriDiscover baseUriDiscover = new BaseUriDiscover();
-    private ExpressionVerifier expressionVerifier =
-            new ExpressionVerifier();
+    private BaseUriDiscover baseUriDiscover;
+
+    private SpelExecutor spelExecutor;
 
     private String expression;
 
@@ -46,6 +49,12 @@ public class LinkBuilderImpl implements LinkBuilder {
         this.applicationContext = applicationContext;
         this.linksBuilderImpl = linksBuilderImpl;
         this.payload = payload;
+        init();
+    }
+
+    public void init() {
+        baseUriDiscover = applicationContext.getBean(BaseUriDiscover.class);
+        spelExecutor = applicationContext.getBean(SpelExecutor.class);
     }
 
     public Method getMethod() {
@@ -132,12 +141,10 @@ public class LinkBuilderImpl implements LinkBuilder {
 
         checkIfMethodIsPresent();
 
-        UriTemplateMethodMappings uriTemplateMethodMappings =
+        UriTemplateMethodMappings uriTemplateMethodMappings  =
                 applicationContext.getBean(UriTemplateMethodMappings.class);
 
-        UriTemplate template = uriTemplateMethodMappings.createNewTemplateForMethod(
-                baseUriDiscover.getBaseUri(getCurrentRequest(), applicationContext),
-                method);
+        UriTemplate template = uriTemplateMethodMappings.createNewTemplateForMethod(method);
 
         ArgumentResolvers argumentResolvers = applicationContext.getBean(ArgumentResolvers.class);
 
@@ -164,7 +171,7 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     public boolean whenExpressionIsTrue() {
         if (expression != null) {
-            return expressionVerifier.isTrue(expression, applicationContext, payload);
+            return spelExecutor.isTrue(expression, payload, null);
         } else {
             return true;
         }

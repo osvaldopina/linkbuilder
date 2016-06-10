@@ -3,6 +3,9 @@ package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
 import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +13,9 @@ import static org.junit.Assert.*;
 
 public class ControllerProxyTest {
 
-    private LinkBuilderImpl linkBuilderImpl = new LinkBuilderImpl(null, null, null);
+    private FakeApplicationContext applicationContext;
+
+    private LinkBuilderImpl linkBuilderImpl;
 
     private Method method;
 
@@ -21,6 +26,9 @@ public class ControllerProxyTest {
 
     @Before
     public void setUp() throws Exception {
+        applicationContext = new FakeApplicationContext();
+        linkBuilderImpl = new LinkBuilderImpl(applicationContext, null, null);
+
         method = ControllerProxyTest.class.getMethod("method", String.class);
 
         controllerProxyTest = ControllerProxy.createProxy(ControllerProxyTest.class, linkBuilderImpl);
@@ -41,6 +49,13 @@ public class ControllerProxyTest {
 
     public void method(String param1) {
 
+    }
+
+    public static class FakeApplicationContext extends GenericApplicationContext {
+        @Override
+        public <T> T getBean(Class<T> requiredType) throws BeansException {
+            return null;
+        }
     }
 
 

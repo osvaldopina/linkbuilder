@@ -7,8 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-@Component
-class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory {
+public class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory {
 
     private ApplicationContext applicationContext;
 

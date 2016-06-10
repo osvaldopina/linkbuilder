@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 
+import com.github.osvaldopina.linkbuilder.configuration.CustomLinkBuilderConfigurer;
+import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,10 +22,19 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @Import(WebSecurityConfig.class)
-public class Application {
+@Configuration
+public class Application extends CustomLinkBuilderConfigurer {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
     }
+
+
+    @Override
+    public BaseUriDiscover baseUriDiscover() {
+        return new LocalBaseUriDiscover();
+    }
+
+
 
 }

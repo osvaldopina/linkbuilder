@@ -1,14 +1,11 @@
 package com.github.osvaldopina.linkbuilder.argumentresolver;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
 
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -46,14 +43,12 @@ public class ArgumentResolversTest  extends EasyMockSupport {
         argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 
         EasyMock.expect(argumentResolver.resolveFor(methodParameter)).andReturn(false);
-        // Information for throwing exception
-//        EasyMock.expect(methodParameter.getParameterIndex()).andReturn(1);
-//        EasyMock.expect(methodParameter.getParameterType()).andReturn((Class) String.class);
-//        EasyMock.expect(methodParameter.getMethod()).andReturn(ArgumentResolversTest.class.getMethod("getArgumentResolverForWithoutArgumentResolver"));
 
         replayAll();
 
-        assertNull(argumentResolvers.getArgumentResolverFor(methodParameter));
+        ArgumentResolver argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
+        assertNotNull(argumentResolver);
+        assertEquals(argumentResolver.getClass(), EmptyArgumentResolver.class);
 
         verifyAll();
 

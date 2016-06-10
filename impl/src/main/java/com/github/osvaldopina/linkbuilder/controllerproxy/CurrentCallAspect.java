@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 @Aspect
-@Component
 public class CurrentCallAspect implements ApplicationContextAware {
 
     private final Log logger = LogFactory.getLog(getClass());

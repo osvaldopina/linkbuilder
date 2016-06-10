@@ -3,9 +3,15 @@ package com.github.osvaldopina.linkbuilder.example;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.Link;
+import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
+import com.github.osvaldopina.linkbuilder.annotation.LinkParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RootRestController {
@@ -19,7 +25,7 @@ public class RootRestController {
 
         Payload payload = new Payload();
 
-        LinksBuilder  linksBuilder = linksBuilderFactory.create();
+        LinksBuilder linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
 
@@ -37,19 +43,19 @@ public class RootRestController {
 
         linksBuilder.link()
                 .withRel("user-defined-type-for-authenticated")
-                .when("isAuthenticated()" )
+                .when("isAuthenticated()")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
         linksBuilder.link()
                 .withRel("using-bean-in-expression-always-true")
-                .when("@anyBean.isAlwaysTrue()" )
+                .when("@anyBean.isAlwaysTrue()")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
         linksBuilder.link()
                 .withRel("using-bean-in-expression-always-false")
-                .when("@anyBean.isAlwaysFalse()" )
+                .when("@anyBean.isAlwaysFalse()")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
@@ -67,7 +73,8 @@ public class RootRestController {
 
     @RequestMapping("/no-query-parameter/{id}")
     @EnableSelfFromCurrentCall
-    public void methodWithoutQueryParameter(@PathVariable("id") String id,@RequestBody String payload) {
+    @LinkTarget("a-method")
+    public void methodWithoutQueryParameter(@PathVariable("id") String id, @RequestBody String payload) {
 
     }
 
@@ -77,5 +84,24 @@ public class RootRestController {
 
     }
 
-
+    @RequestMapping("/other")
+    @Link(destination = RootRestController.class, target = "a-method", relation = "rel",
+            when = "true",
+            templated = true
+            /*
+            ,
+            params = {
+                    @LinkParam(
+                            when = "true",
+                            name = "id",
+                            value = "25"
+                    )
+            }
+            */
+    )
+    public ResourceSupport other() {
+        ResourceSupport resourceSupport = new ResourceSupport();
+        return resourceSupport;
+    }
 }
+
