@@ -4,7 +4,6 @@ import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.annotation.LinkParam;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
-import javafx.application.Application;
 import org.springframework.context.ApplicationContext;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
