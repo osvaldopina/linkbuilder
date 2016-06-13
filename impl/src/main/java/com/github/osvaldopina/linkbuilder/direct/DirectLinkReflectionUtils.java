@@ -44,7 +44,7 @@ public class DirectLinkReflectionUtils {
     }
 
     public String getLinkTarget(Method method) {
-        LinkTarget linkTarget = method.getDeclaredAnnotation(LinkTarget.class);
+        LinkTarget linkTarget = method.getAnnotation(LinkTarget.class);
 
         if (linkTarget.value() == null || "".equals(linkTarget.value())) {
             throw new LinkBuilderException("@LinkTarget for " +method+ " must not be null of empty string!");
