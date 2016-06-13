@@ -1,11 +1,10 @@
-package com.github.osvaldopina.linkbuilder.example;
+package com.github.osvaldopina.linkbuilder.example.todo;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
-import com.github.osvaldopina.linkbuilder.annotation.LinkParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.PathVariable;

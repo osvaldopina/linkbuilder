@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example;
+package com.github.osvaldopina.linkbuilder.example.todo;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;

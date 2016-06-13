@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.example;
 
+import com.github.osvaldopina.linkbuilder.example.todo.Application;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

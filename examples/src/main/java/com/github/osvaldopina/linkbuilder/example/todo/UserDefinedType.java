@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example;
+package com.github.osvaldopina.linkbuilder.example.todo;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.templategenerator;
+package com.github.osvaldopina.linkbuilder.example.userdefinedtype;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,14 +12,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Application.class)
-public class TemplateGeneratorExtensionTest {
+public class UserDefinedTypeTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -32,12 +31,12 @@ public class TemplateGeneratorExtensionTest {
     }
 
     @Test
-    public void customTemplate() throws Exception {
+    public void userDefinedType() throws Exception {
 
         mockMvc.perform(get("/"))
             //    .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._links.rel.href").value("http://localhost/custom-template/query-value"));
+                .andExpect(jsonPath("$._links.rel.href").value("http://localhost/user-defined-type?value1=v1&value2=v2"));
 
     }
 
