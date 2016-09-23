@@ -73,7 +73,7 @@ you get the following reponse:
 }
 ```
 
-[Here](examples/src/main/java/com\github/osvaldopina/linkbuilder/example/directlink) the code for a complete example and
+[Here](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/directlink) the code for a complete example and
 [here](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype) the example integration test
 
 
