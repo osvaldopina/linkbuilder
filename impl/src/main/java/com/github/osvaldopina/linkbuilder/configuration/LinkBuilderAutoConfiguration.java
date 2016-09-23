@@ -7,20 +7,17 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestBodyAnno
 import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestParamAnnotationArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableClassIsPresent;
-import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
-import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCallAspect;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCall;
 import com.github.osvaldopina.linkbuilder.direct.DirectLinkTargetBeanPostProcessor;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallBeanPostProcessor;
 import com.github.osvaldopina.linkbuilder.impl.LinksBuilderFactoryImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
-import com.github.osvaldopina.linkbuilder.methodtemplate.impl.TemplateGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.impl.UriTemplateMethodMappingsImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.RequestPartsFactoryListImpl;
 import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
-import com.github.osvaldopina.linkbuilder.spel.impl.SpelExecutorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
@@ -92,9 +89,20 @@ public class LinkBuilderAutoConfiguration {
     }
 
     @Bean
-    public CurrentCallAspect currentCallAspect() {
-        return new CurrentCallAspect();
+    public LinkGenerator linkGenerator() {
+        if (customLinkBuilderConfigurer != null) {
+            LinkGenerator linkGenerator = customLinkBuilderConfigurer.linkGenerator();
+            if (linkGenerator != null) {
+                return linkGenerator;
+            }
+        }
+        return defaultLinkBuilderConfigurer.linkGenerator();
     }
+
+//    @Bean
+//    public CurrentCallAspect currentCallAspect() {
+//        return new CurrentCallAspect();
+//    }
 
     @Bean
     public CurrentCall currentCall() {
@@ -127,10 +135,17 @@ public class LinkBuilderAutoConfiguration {
         return new PageableArgumentResolver();
     }
 
-//    @Bean
-//    public static BeanPostProcessor directLinkTargetBeanPostProcessor() {
-//        return new DirectLinkTargetBeanPostProcessor();
-//    }
+    @Bean
+    public static BeanPostProcessor directLinkTargetBeanPostProcessor() {
+        return new DirectLinkTargetBeanPostProcessor();
+    }
+
+    @Bean
+    public static BeanPostProcessor currentCallBeanPostProcessor() {
+        return new CurrentCallBeanPostProcessor();
+    }
+
+
 
 }
 

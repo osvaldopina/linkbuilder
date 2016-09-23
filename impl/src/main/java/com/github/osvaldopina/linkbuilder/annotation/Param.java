@@ -1,8 +1,8 @@
 package com.github.osvaldopina.linkbuilder.annotation;
 
-public @interface LinkParam {
+public @interface Param {
 
-    String when();
+    String when() default "";
 
     String name();
 

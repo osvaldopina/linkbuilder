@@ -15,10 +15,10 @@ public @interface Link {
 
     String relation();
 
-    String when();
+    String when() default "";
 
     boolean templated() default false;
 
-    LinkParam[] params() default {};
+    Param[] params() default {};
 
 }

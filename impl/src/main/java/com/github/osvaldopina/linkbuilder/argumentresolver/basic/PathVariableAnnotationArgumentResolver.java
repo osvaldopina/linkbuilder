@@ -2,14 +2,11 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.basic;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 
 public class PathVariableAnnotationArgumentResolver implements ArgumentResolver {
@@ -24,15 +21,16 @@ public class PathVariableAnnotationArgumentResolver implements ArgumentResolver 
     }
 
 
-    @Override
     public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
-                                     List<String> templatedParamNames) {
+                              VariableSubstitutionController variableSubstitutionController) {
+
         Assert.notNull(template);
         Assert.notNull(methodParameter);
 
-        PathVariable pathVariable = methodParameter.getParameterAnnotation(PathVariable.class);
+        PathVariable pathVariable = methodParameter.getMethodAnnotation(PathVariable.class);
 
-        if (! templatedParamNames.contains(pathVariable.value())) {
+
+        if (variableSubstitutionController.substitute(methodParameter, pathVariable.value(), parameter)) {
             template.set(pathVariable.value(), parameter);
         }
 

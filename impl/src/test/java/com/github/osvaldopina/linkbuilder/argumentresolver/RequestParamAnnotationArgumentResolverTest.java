@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.argumentresolver;
 import com.damnhandy.uri.template.UriTemplate;
 import com.damnhandy.uri.template.UriTemplateBuilder;
 import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestParamAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.easymock.*;
 import org.junit.Before;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class RequestLinkParamAnnotationArgumentResolverTest extends EasyMockSupport {
+public class RequestParamAnnotationArgumentResolverTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
@@ -41,7 +42,7 @@ public class RequestLinkParamAnnotationArgumentResolverTest extends EasyMockSupp
     private RequestParam requestParam;
 
     @Mock
-    private List<String> templatedParamNames;
+    private VariableSubstitutionController variableSubstitutionController;
 
 
     @Before
@@ -102,14 +103,14 @@ public class RequestLinkParamAnnotationArgumentResolverTest extends EasyMockSupp
         String value = "value-for-var1";
 
         EasyMock.expect(requestParam.value()).andReturn(varName);
-        EasyMock.expect(templatedParamNames.contains("var1")).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "var1", value)).andReturn(true);
         EasyMock.expect(methodParameter.getParameterAnnotation(RequestParam.class)).andReturn(requestParam);
         EasyMock.expect(requestParam.value()).andReturn(varName);
         EasyMock.expect(uriTemplate.set(varName, value)).andReturn(uriTemplate);
 
         replayAll();
 
-        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, variableSubstitutionController);
 
         verifyAll();
 
@@ -122,11 +123,11 @@ public class RequestLinkParamAnnotationArgumentResolverTest extends EasyMockSupp
 
         EasyMock.expect(methodParameter.getParameterAnnotation(RequestParam.class)).andReturn(requestParam);
         EasyMock.expect(requestParam.value()).andReturn(varName);
-        EasyMock.expect(templatedParamNames.contains("var1")).andReturn(true);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "var1", value)).andReturn(false);
 
         replayAll();
 
-        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        requestParamAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, variableSubstitutionController);
 
         verifyAll();
 

@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
+package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;

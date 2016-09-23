@@ -60,7 +60,7 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder paramAsTemplate(int paramNumber);
+    LinkBuilder variableAsTemplate(int paramNumber);
 
     /**
      * Indicates that parameter with this name should not be substituted by the parameter value and leaved
@@ -75,7 +75,16 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder paramAsTemplate(String templateParamName);
+    LinkBuilder variableAsTemplate(String templateParamName);
+
+
+    /**
+     * Indicates that all null parameters should no be substituted and should be leaved as a template variable.
+     * The resulted link will be a template.
+     *
+     * @return LinkBuilder link builder.
+     */
+    LinkBuilder nullVariablesAsTemplate();
 
     /**
      * Indicates that all parameters should not be substituted by the parameter value and leaved

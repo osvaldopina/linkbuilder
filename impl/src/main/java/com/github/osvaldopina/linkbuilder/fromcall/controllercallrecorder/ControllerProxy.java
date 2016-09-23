@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
+package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
 import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.aopalliance.aop.Advice;

@@ -1,45 +1,33 @@
 package com.github.osvaldopina.linkbuilder.impl;
 
-import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
-import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
-import com.github.osvaldopina.linkbuilder.controllerproxy.CurrentCall;
-import com.github.osvaldopina.linkbuilder.controllerproxy.controllercall.ControllerProxy;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.*;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCall;
+import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
+import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
-import com.github.osvaldopina.linkbuilder.spel.impl.SpelExecutorImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.MethodParameter;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.core.MethodParameters;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LinkBuilderImpl implements LinkBuilder {
 
     private String rel;
     private boolean fromCurrentCall;
-    private Method method;
-    private Object[] parameters;
     private ApplicationContext applicationContext;
     private LinksBuilderImpl linksBuilderImpl;
-    private List<Integer> templatedParamNumbers = new ArrayList<Integer>();
-    private List<String> templatedParamNames = new ArrayList<String>();
-    private boolean allParamsAsTemplate;
+    private VariableSubstitutionControllers variableSubstitutionControllers = new VariableSubstitutionControllers();
     private Object payload;
-
-    private BaseUriDiscover baseUriDiscover;
+    private LinkGenerator linkGenerator;
+    private MethodCall methodCall;
 
     private SpelExecutor spelExecutor;
 
@@ -53,25 +41,19 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     public void init() {
-        baseUriDiscover = applicationContext.getBean(BaseUriDiscover.class);
         spelExecutor = applicationContext.getBean(SpelExecutor.class);
+        linkGenerator = applicationContext.getBean(LinkGenerator.class);
+
     }
 
-    public Method getMethod() {
-        return method;
+    public void setMethodCall(MethodCall methodCall) {
+        this.methodCall = methodCall;
     }
 
-    public void setMethod(Method method) {
-        this.method = method;
+    public MethodCall getMethodCall() {
+        return methodCall;
     }
 
-    public Object[] getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(Object[] parameters) {
-        this.parameters = parameters;
-    }
 
     @Override
     public LinkBuilder withSelfRel() {
@@ -104,20 +86,34 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     @Override
-    public LinkBuilder paramAsTemplate(int paramNumber) {
-        templatedParamNumbers.add(paramNumber);
+    public LinkBuilder variableAsTemplate(int paramIndex) {
+        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
+                new NotSubstituteParameterIndexVariableSubstitutionController(paramIndex)
+        );
         return this;
     }
 
     @Override
-    public LinkBuilder paramAsTemplate(String templateParamName) {
-        templatedParamNames.add(templateParamName);
+    public LinkBuilder variableAsTemplate(String variableName) {
+        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
+                new NotSubstituteVariableNameVariableSubstitutionController(variableName)
+        );
+        return this;
+    }
+
+    @Override
+    public LinkBuilder nullVariablesAsTemplate() {
+        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
+                new NotSubstituteNullValueVariableSubstitutionController()
+        );
         return this;
     }
 
     @Override
     public LinkBuilder allParamsAsTemplate() {
-        allParamsAsTemplate = true;
+        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
+                new SubstituteNoneVariableSubstitutionController()
+        );
         return this;
     }
 
@@ -135,38 +131,11 @@ public class LinkBuilderImpl implements LinkBuilder {
     public Link build() {
         if (fromCurrentCall) {
             CurrentCall currentCall = applicationContext.getBean(CurrentCall.class);
-            method = currentCall.getMethod();
-            parameters = currentCall.getParameters();
+            methodCall = currentCall.getMethodCall();
         }
 
-        checkIfMethodIsPresent();
+        return  linkGenerator.generate(methodCall, isTemplated(), rel, variableSubstitutionControllers);
 
-        UriTemplateMethodMappings uriTemplateMethodMappings  =
-                applicationContext.getBean(UriTemplateMethodMappings.class);
-
-        UriTemplate template = uriTemplateMethodMappings.createNewTemplateForMethod(method);
-
-        ArgumentResolvers argumentResolvers = applicationContext.getBean(ArgumentResolvers.class);
-
-        MethodParameters methodParameters = new MethodParameters(method);
-
-        if (!allParamsAsTemplate) {
-
-            ArgumentResolver argumentResolver;
-            for (MethodParameter methodParameter : methodParameters.getParameters()) {
-                if (!templatedParamNumbers.contains(methodParameter.getParameterIndex())) {
-                    checkIfParameterIsPresent(methodParameter.getParameterIndex());
-
-                    argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
-                    argumentResolver.setTemplateVariables(template,
-                            methodParameter,
-                            parameters[methodParameter.getParameterIndex()],
-                            templatedParamNames);
-                }
-            }
-        }
-
-        return new Link(isTemplated() ? template.expandPartial() : template.expand(), rel);
     }
 
     public boolean whenExpressionIsTrue() {
@@ -178,19 +147,10 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     }
 
-    private void checkIfMethodIsPresent() {
-        if (method == null) {
-            throw new LinkBuilderException("Could not determine which method to get template!");
+    private void checkIfMethodCallIsPresent() {
+        if (methodCall == null) {
+            throw new LinkBuilderException("Could not determine which method call to get template!");
         }
-    }
-
-    private void checkIfParameterIsPresent(int parameterIndex) {
-        if (parameters == null || parameters.length < parameterIndex) {
-            throw new LinkBuilderException("Tried to get parameter index " + parameterIndex + " for call on method " +
-                    method.getName() + " but parameters " +
-                    (parameters == null ? " is null" : "have length " + parameters.length));
-        }
-
     }
 
     @Override
@@ -199,7 +159,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     private boolean isTemplated() {
-        return allParamsAsTemplate || !templatedParamNames.isEmpty() || !templatedParamNumbers.isEmpty();
+        return variableSubstitutionControllers.hasVariableSubstitutionController();
     }
 
     private HttpServletRequest getCurrentRequest() {

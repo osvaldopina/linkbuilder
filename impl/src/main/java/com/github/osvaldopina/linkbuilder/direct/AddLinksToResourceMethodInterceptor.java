@@ -1,9 +1,10 @@
 package com.github.osvaldopina.linkbuilder.direct;
 
-import com.damnhandy.uri.template.UriTemplate;
+import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.Link;
-import com.github.osvaldopina.linkbuilder.annotation.LinkParam;
-import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.annotation.Links;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCall;
+import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.context.ApplicationContext;
 import org.springframework.hateoas.ResourceSupport;
@@ -14,8 +15,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddLinksToResourceMethodInterceptor implements AfterReturningAdvice {
 
@@ -27,28 +26,27 @@ public class AddLinksToResourceMethodInterceptor implements AfterReturningAdvice
 
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        Link link = method.getAnnotation(Link.class);
+        if (returnValue != null) {
+            LinkGenerator linkGenerator = applicationContext.getBean(LinkGenerator.class);
 
-        ResourceSupport resourceSupport = (ResourceSupport) returnValue;
+            createSelfLink(method, linkGenerator, (ResourceSupport) returnValue);
 
-        List<org.springframework.hateoas.Link> links = new ArrayList<org.springframework.hateoas.Link>();
+            createAllAnnotatedLinks(method, args, linkGenerator, (ResourceSupport) returnValue);
+        }
+    }
 
-        if (link != null) {
-            Class<?> destination = link.destination();
-            String targetLink = link.target();
+    private void createAllAnnotatedLinks(Method method, Object[] args, LinkGenerator linkGenerator, ResourceSupport resourceSupport) {
+        Links linksAnnotation = method.getAnnotation(Links.class);
+        for (Link link : linksAnnotation.value()) {
+            resourceSupport.add(linkGenerator.generate(link, resourceSupport, args));
+        }
+    }
 
-            UriTemplateMethodMappings uriTemplateMethodMappingsImpl =
-                    applicationContext.getBean(UriTemplateMethodMappings.class);
+    private void createSelfLink(Method method, LinkGenerator linkGenerator, ResourceSupport resourceSupport) {
+        if (method.getAnnotation(EnableSelfFromCurrentCall.class) != null) {
+            CurrentCall currentCall = applicationContext.getBean(CurrentCall.class);
 
-            UriTemplate template = uriTemplateMethodMappingsImpl.createNewTemplateForLinkTarget(destination, targetLink);
-
-            for(LinkParam linkParam: link.params()) {
-                template.set(linkParam.name(), linkParam.value());
-            }
-
-            links.add(new org.springframework.hateoas.Link(link.templated() ? template.expandPartial() : template.expand(), link.relation()));
-            resourceSupport.add(links);
-
+            resourceSupport.add(linkGenerator.generate(currentCall.getMethodCall(), false, "self"));
         }
     }
 

@@ -1,10 +1,9 @@
-package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
+package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
 import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.lang.reflect.Method;
@@ -41,9 +40,9 @@ public class ControllerProxyTest {
         controllerProxyTest.method(parameter);
 
         // cannot use equals on method because aspects...
-        assertEquals(method.toString(), linkBuilderImpl.getMethod().toString());
-        assertEquals(1, linkBuilderImpl.getParameters().length);
-        assertSame(parameter, linkBuilderImpl.getParameters()[0]);
+        assertEquals(method.toString(), linkBuilderImpl.getMethodCall().getMethod().toString());
+        assertEquals(1, linkBuilderImpl.getMethodCall().getParams().length);
+        assertSame(parameter, linkBuilderImpl.getMethodCall().getParam(0));
 
     }
 

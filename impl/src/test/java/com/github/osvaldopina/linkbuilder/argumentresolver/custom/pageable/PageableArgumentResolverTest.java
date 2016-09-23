@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.easymock.*;
 import org.junit.Rule;
@@ -38,7 +39,7 @@ public class PageableArgumentResolverTest extends EasyMockSupport {
     private UriTemplate uriTemplate;
 
     @Mock
-    private List<String> templatedParamNames;
+    private VariableSubstitutionController variableSubstitutionController;
 
     @Test
     public void resolveForPageable() throws Exception {
@@ -85,21 +86,22 @@ public class PageableArgumentResolverTest extends EasyMockSupport {
     @Test
     public void AddToTemplateValuesFromPageableObjectTemplatedParamNamesEmpty() throws Exception {
 
-        EasyMock.expect(templatedParamNames.contains("page")).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "page", pageable)).andReturn(true);
         EasyMock.expect(pageable.getPageNumber()).andReturn(1);
         EasyMock.expect(uriTemplate.set("page", 1)).andReturn(uriTemplate);
 
-        EasyMock.expect(templatedParamNames.contains("size")).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "size", pageable)).andReturn(true);
         EasyMock.expect(pageable.getPageSize()).andReturn(2);
         EasyMock.expect(uriTemplate.set("size", 2)).andReturn(uriTemplate);
 
-        EasyMock.expect(templatedParamNames.contains("sort")).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "sort", pageable)).andReturn(true);
         EasyMock.expect(pageable.getSort()).andReturn(sort);
         EasyMock.expect(uriTemplate.set("sort", sort)).andReturn(uriTemplate);
 
         replayAll();
 
-        pageableArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, pageable, templatedParamNames);
+        pageableArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, pageable,
+                variableSubstitutionController);
 
         verifyAll();
 
@@ -108,15 +110,13 @@ public class PageableArgumentResolverTest extends EasyMockSupport {
     @Test
     public void AddToTemplateValuesFromPageableObjectTemplatedParamNamesWithPageableParams() throws Exception {
 
-        EasyMock.expect(templatedParamNames.contains("page")).andReturn(true);
-
-        EasyMock.expect(templatedParamNames.contains("size")).andReturn(true);
-
-        EasyMock.expect(templatedParamNames.contains("sort")).andReturn(true);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "page", pageable)).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "size", pageable)).andReturn(false);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "sort", pageable)).andReturn(false);
 
         replayAll();
 
-        pageableArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, pageable, templatedParamNames);
+        pageableArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, pageable, variableSubstitutionController);
 
         verifyAll();
 

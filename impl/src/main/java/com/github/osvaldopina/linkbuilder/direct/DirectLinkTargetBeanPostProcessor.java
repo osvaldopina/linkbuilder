@@ -1,5 +1,7 @@
 package com.github.osvaldopina.linkbuilder.direct;
 
+import com.github.osvaldopina.linkbuilder.annotation.Links;
+import com.github.osvaldopina.linkbuilder.utils.TemplateBuilderInstrospectionUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -8,15 +10,18 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Method;
 
-public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor , ApplicationContextAware {
+public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
-    private DirectLinkReflectionUtils directLinkReflectionUtils = new DirectLinkReflectionUtils();
+    private TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils = new TemplateBuilderInstrospectionUtils();
 
     private ApplicationContext applicationContext;
 
 
-    protected DirectLinkTargetBeanPostProcessor(DirectLinkReflectionUtils directLinkReflectionUtils) {
-        this.directLinkReflectionUtils = directLinkReflectionUtils;
+    public DirectLinkTargetBeanPostProcessor() {
+    }
+
+    protected DirectLinkTargetBeanPostProcessor(TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils) {
+        this.templateBuilderInstrospectionUtils = templateBuilderInstrospectionUtils;
     }
 
     @Override
@@ -26,8 +31,8 @@ public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor , Ap
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (directLinkReflectionUtils.isRestController(bean)) {
-            for(Method method: directLinkReflectionUtils.getLinkAnnotatedMethods(bean)) {
+        if (templateBuilderInstrospectionUtils.isRestController(bean)) {
+            for (Method method : templateBuilderInstrospectionUtils.getAnnotatedMethods(bean, Links.class)) {
                 ProxyFactory factory = new ProxyFactory();
                 factory.addAdvice(new AddLinksToResourceMethodInterceptor(applicationContext));
                 factory.setTarget(bean);

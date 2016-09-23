@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.todo;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,9 @@ public class UserDefinedTypeArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter, List<String> templatedParamNames) {
+    public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
+                                     VariableSubstitutionController variableSubstitutionController) {
+
         if (parameter != null && ((UserDefinedType) parameter).getValue1() != null) {
             template.set("value1", ((UserDefinedType) parameter).getValue1());
         }
@@ -38,4 +41,5 @@ public class UserDefinedTypeArgumentResolver implements ArgumentResolver {
             template.set("value2", "null-value");
         }
     }
+
 }

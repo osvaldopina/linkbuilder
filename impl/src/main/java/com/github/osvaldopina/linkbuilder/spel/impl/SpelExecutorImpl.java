@@ -61,7 +61,7 @@ public class SpelExecutorImpl implements SpelExecutor, ApplicationContextAware {
         Expression parsedExpression = securityExpressionParser.parse(applicationContext, expression);
 
         try {
-            return parsedExpression.getValue(ctx, Boolean.class);
+            return parsedExpression.getValue(ctx);
         }
         catch (EvaluationException e) {
             throw new LinkBuilderException("Failed to evaluate expression '"

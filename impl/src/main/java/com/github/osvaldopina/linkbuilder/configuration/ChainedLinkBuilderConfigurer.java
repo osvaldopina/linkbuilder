@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
+import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
@@ -38,6 +39,11 @@ public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
     @Override
     public BaseUriDiscover baseUriDiscover() {
         return getConfigurer().baseUriDiscover();
+    }
+
+    @Override
+    public LinkGenerator linkGenerator() {
+        return getConfigurer().linkGenerator();
     }
 
     private LinkBuilderConfigurer getConfigurer() {

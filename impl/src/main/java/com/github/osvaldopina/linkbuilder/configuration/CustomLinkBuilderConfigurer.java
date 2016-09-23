@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
+import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
@@ -24,6 +25,11 @@ public class CustomLinkBuilderConfigurer implements LinkBuilderConfigurer {
 
     @Override
     public BaseUriDiscover baseUriDiscover() {
+        return null;
+    }
+
+    @Override
+    public LinkGenerator linkGenerator() {
         return null;
     }
 }

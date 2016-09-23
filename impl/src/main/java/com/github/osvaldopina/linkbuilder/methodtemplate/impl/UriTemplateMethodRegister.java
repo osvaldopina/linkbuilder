@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.direct.DirectLinkReflectionUtils;
+import com.github.osvaldopina.linkbuilder.utils.TemplateBuilderInstrospectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,7 +14,7 @@ class UriTemplateMethodRegister {
 
     private final Log logger = LogFactory.getLog(getClass());
 
-    private  DirectLinkReflectionUtils directLinkReflectionUtils = new DirectLinkReflectionUtils();
+    private TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils = new TemplateBuilderInstrospectionUtils();
 
     private Map<Method,UriTemplate> methodTemplates = new HashMap<Method, UriTemplate>();
 
@@ -27,8 +27,8 @@ class UriTemplateMethodRegister {
         String linkTarget = null;
 
 
-        if (directLinkReflectionUtils.hasLinkTargetAnnotation(method)) {
-            linkTarget = directLinkReflectionUtils.getLinkTarget(method);
+        if (templateBuilderInstrospectionUtils.hasLinkTargetAnnotation(method)) {
+            linkTarget = templateBuilderInstrospectionUtils.getLinkTarget(method);
             targetTemplates.put(linkTarget, uriTemplate);
         }
         logger.info("Registered for method:"

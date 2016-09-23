@@ -1,6 +1,7 @@
-package com.github.osvaldopina.linkbuilder.controllerproxy.controllercall;
+package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
 import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -16,8 +17,7 @@ public class ControllerAdvice implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        linkBuilder.setMethod(invocation.getMethod());
-        linkBuilder.setParameters(invocation.getArguments());
+        linkBuilder.setMethodCall(new MethodCall(invocation.getMethod(), invocation.getArguments()));
         return null;
     }
 }

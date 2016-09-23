@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.basic;
 import com.damnhandy.uri.template.UriTemplate;
 import com.damnhandy.uri.template.UriTemplateBuilder;
 import com.github.osvaldopina.linkbuilder.argumentresolver.basic.PathVariableAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.easymock.*;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
     private PathVariable pathVariable;
 
     @Mock
-    private List<String> templatedParamNames;
+    private VariableSubstitutionController variableSubstitutionController;
 
 
     @Before
@@ -98,14 +99,14 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
         String value = "value-for-var1";
 
         EasyMock.expect(pathVariable.value()).andReturn(varName);
-        EasyMock.expect(templatedParamNames.contains("var1")).andReturn(false);
-        EasyMock.expect(methodParameter.getParameterAnnotation(PathVariable.class)).andReturn(pathVariable);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "var1", value)).andReturn(true);
+        EasyMock.expect(methodParameter.getMethodAnnotation(PathVariable.class)).andReturn(pathVariable);
         EasyMock.expect(pathVariable.value()).andReturn(varName);
         EasyMock.expect(uriTemplate.set(varName, value)).andReturn(uriTemplate);
 
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, variableSubstitutionController);
 
         verifyAll();
 
@@ -116,13 +117,13 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(methodParameter.getParameterAnnotation(PathVariable.class)).andReturn(pathVariable);
+        EasyMock.expect(methodParameter.getMethodAnnotation(PathVariable.class)).andReturn(pathVariable);
         EasyMock.expect(pathVariable.value()).andReturn(varName);
-        EasyMock.expect(templatedParamNames.contains("var1")).andReturn(true);
+        EasyMock.expect(variableSubstitutionController.substitute(methodParameter, "var1", value)).andReturn(false);
 
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, templatedParamNames);
+        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, methodParameter, value, variableSubstitutionController);
 
         verifyAll();
 

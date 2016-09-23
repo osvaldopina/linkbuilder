@@ -4,13 +4,9 @@
 
 [![Join the chat at https://gitter.im/osvaldopina/linkbuilder](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/osvaldopina/linkbuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Up Next
+# How to use it.
 
-Annotations only...
-
-## How to use it.
-
-### Include the dependency
+## Include the dependency
 
 Add the following dependency to your project:
 
@@ -18,7 +14,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.6</version>
+    <version>0.2.0</version>
 </dependency>
 
 ```
@@ -29,10 +25,58 @@ Or the following dependency for the version under development:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.1.7-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
 </dependency>
 
 ```
+## New in 0.2.0
+
+### Generating links using only annotations
+
+Indicate the  target method  using ```@LinkTarget```:
+
+```java
+    @RequestMapping("/direct-link/{path}")
+    @LinkTarget("direct")
+    public void directLink(@RequestParam(value = "query", required = false) String query,
+                           @PathVariable("path") String path) {
+
+    }
+```
+Then  use ```@Links, @Link``` to point to a target method:
+```java
+    @RequestMapping("/")
+    @EnableSelfFromCurrentCall
+    @Links({
+            @Link(destination = RootRestController.class, target = "direct", relation = "direct", params = {
+                    @Param(name = "query",value = "#payload.queryValue"),
+                    @Param(name = "path",value = "#payload.pathValue")
+            })
+    })
+    public Payload root() {
+...
+```
+Then when perform a GET on previous controller (GET http://localhost:8080/ calling ```public Payload root()```)
+you have de following reponse:
+```json
+{
+    "queryValue": "anyQueryValue",
+    "pathValue": "anyPathValue",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/"
+        },
+        "direct": {
+            "href": "http://localhost:8080/direct-link/anyPathValue?query=anyQueryValue"
+        }
+    }
+}
+```
+
+[Here](examples/src/main/java/com\github/osvaldopina/linkbuilder/example/directlink) the code for a complete example and
+[here](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype) the example integration test
+
+
 ### New in 0.1.3
 
 ## Spel expressions for link conditional rendering
@@ -62,7 +106,7 @@ Or the following dependency for the version under development:
 
          linksBuilder.link()
                  .withRel("link-for-authenticated-users")
-                 .when("payload.someProperty && isAuthenticated()" )
+                 .when("#payload.someProperty && isAuthenticated()" )
                  .fromControllerCall(ARestController.class)
                  .someControllerMethod();
 
@@ -72,7 +116,7 @@ Or the following dependency for the version under development:
  ```
 
 
-### Annotate controller methods 
+### Annotate controller methods
 
 ```@EnableSelfFromCurrentCall``` If you want to use the annotated method to generate links, link templates and use the current call to generate a self link:
 
@@ -108,7 +152,7 @@ public class RootRestController {
 
 ### Inject ```LinksBuilderFactory```
 
-```java 
+```java
 
     @Autowired
     private LinksBuilderFactory linksBuilderFactory;
@@ -139,5 +183,4 @@ public class RootRestController {
 
         payload.add(linksBuilder.buildAll());
  ```
- 
- 
+
