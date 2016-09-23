@@ -57,7 +57,7 @@ Then  use ```@Links, @Link``` to point to a target method:
 ...
 ```
 Then when perform a GET on previous controller (GET http://localhost:8080/ calling ```public Payload root()```)
-you have de following reponse:
+you get the following reponse:
 ```json
 {
     "queryValue": "anyQueryValue",
