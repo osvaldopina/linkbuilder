@@ -2,9 +2,8 @@ package com.github.osvaldopina.linkbuilder.example.extensions.requestpartsfactor
 
 
 import com.github.osvaldopina.linkbuilder.configuration.CustomLinkBuilderConfigurer;
-import com.github.osvaldopina.linkbuilder.example.extensions.baseuridiscover.*;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

@@ -1,8 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.EvaluationContextCreator;
-import com.github.osvaldopina.linkbuilder.spel.impl.SecurityExpressionParser;
-import com.github.osvaldopina.linkbuilder.spel.impl.SpelExecutorImpl;
 import org.easymock.*;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.junit.Assert.*;
 
-public class SpelExecutorImplTest extends EasyMockSupport {
+public class ExpressionExecutorImplTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
@@ -39,7 +36,7 @@ public class SpelExecutorImplTest extends EasyMockSupport {
     private Authentication authentication;
 
     @TestSubject
-    SpelExecutorImpl spelExecutor = new SpelExecutorImpl();
+    ExpressionExecutorImpl spelExecutor = new ExpressionExecutorImpl();
 
 
     @Before
@@ -50,7 +47,7 @@ public class SpelExecutorImplTest extends EasyMockSupport {
 
     @Test
     public void isTrueWithoutPayload() throws Exception {
-        String expression = "spel expression";
+        String expression = "expression expression";
 
         EasyMock.expect(evaluationContextCreator.create(applicationContext)).andReturn(evaluationContext);
         EasyMock.expect(securityExpressionParser.parse(applicationContext, expression)).andReturn(parsedExpression);
@@ -66,7 +63,7 @@ public class SpelExecutorImplTest extends EasyMockSupport {
 
     @Test
     public void isTrueWithPayload() throws Exception {
-        String expression = "spel expression";
+        String expression = "expression expression";
         Object payload = new Object();
         Object[] parameters = new Object[] {};
 

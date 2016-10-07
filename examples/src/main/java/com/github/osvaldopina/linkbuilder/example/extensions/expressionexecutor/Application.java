@@ -1,9 +1,8 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.spelexecutor;
+package com.github.osvaldopina.linkbuilder.example.extensions.expressionexecutor;
 
 
 import com.github.osvaldopina.linkbuilder.configuration.CustomLinkBuilderConfigurer;
-import com.github.osvaldopina.linkbuilder.example.extensions.requestpartsfactorylist.*;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -22,7 +21,7 @@ public class Application extends CustomLinkBuilderConfigurer {
     }
 
     @Override
-    public SpelExecutor spelExecutor() {
-        return new SpelExecutorDefinedReturn();
+    public ExpressionExecutor spelExecutor() {
+        return new ExpressionExecutorDefinedReturn();
     }
 }

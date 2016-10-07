@@ -1,19 +1,18 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.security.access.expression.ExpressionUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
-public class SpelExecutorImpl implements SpelExecutor, ApplicationContextAware {
+public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationContextAware {
 
     private EvaluationContextCreator evaluationContextCreator =
             new EvaluationContextCreator();
@@ -26,7 +25,7 @@ public class SpelExecutorImpl implements SpelExecutor, ApplicationContextAware {
     @Override
     public boolean isTrue(String expression, Object payload, Object[] params) {
         Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), "Authentication is null. " +
-                "Is spel enabled?");
+                "Is expression enabled?");
 
         EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
 
@@ -46,7 +45,7 @@ public class SpelExecutorImpl implements SpelExecutor, ApplicationContextAware {
     @Override
     public Object getValue(String expression, Object payload, Object[] params) {
         Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), "Authentication is null. " +
-                "Is spel enabled?");
+                "Is expression enabled?");
 
         EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
 

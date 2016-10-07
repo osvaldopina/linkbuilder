@@ -4,6 +4,7 @@ import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
+    private LinksBuilderFactory<Link> linksBuilderFactory;
 
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
@@ -20,7 +21,7 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
+        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create(payload);
 
         linksBuilder.link()
                 .withRel("rel")

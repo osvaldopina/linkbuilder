@@ -3,9 +3,9 @@ package com.github.osvaldopina.linkbuilder.example.todo;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
+    private LinksBuilderFactory<Link> linksBuilderFactory;
 
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
@@ -24,13 +24,13 @@ public class RootRestController {
 
         Payload payload = new Payload();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create();
+        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
 
         linksBuilder.link()
                 .setExpressionPayload(payload)
-                .withRel("a-link-with-spel-payload-check")
+                .withRel("a-link-with-expression-payload-check")
                 .when("#payload.awaysTrueProperty")
                 .fromControllerCall(RootRestController.class)
                 .root();
@@ -83,24 +83,6 @@ public class RootRestController {
 
     }
 
-    @RequestMapping("/other")
-    @Link(destination = RootRestController.class, target = "a-method", relation = "rel",
-            when = "true",
-            templated = true
-            /*
-            ,
-            params = {
-                    @LinkParam(
-                            when = "true",
-                            name = "id",
-                            value = "25"
-                    )
-            }
-            */
-    )
-    public ResourceSupport other() {
-        ResourceSupport resourceSupport = new ResourceSupport();
-        return resourceSupport;
-    }
-}
+
+  }
 

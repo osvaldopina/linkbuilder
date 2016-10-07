@@ -9,7 +9,7 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutionc
 import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -67,12 +67,12 @@ public class LinkGeneratorImpl implements LinkGenerator, ApplicationContextAware
         UriTemplateMethodMappings uriTemplateMethodMappingsImpl =
                 applicationContext.getBean(UriTemplateMethodMappings.class);
 
-        SpelExecutor spelExecutor = applicationContext.getBean(SpelExecutor.class);
+        ExpressionExecutor expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
 
         UriTemplate template = uriTemplateMethodMappingsImpl.createNewTemplateForLinkTarget(destination, targetLink);
 
         for (Param param : linkAnnotation.params()) {
-            template.set(param.name(), spelExecutor.getValue(param.value(), payLoad, params));
+            template.set(param.name(), expressionExecutor.getValue(param.value(), payLoad, params));
         }
 
         return new org.springframework.hateoas.Link(

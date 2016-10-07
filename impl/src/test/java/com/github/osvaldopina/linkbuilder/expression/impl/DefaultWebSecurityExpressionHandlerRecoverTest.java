@@ -1,7 +1,6 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.spel.impl.DefaultWebSecurityExpressionHandlerRecover;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -59,9 +58,9 @@ public class DefaultWebSecurityExpressionHandlerRecoverTest extends EasyMockSupp
             defaultWebSecurityExpressionHandlerRecover.recover(applicationContext);
         }
         catch (LinkBuilderException e) {
-            assertEquals("A spel expression was configured but a instance of " +
+            assertEquals("A expression expression was configured but a instance of " +
                     DefaultWebSecurityExpressionHandler.class +
-                    " could not be found because " + noSuchBeanDefinition + ". Is spel configured?", e.getMessage());
+                    " could not be found because " + noSuchBeanDefinition + ". Is expression configured?", e.getMessage());
         }
 
         verifyAll();

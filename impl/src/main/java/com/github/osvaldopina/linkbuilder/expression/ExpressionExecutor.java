@@ -1,8 +1,6 @@
-package com.github.osvaldopina.linkbuilder.spel;
+package com.github.osvaldopina.linkbuilder.expression;
 
-import org.springframework.hateoas.ResourceSupport;
-
-public interface SpelExecutor {
+public interface ExpressionExecutor {
 
     boolean isTrue(String expression, Object payload, Object[] params);
 

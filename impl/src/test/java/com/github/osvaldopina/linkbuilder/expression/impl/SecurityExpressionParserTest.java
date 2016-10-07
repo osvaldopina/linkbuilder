@@ -1,7 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.SecurityExpressionHandler;
-import com.github.osvaldopina.linkbuilder.spel.impl.SecurityExpressionParser;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,7 +33,7 @@ public class SecurityExpressionParserTest extends EasyMockSupport {
     @Test
     public void getExpressionForNonCachedExpression() throws Exception {
 
-        String expression = "spel expression";
+        String expression = "expression expression";
 
         EasyMock.expect(cache.get(expression)).andReturn(null);
         EasyMock.expect(securityExpressionHandler.parse(applicationContext, expression)).andReturn(parsedExpression);
@@ -52,7 +50,7 @@ public class SecurityExpressionParserTest extends EasyMockSupport {
     @Test
     public void getExpressionForCachedExpression() throws Exception {
 
-        String expression = "spel expression";
+        String expression = "expression expression";
 
         EasyMock.expect(cache.get(expression)).andReturn(parsedExpression);
 

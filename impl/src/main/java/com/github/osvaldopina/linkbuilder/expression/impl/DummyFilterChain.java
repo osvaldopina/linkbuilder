@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

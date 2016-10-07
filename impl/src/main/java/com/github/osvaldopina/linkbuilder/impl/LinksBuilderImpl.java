@@ -15,7 +15,7 @@ import java.util.List;
  * Builder for Links. This builder should be used to create a list of <code>Link</code>. The method <code>link</code>
  * should be used to create a builder for a link.
  */
-class LinksBuilderImpl implements LinksBuilder {
+class LinksBuilderImpl  implements LinksBuilder {
 
     private Object payload;
 

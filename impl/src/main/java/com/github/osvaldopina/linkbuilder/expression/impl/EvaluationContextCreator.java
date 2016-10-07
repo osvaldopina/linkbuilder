@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.expression.EvaluationContext;

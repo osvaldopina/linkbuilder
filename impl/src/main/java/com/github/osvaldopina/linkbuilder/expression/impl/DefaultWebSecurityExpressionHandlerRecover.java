@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.springframework.beans.BeansException;
@@ -13,9 +13,9 @@ public class DefaultWebSecurityExpressionHandlerRecover {
         }
         catch(BeansException e) {
             throw new LinkBuilderException(
-                    "A spel expression was configured but a instance of " +
+                    "A expression expression was configured but a instance of " +
                             DefaultWebSecurityExpressionHandler.class +
-                            " could not be found because " +e + ". Is spel configured?"
+                            " could not be found because " +e + ". Is expression configured?"
             );
         }
 

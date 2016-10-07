@@ -7,7 +7,7 @@ import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCa
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
 import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.hateoas.Link;
 import org.springframework.util.Assert;
@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class LinkBuilderImpl implements LinkBuilder {
+public class LinkBuilderImpl implements LinkBuilder<Link> {
 
     private String rel;
     private boolean fromCurrentCall;
@@ -29,7 +29,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     private LinkGenerator linkGenerator;
     private MethodCall methodCall;
 
-    private SpelExecutor spelExecutor;
+    private ExpressionExecutor expressionExecutor;
 
     private String expression;
 
@@ -41,7 +41,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     public void init() {
-        spelExecutor = applicationContext.getBean(SpelExecutor.class);
+        expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
         linkGenerator = applicationContext.getBean(LinkGenerator.class);
 
     }
@@ -56,37 +56,37 @@ public class LinkBuilderImpl implements LinkBuilder {
 
 
     @Override
-    public LinkBuilder withSelfRel() {
+    public LinkBuilder<Link> withSelfRel() {
         this.rel = "self";
         return this;
     }
 
     @Override
-    public LinkBuilder withRel(String rel) {
+    public LinkBuilder<Link> withRel(String rel) {
         this.rel = rel;
         return this;
     }
 
     @Override
-    public LinkBuilder setExpressionPayload(Object payload) {
+    public LinkBuilder<Link> setExpressionPayload(Object payload) {
         this.payload = payload;
         return this;
     }
 
     @Override
-    public LinkBuilder when(String expression) {
+    public LinkBuilder<Link> when(String expression) {
         this.expression = expression;
         return this;
     }
 
     @Override
-    public LinkBuilder fromCurrentCall() {
+    public LinkBuilder<Link> fromCurrentCall() {
         this.fromCurrentCall = true;
         return this;
     }
 
     @Override
-    public LinkBuilder variableAsTemplate(int paramIndex) {
+    public LinkBuilder<Link> variableAsTemplate(int paramIndex) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteParameterIndexVariableSubstitutionController(paramIndex)
         );
@@ -94,7 +94,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     @Override
-    public LinkBuilder variableAsTemplate(String variableName) {
+    public LinkBuilder<Link> variableAsTemplate(String variableName) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteVariableNameVariableSubstitutionController(variableName)
         );
@@ -102,7 +102,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     @Override
-    public LinkBuilder nullVariablesAsTemplate() {
+    public LinkBuilder<Link> nullVariablesAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteNullValueVariableSubstitutionController()
         );
@@ -110,7 +110,7 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     @Override
-    public LinkBuilder allParamsAsTemplate() {
+    public LinkBuilder<Link> allParamsAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new SubstituteNoneVariableSubstitutionController()
         );
@@ -118,12 +118,12 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
     @Override
-    public <T> T fromControllerCall(Class<T> controllerClass) {
+    public <E> E fromControllerCall(Class<E> controllerClass) {
         return ControllerProxy.createProxy(controllerClass, this);
     }
 
     @Override
-    public LinkBuilder link() {
+    public LinkBuilder<Link> link() {
         return linksBuilderImpl.link();
     }
 
@@ -140,7 +140,7 @@ public class LinkBuilderImpl implements LinkBuilder {
 
     public boolean whenExpressionIsTrue() {
         if (expression != null) {
-            return spelExecutor.isTrue(expression, payload, null);
+            return expressionExecutor.isTrue(expression, payload, null);
         } else {
             return true;
         }
@@ -172,3 +172,4 @@ public class LinkBuilderImpl implements LinkBuilder {
     }
 
 }
+

@@ -1,20 +1,18 @@
 package com.github.osvaldopina.linkbuilder;
 
-import org.springframework.hateoas.Link;
-
 import java.util.List;
 
 /**
  * Builder to configure and create a <code>Link</code>
  */
-public interface LinkBuilder {
+public interface LinkBuilder<T> {
 
     /**
      * Sets the link rel to "self".
      *
      * @return LinkBuilder Link builder.
      */
-    LinkBuilder withSelfRel();
+    LinkBuilder<T> withSelfRel();
 
     /**
      * Sets the link rel attribute.
@@ -23,26 +21,26 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder withRel(String rel);
+    LinkBuilder<T> withRel(String rel);
 
     /**
-     * Sets the payload variable in spel expression context so it can be used in expressions
+     * Sets the payload variable in expression expression context so it can be used in expressions
      *
-     * @param payload Object to be setted as 'payload' variable in spel context
+     * @param payload Object to be setted as 'payload' variable in expression context
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder setExpressionPayload(Object payload);
+    LinkBuilder<T> setExpressionPayload(Object payload);
 
     /**
-     * Defines spel condition expression for link rendering. If expression evaluates to true the link will
+     * Defines expression condition expression for link rendering. If expression evaluates to true the link will
      * be rendered in buildAll()
      *
      * @param expression Spel expression
      *
      * @return linkBuilder link builder.
      */
-    LinkBuilder when(String expression);
+    LinkBuilder<T> when(String expression);
     /**
      * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
      * are changed with a aspect that records the method and the list of parameters.
@@ -50,7 +48,7 @@ public interface LinkBuilder {
      * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
      * @return LinkBuilder link builder.
      */
-    LinkBuilder fromCurrentCall();
+    LinkBuilder<T> fromCurrentCall();
 
     /**
      * Indicates that the nth method parameter should not be substituted by the parameter value and leaved
@@ -60,7 +58,7 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder variableAsTemplate(int paramNumber);
+    LinkBuilder<T> variableAsTemplate(int paramNumber);
 
     /**
      * Indicates that parameter with this name should not be substituted by the parameter value and leaved
@@ -75,7 +73,7 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder variableAsTemplate(String templateParamName);
+    LinkBuilder<T> variableAsTemplate(String templateParamName);
 
 
     /**
@@ -84,7 +82,7 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder nullVariablesAsTemplate();
+    LinkBuilder<T> nullVariablesAsTemplate();
 
     /**
      * Indicates that all parameters should not be substituted by the parameter value and leaved
@@ -92,36 +90,36 @@ public interface LinkBuilder {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder allParamsAsTemplate();
+    LinkBuilder<T> allParamsAsTemplate();
 
     /**
      * Sets the link parameters from a call to a rest controller.
      *
      * @param controllerClass Controller class.
-     * @param <T> Controller type
+     * @param <E> Controller type
      *
      * @return LinkBuilder link builder.
      */
-    <T> T fromControllerCall(Class<T> controllerClass);
+     <E> E fromControllerCall(Class<E> controllerClass);
 
     /**
      * Creates a new <code>LinkBuilder</code>.
      *
      * @return LinkBuilder new link builder.
      */
-    LinkBuilder link();
+    LinkBuilder<T> link();
 
     /**
      * Creates the <code>Link</code>.
      *
      * @return Link link.
      */
-    Link build();
+    T build();
 
     /**
      * Creates all links configured in the same <code>LinksBuilder</code>.
      *
      * @return List of links configured in the same <code>LinksBuilder</code>.
      */
-    List<Link> buildAll();
+    List<T> buildAll();
 }

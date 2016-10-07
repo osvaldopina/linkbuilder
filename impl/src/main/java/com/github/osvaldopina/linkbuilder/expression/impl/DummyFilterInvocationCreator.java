@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.web.context.request.RequestContextHolder;

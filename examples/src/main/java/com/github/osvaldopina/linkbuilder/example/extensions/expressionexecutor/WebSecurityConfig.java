@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.spelexecutor;
+package com.github.osvaldopina.linkbuilder.example.extensions.expressionexecutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

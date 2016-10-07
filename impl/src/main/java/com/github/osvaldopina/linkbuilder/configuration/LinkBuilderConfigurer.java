@@ -4,7 +4,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 
 public interface LinkBuilderConfigurer {
 
@@ -12,7 +12,7 @@ public interface LinkBuilderConfigurer {
 
     RequestPartsFactoryList requestPartsFactoryList();
 
-    SpelExecutor spelExecutor();
+    ExpressionExecutor spelExecutor();
 
     BaseUriDiscover baseUriDiscover();
 

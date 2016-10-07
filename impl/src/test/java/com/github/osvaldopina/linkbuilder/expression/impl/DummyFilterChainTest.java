@@ -1,6 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.DummyFilterChain;
 import org.junit.Test;
 
 public class DummyFilterChainTest {

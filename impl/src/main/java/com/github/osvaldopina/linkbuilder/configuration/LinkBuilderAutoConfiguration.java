@@ -17,7 +17,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappin
 import com.github.osvaldopina.linkbuilder.methodtemplate.impl.UriTemplateMethodMappingsImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
@@ -67,11 +67,11 @@ public class LinkBuilderAutoConfiguration {
     }
 
     @Bean
-    public SpelExecutor spelExecutor() {
+    public ExpressionExecutor spelExecutor() {
         if (customLinkBuilderConfigurer != null) {
-            SpelExecutor spelExecutor = customLinkBuilderConfigurer.spelExecutor();
-            if (spelExecutor != null) {
-                return spelExecutor;
+            ExpressionExecutor expressionExecutor = customLinkBuilderConfigurer.spelExecutor();
+            if (expressionExecutor != null) {
+                return expressionExecutor;
             }
         }
         return defaultLinkBuilderConfigurer.spelExecutor();

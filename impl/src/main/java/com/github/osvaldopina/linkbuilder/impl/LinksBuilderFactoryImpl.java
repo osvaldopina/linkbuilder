@@ -5,9 +5,10 @@ import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Component;
 
-public class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory {
+public class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory<Link> {
 
     private ApplicationContext applicationContext;
 

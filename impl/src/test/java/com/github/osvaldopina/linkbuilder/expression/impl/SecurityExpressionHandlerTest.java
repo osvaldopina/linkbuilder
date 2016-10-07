@@ -1,7 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.DefaultWebSecurityExpressionHandlerRecover;
-import com.github.osvaldopina.linkbuilder.spel.impl.SecurityExpressionHandler;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;
@@ -76,7 +74,7 @@ public class SecurityExpressionHandlerTest extends EasyMockSupport {
 
     @Test
     public void parse() throws Exception {
-        String expression = "spel expression";
+        String expression = "expression expression";
 
         EasyMock.expect(defaultWebSecurityExpressionHandlerRecover.recover(applicationContext)).andReturn(defaultWebSecurityExpressionHandler);
         defaultWebSecurityExpressionHandler.setExpressionParser(expressionParser);

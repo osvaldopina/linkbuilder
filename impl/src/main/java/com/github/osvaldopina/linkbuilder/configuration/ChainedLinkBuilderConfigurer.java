@@ -5,10 +5,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 
 public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
 
@@ -32,7 +29,7 @@ public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public SpelExecutor spelExecutor() {
+    public ExpressionExecutor spelExecutor() {
         return getConfigurer().spelExecutor();
     }
 

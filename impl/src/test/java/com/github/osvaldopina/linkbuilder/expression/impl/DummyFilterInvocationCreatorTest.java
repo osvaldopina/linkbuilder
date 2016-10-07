@@ -1,7 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.DummyFilterChain;
-import com.github.osvaldopina.linkbuilder.spel.impl.DummyFilterInvocationCreator;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;

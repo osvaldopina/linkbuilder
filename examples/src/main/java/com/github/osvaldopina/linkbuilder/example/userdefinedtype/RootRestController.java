@@ -4,9 +4,9 @@ import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
+    private LinksBuilderFactory<Link> linksBuilderFactory;
 
     @RequestMapping("/")
     @GenerateUriTemplateFor
@@ -25,7 +25,7 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create();
+        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link()
                 .withRel("rel")

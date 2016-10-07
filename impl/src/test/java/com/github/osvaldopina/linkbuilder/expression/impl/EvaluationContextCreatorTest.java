@@ -1,8 +1,5 @@
-package com.github.osvaldopina.linkbuilder.spel.impl;
+package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import com.github.osvaldopina.linkbuilder.spel.impl.DummyFilterInvocationCreator;
-import com.github.osvaldopina.linkbuilder.spel.impl.EvaluationContextCreator;
-import com.github.osvaldopina.linkbuilder.spel.impl.SecurityExpressionHandler;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;

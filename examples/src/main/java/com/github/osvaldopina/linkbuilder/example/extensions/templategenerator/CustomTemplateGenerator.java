@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.extensions.templategenerator;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 
 import java.lang.reflect.Method;
 

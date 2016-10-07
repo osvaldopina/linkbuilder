@@ -1,8 +1,8 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.spelexecutor;
+package com.github.osvaldopina.linkbuilder.example.extensions.expressionexecutor;
 
-import com.github.osvaldopina.linkbuilder.spel.SpelExecutor;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 
-public class SpelExecutorDefinedReturn implements SpelExecutor {
+public class ExpressionExecutorDefinedReturn implements ExpressionExecutor {
 
     public static boolean returnValue = false;
 

@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.spelexecutor;
+package com.github.osvaldopina.linkbuilder.example.extensions.expressionexecutor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class SpelExecutorExtensionTest {
     @Test
     public void spelExecutorIsCalledAndReturnTrue() throws Exception {
 
-        SpelExecutorDefinedReturn.returnValue = true;
+        ExpressionExecutorDefinedReturn.returnValue = true;
 
         mockMvc.perform(get("/"))
         .andExpect(jsonPath("$._links.rel.href").value("http://localhost/"));
@@ -44,7 +44,7 @@ public class SpelExecutorExtensionTest {
     @Test
     public void spelExecutorIsCalledAndReturnFalse() throws Exception {
 
-        SpelExecutorDefinedReturn.returnValue = false;
+        ExpressionExecutorDefinedReturn.returnValue = false;
 
         mockMvc.perform(get("/"))
                 //    .andDo(print())
