@@ -12,9 +12,9 @@ public class VariableSubstitutionControllers implements VariableSubstitutionCont
     List<VariableSubstitutionController> variableSubstitutionControllers = new ArrayList<VariableSubstitutionController>();
 
     @Override
-    public boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue) {
+    public boolean substitute(Method method, int parameterIndex, String variableName, Object parameterValue) {
     for(VariableSubstitutionController variableSubstitutionController:variableSubstitutionControllers) {
-            if (!variableSubstitutionController.substitute(methodParameter, variableName, parameterValue)) {
+            if (!variableSubstitutionController.substitute(method, parameterIndex, variableName, parameterValue)) {
                 return false;
             }
         }

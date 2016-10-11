@@ -35,7 +35,7 @@ public class TemplateGeneratorExtensionTest {
     public void customTemplate() throws Exception {
 
         mockMvc.perform(get("/"))
-            //    .andDo(print())
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._links.rel.href").value("http://localhost/custom-template/query-value"));
 

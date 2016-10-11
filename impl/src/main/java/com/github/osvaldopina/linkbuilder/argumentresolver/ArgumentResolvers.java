@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.argumentresolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class ArgumentResolvers {
     }
 
 
-    public ArgumentResolver getArgumentResolverFor(MethodParameter methodParameter) {
+    public ArgumentResolver getArgumentResolverFor(Method method, int parameterIndex) {
         for(ArgumentResolver argumentResolver:argumentResolvers) {
-            if (argumentResolver.resolveFor(methodParameter)) {
+            if (argumentResolver.resolveFor(method, parameterIndex)) {
                 return argumentResolver;
             }
         }

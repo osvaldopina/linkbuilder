@@ -2,17 +2,15 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.basic;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.damnhandy.uri.template.UriTemplateBuilder;
-import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestBodyAnnotationArgumentResolver;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.easymock.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,16 +20,19 @@ public class RequestBodyArgumentResolverTest extends EasyMockSupport {
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
 
+    @Mock
+    IntrospectionUtils introspectionUtils;
+
     @TestSubject
-    private RequestBodyAnnotationArgumentResolver requestBodyAnnotationArgumentResolver = new RequestBodyAnnotationArgumentResolver();
+    private RequestBodyAnnotationArgumentResolver requestBodyAnnotationArgumentResolver =
+            new RequestBodyAnnotationArgumentResolver(introspectionUtils);
 
     private UriTemplateBuilder uriTemplateBuilder;
 
     @Mock
     private UriTemplate uriTemplate;
 
-    @Mock
-    private MethodParameter methodParameter;
+    private Method method;
 
     @Mock
     private UriTemplateAugmenter.Factory uriTemplateAugmentFactory;
@@ -40,27 +41,26 @@ public class RequestBodyArgumentResolverTest extends EasyMockSupport {
     private UriTemplateAugmenter uriTemplateAugmenter;
 
     @Mock
-    private RequestParam requestParam;
-
-    @Mock
-    private List<String> templatedParamNames;
+    private VariableSubstitutionController variableSubstitutionController;
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
 
         uriTemplateBuilder = UriTemplate.createBuilder();
+
+        method = RequestBodyArgumentResolverTest.class.getMethod("equals", Object.class);
     }
 
 
     @Test
     public void resolveForAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(methodParameter.hasParameterAnnotation(RequestBody.class)).andReturn(true);
+        EasyMock.expect(introspectionUtils.isRequestBodyVariableParameter(method, 0)).andReturn(true);
 
         replayAll();
 
-        assertTrue(requestBodyAnnotationArgumentResolver.resolveFor(methodParameter));
+        assertTrue(requestBodyAnnotationArgumentResolver.resolveFor(method, 0));
 
         verifyAll();
 
@@ -69,14 +69,35 @@ public class RequestBodyArgumentResolverTest extends EasyMockSupport {
     @Test
     public void resolveForNonAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(methodParameter.hasParameterAnnotation(RequestBody.class)).andReturn(false);
+        EasyMock.expect(introspectionUtils.isRequestBodyVariableParameter(method, 0)).andReturn(false);
 
         replayAll();
 
-        assertFalse(requestBodyAnnotationArgumentResolver.resolveFor(methodParameter));
+        assertFalse(requestBodyAnnotationArgumentResolver.resolveFor(method, 0));
 
         verifyAll();
 
     }
 
+    @Test
+    public void augmentTemplate() throws Exception {
+
+        replayAll();
+
+        requestBodyAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, method, 0);
+
+        verifyAll();
+    }
+
+    @Test
+    public void setTemplateVariables() throws Exception {
+
+        replayAll();
+
+        requestBodyAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, "value" , variableSubstitutionController);
+
+        verifyAll();
+    }
+
 }
+

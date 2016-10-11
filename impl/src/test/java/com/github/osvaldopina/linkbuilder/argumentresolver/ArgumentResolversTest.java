@@ -1,10 +1,12 @@
 package com.github.osvaldopina.linkbuilder.argumentresolver;
 
 import org.easymock.*;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -17,21 +19,28 @@ public class ArgumentResolversTest  extends EasyMockSupport {
     @Mock
     private ArgumentResolver argumentResolver;
 
+    private Method method;
+
     @Mock
     private MethodParameter methodParameter;
 
     private ArgumentResolvers argumentResolvers;
+
+    @Before
+    public void setUp() throws Exception {
+        method = ArgumentResolversTest.class.getMethod("equals", Object.class);
+    }
 
     @Test
     public void getArgumentResolverForWithAArgumentResolver() throws Exception {
 
         argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 
-        EasyMock.expect(argumentResolver.resolveFor(methodParameter)).andReturn(true);
+        EasyMock.expect(argumentResolver.resolveFor(method, 0)).andReturn(true);
 
         replayAll();
 
-        assertSame(argumentResolver, argumentResolvers.getArgumentResolverFor(methodParameter));
+        assertSame(argumentResolver, argumentResolvers.getArgumentResolverFor(method, 0));
 
         verifyAll();
 
@@ -42,11 +51,11 @@ public class ArgumentResolversTest  extends EasyMockSupport {
 
         argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 
-        EasyMock.expect(argumentResolver.resolveFor(methodParameter)).andReturn(false);
+        EasyMock.expect(argumentResolver.resolveFor(method, 0)).andReturn(false);
 
         replayAll();
 
-        ArgumentResolver argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
+        ArgumentResolver argumentResolver = argumentResolvers.getArgumentResolverFor(method, 0);
         assertNotNull(argumentResolver);
         assertEquals(argumentResolver.getClass(), EmptyArgumentResolver.class);
 

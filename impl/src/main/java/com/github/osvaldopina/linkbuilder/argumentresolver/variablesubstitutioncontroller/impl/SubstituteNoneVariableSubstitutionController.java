@@ -3,10 +3,12 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitution
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
+
 public class SubstituteNoneVariableSubstitutionController implements VariableSubstitutionController {
 
     @Override
-    public boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue) {
+    public boolean substitute(Method method, int parameterIndex, String variableName, Object parameterValue) {
        return false;
     }
 }

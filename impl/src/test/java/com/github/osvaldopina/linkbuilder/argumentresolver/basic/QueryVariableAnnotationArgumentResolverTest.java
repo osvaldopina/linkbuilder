@@ -13,10 +13,9 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport {
+public class QueryVariableAnnotationArgumentResolverTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
@@ -25,8 +24,8 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
     IntrospectionUtils introspectionUtils;
 
     @TestSubject
-    private PathVariableAnnotationArgumentResolver pathVariableAnnotationArgumentResolver =
-            new PathVariableAnnotationArgumentResolver(introspectionUtils);
+    private QueryVariableAnnotationArgumentResolver queryVariableAnnotationArgumentResolver =
+            new QueryVariableAnnotationArgumentResolver(introspectionUtils);
 
     private UriTemplateBuilder uriTemplateBuilder;
 
@@ -57,11 +56,11 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
     @Test
     public void resolveForAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(introspectionUtils.isPathVariableParameter(method, 0)).andReturn(true);
+        EasyMock.expect(introspectionUtils.isQueryVariableParameter(method, 0)).andReturn(true);
 
         replayAll();
 
-        assertTrue(pathVariableAnnotationArgumentResolver.resolveFor(method, 0));
+        assertTrue(queryVariableAnnotationArgumentResolver.resolveFor(method, 0));
 
         verifyAll();
 
@@ -70,11 +69,11 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
     @Test
     public void resolveForNonAnnotatedMethod() throws Exception {
 
-        EasyMock.expect(introspectionUtils.isPathVariableParameter(method, 0)).andReturn(false);
+        EasyMock.expect(introspectionUtils.isQueryVariableParameter(method, 0)).andReturn(false);
 
         replayAll();
 
-        assertFalse(pathVariableAnnotationArgumentResolver.resolveFor(method, 0));
+        assertFalse(queryVariableAnnotationArgumentResolver.resolveFor(method, 0));
 
         verifyAll();
 
@@ -84,9 +83,13 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
     public void augmentTemplate() throws Exception {
         String varName = "var1";
 
+        EasyMock.expect(introspectionUtils.getQueryVariableName(method, 0)).andReturn(varName);
+        uriTemplateAugmenter.addToQuery(varName);
+        EasyMock.expectLastCall();
+
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, method, 0);
+        queryVariableAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, method, 0);
 
         verifyAll();
     }
@@ -96,14 +99,14 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(introspectionUtils.getPathVariableName(method, 0)).andReturn(varName);
+        EasyMock.expect(introspectionUtils.getQueryVariableName(method, 0)).andReturn(varName);
         EasyMock.expect(variableSubstitutionController.substitute(method, 0, varName, value)).andReturn(true);
         EasyMock.expect(uriTemplate.getVariables()).andReturn(new String[] {"var2"});
         EasyMock.expect(uriTemplate.getTemplate()).andReturn("template");
 
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
+        queryVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
 
         verifyAll();
 
@@ -114,7 +117,7 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(introspectionUtils.getPathVariableName(method, 0)).andReturn(varName);
+        EasyMock.expect(introspectionUtils.getQueryVariableName(method, 0)).andReturn(varName);
         EasyMock.expect(variableSubstitutionController.substitute(method, 0, varName, value)).andReturn(true);
         EasyMock.expect(uriTemplate.getVariables()).andReturn(new String[] {"var1"});
         EasyMock.expect(uriTemplate.set(varName, value)).andReturn(uriTemplate);
@@ -122,7 +125,7 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
 
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
+        queryVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
 
         verifyAll();
 
@@ -133,12 +136,12 @@ public class PathVariableAnnotationArgumentResolverTest extends EasyMockSupport 
         String varName = "var1";
         String value = "value-for-var1";
 
-        EasyMock.expect(introspectionUtils.getPathVariableName(method, 0)).andReturn(varName);
+        EasyMock.expect(introspectionUtils.getQueryVariableName(method, 0)).andReturn(varName);
         EasyMock.expect(variableSubstitutionController.substitute(method, 0, varName, value)).andReturn(false);
 
         replayAll();
 
-        pathVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
+        queryVariableAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, value, variableSubstitutionController);
 
         verifyAll();
 

@@ -14,7 +14,7 @@ public class NotSubstituteParameterIndexVariableSubstitutionController implement
     }
 
     @Override
-    public boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue) {
-        return this.parameterIndex != methodParameter.getParameterIndex();
+    public boolean substitute(Method method, int parameterIndex, String variableName, Object parameterValue) {
+        return this.parameterIndex != parameterIndex;
     }
 }

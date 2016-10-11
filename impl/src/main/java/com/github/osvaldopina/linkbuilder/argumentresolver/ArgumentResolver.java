@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface ArgumentResolver {
 
-    boolean resolveFor(MethodParameter methodParameter);
+    boolean resolveFor(Method method, int parameterIndex);
 
-    void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, MethodParameter methodParameter);
+    void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, Method method, int parameterIndex);
 
-    void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
+    void setTemplateVariables(UriTemplate template, Method method, int parameterIndex, Object parameter,
                               VariableSubstitutionController variableSubstitutionController);
 
 

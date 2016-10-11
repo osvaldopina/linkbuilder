@@ -14,7 +14,7 @@ public class NotSubstituteVariableNameVariableSubstitutionController implements 
     }
 
     @Override
-    public boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue) {
+    public boolean substitute(Method method, int parameterIndex, String variableName, Object parameterValue) {
         return ! this.variableName.equals(variableName);
     }
 }

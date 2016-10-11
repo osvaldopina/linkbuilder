@@ -3,30 +3,32 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.basic;
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
-import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 
 public class RequestBodyAnnotationArgumentResolver implements ArgumentResolver {
 
-    @Override
-    public boolean resolveFor(MethodParameter methodParameter) {
-        return methodParameter.hasParameterAnnotation(RequestBody.class);
+    private IntrospectionUtils introspectionUtils;
+
+    public RequestBodyAnnotationArgumentResolver(IntrospectionUtils introspectionUtils) {
+        this.introspectionUtils = introspectionUtils;
     }
 
     @Override
-    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, MethodParameter methodParameter) {
+    public boolean resolveFor(Method method, int parameterIndex) {
+        return introspectionUtils.isRequestBodyVariableParameter(method, parameterIndex);
     }
 
     @Override
-    public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
+    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, Method method, int parameterIndex) {
+
+    }
+
+    @Override
+    public void setTemplateVariables(UriTemplate template, Method method, int parameterIndex, Object parameter,
                                      VariableSubstitutionController variableSubstitutionController) {
 
     }

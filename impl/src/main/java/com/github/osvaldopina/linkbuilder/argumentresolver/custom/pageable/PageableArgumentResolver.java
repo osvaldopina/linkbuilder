@@ -10,19 +10,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 
 @Conditional(PageableClassIsPresent.class)
 public class PageableArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean resolveFor(MethodParameter methodParameter) {
-        return Pageable.class.isAssignableFrom(methodParameter.getParameterType());
+    public boolean resolveFor(Method method, int parameterIndex) {
+
+        return Pageable.class.isAssignableFrom(method.getParameterTypes()[parameterIndex]);
     }
 
     @Override
-    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, MethodParameter methodParameter) {
+    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, Method method, int parameterIndex) {
         Assert.notNull(uriTemplateAugmenter);
 
         uriTemplateAugmenter.addToQuery("page");
@@ -31,7 +31,7 @@ public class PageableArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
+    public void setTemplateVariables(UriTemplate template, Method method, int parameterIndex, Object parameter,
                                      VariableSubstitutionController variableSubstitutionController) {
 
         Assert.notNull(template);
@@ -39,15 +39,15 @@ public class PageableArgumentResolver implements ArgumentResolver {
 
         Pageable pageable = (Pageable) parameter;
 
-        if (variableSubstitutionController.substitute(methodParameter, "page", parameter)) {
+        if (variableSubstitutionController.substitute(method, parameterIndex, "page", parameter)) {
             template.set("page", pageable.getPageNumber());
         }
 
-        if (variableSubstitutionController.substitute(methodParameter, "size", parameter)) {
+        if (variableSubstitutionController.substitute(method, parameterIndex, "size", parameter)) {
             template.set("size", pageable.getPageSize());
         }
 
-        if (variableSubstitutionController.substitute(methodParameter, "sort", parameter)) {
+        if (variableSubstitutionController.substitute(method, parameterIndex, "sort", parameter)) {
             template.set("sort", pageable.getSort());
         }
 

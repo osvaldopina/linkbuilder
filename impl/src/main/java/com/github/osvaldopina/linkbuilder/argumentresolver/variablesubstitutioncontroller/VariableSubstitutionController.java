@@ -6,6 +6,6 @@ import java.lang.reflect.Method;
 
 public interface VariableSubstitutionController {
 
-    boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue);
+    boolean substitute(Method method, int parameterIndex, String variableName, Object parameterValue);
 
 }

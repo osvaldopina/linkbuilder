@@ -6,6 +6,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -13,9 +15,6 @@ public class VariableSubstitutionControllersTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
-
-    @Mock
-    private MethodParameter methodParameter;
 
     private String variableName = "var";
 
@@ -36,15 +35,15 @@ public class VariableSubstitutionControllersTest extends EasyMockSupport {
     @Test
     public void substituteAllControllersTrue() throws Exception {
 
-        EasyMock.expect(controller1.substitute(methodParameter, variableName, parameterValue)).andReturn(true);
-        EasyMock.expect(controller2.substitute(methodParameter, variableName, parameterValue)).andReturn(true);
+        EasyMock.expect(controller1.substitute(null, 0, variableName, parameterValue)).andReturn(true);
+        EasyMock.expect(controller2.substitute(null, 0 , variableName, parameterValue)).andReturn(true);
 
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller1);
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller2);
 
 
         replayAll();
-        assertTrue(variableSubstitutionControllers.substitute(methodParameter, variableName, parameterValue));
+        assertTrue(variableSubstitutionControllers.substitute(null, 0, variableName, parameterValue));
         verifyAll();
 
     }
@@ -52,14 +51,14 @@ public class VariableSubstitutionControllersTest extends EasyMockSupport {
     @Test
     public void substituteFirstControllerFalse() throws Exception {
 
-        EasyMock.expect(controller1.substitute(methodParameter, variableName, parameterValue)).andReturn(false);
+        EasyMock.expect(controller1.substitute(null, 0, variableName, parameterValue)).andReturn(false);
 
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller1);
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller2);
 
 
         replayAll();
-        assertFalse(variableSubstitutionControllers.substitute(methodParameter, variableName, parameterValue));
+        assertFalse(variableSubstitutionControllers.substitute(null, 0, variableName, parameterValue));
         verifyAll();
 
     }
@@ -67,15 +66,15 @@ public class VariableSubstitutionControllersTest extends EasyMockSupport {
     @Test
     public void substituteSecondControllersFalse() throws Exception {
 
-        EasyMock.expect(controller1.substitute(methodParameter, variableName, parameterValue)).andReturn(true);
-        EasyMock.expect(controller2.substitute(methodParameter, variableName, parameterValue)).andReturn(false);
+        EasyMock.expect(controller1.substitute(null, 0, variableName, parameterValue)).andReturn(true);
+        EasyMock.expect(controller2.substitute(null, 0, variableName, parameterValue)).andReturn(false);
 
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller1);
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(controller2);
 
 
         replayAll();
-        assertFalse(variableSubstitutionControllers.substitute(methodParameter, variableName, parameterValue));
+        assertFalse(variableSubstitutionControllers.substitute(null, 0, variableName, parameterValue));
         verifyAll();
 
     }

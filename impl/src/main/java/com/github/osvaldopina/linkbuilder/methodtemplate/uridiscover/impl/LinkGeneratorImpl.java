@@ -48,9 +48,14 @@ public class LinkGeneratorImpl implements LinkGenerator, ApplicationContextAware
         ArgumentResolver argumentResolver;
         for (MethodParameter methodParameter : methodParameters.getParameters()) {
 
-            argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
+            argumentResolver = argumentResolvers.getArgumentResolverFor(
+                    methodParameter.getMethod(),
+                    methodParameter.getParameterIndex()
+            );
+
             argumentResolver.setTemplateVariables(template,
-                    methodParameter,
+                    methodParameter.getMethod(),
+                    methodParameter.getParameterIndex(),
                     methodCall.getParam(methodParameter.getParameterIndex()),
                     variableSubstitutionController);
         }
@@ -58,7 +63,7 @@ public class LinkGeneratorImpl implements LinkGenerator, ApplicationContextAware
         return new Link(templated ? template.expandPartial() : template.expand(), rel);
     }
 
-    public Link generate(com.github.osvaldopina.linkbuilder.annotation.Link linkAnnotation, ResourceSupport payLoad,
+    public Link generate(com.github.osvaldopina.linkbuilder.annotation.Link linkAnnotation, Object payLoad,
                          Object[] params) {
 
         Class<?> destination = linkAnnotation.destination();

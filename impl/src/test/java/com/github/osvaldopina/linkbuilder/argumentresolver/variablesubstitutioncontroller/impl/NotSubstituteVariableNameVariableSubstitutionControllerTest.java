@@ -8,6 +8,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
+
 import static org.junit.Assert.*;
 
 public class NotSubstituteVariableNameVariableSubstitutionControllerTest   extends EasyMockSupport {
@@ -15,8 +17,9 @@ public class NotSubstituteVariableNameVariableSubstitutionControllerTest   exten
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
 
-    @Mock
-    private MethodParameter methodParameter;
+    private Method method;
+
+    private int parameterIndex =0;
 
     private String variableName;
 
@@ -32,7 +35,12 @@ public class NotSubstituteVariableNameVariableSubstitutionControllerTest   exten
     public void notSubstituteParameter() throws Exception {
 
         replayAll();
-        assertFalse(notSubstituteVariableNameVariableSubstitutionController.substitute(methodParameter, "var",  null));
+        assertFalse(notSubstituteVariableNameVariableSubstitutionController.substitute(
+                method,
+                parameterIndex,
+                "var",
+                null)
+        );
         verifyAll();
     }
 
@@ -40,7 +48,12 @@ public class NotSubstituteVariableNameVariableSubstitutionControllerTest   exten
     public void substituteParameter() throws Exception {
 
         replayAll();
-        assertTrue(notSubstituteVariableNameVariableSubstitutionController.substitute(methodParameter, "other-var",  null));
+        assertTrue(notSubstituteVariableNameVariableSubstitutionController.substitute(
+                method,
+                parameterIndex,
+                "other-var",
+                null)
+        );
         verifyAll();
     }
 

@@ -1,9 +1,9 @@
 package com.github.osvaldopina.linkbuilder.direct;
 
-import com.github.osvaldopina.linkbuilder.annotation.Links;
-import com.github.osvaldopina.linkbuilder.utils.TemplateBuilderInstrospectionUtils;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -12,17 +12,11 @@ import java.lang.reflect.Method;
 
 public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
-    private TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils = new TemplateBuilderInstrospectionUtils();
+    @Autowired
+    private IntrospectionUtils introspectionUtils;
 
     private ApplicationContext applicationContext;
 
-
-    public DirectLinkTargetBeanPostProcessor() {
-    }
-
-    protected DirectLinkTargetBeanPostProcessor(TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils) {
-        this.templateBuilderInstrospectionUtils = templateBuilderInstrospectionUtils;
-    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -31,8 +25,8 @@ public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, App
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (templateBuilderInstrospectionUtils.isRestController(bean)) {
-            for (Method method : templateBuilderInstrospectionUtils.getAnnotatedMethods(bean, Links.class)) {
+        if (introspectionUtils.isRestController(bean)) {
+            for (Method method : introspectionUtils.getLinksAnnotatedMethods(bean)) {
                 ProxyFactory factory = new ProxyFactory();
                 factory.addAdvice(new AddLinksToResourceMethodInterceptor(applicationContext));
                 factory.setTarget(bean);

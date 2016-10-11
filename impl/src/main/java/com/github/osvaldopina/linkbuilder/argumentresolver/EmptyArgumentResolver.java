@@ -15,16 +15,16 @@ import java.util.List;
 public class EmptyArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean resolveFor(MethodParameter methodParameter) {
+    public boolean resolveFor(Method method, int parameterIndex) {
         return false;
     }
 
     @Override
-    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, MethodParameter methodParameter) {
+    public void augmentTemplate(UriTemplateAugmenter uriTemplateAugmenter, Method method, int parameterIndex) {
     }
 
 
-    public void setTemplateVariables(UriTemplate template, MethodParameter methodParameter, Object parameter,
+    public void setTemplateVariables(UriTemplate template, Method method, int parameterIndex, Object parameter,
                               VariableSubstitutionController variableSubstitutionController) {
 
     }

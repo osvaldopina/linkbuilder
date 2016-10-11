@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
-import com.github.osvaldopina.linkbuilder.utils.TemplateBuilderInstrospectionUtils;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
@@ -33,19 +33,21 @@ public class UriTemplateMethodMappingsImpl implements UriTemplateMethodMappings 
     @Autowired
     private TemplateGenerator templateGenerator;
 
-    private TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils =
-            new TemplateBuilderInstrospectionUtils();
+    @Autowired
+    private IntrospectionUtils introspectionUtils;
 
-    private UriTemplateMethodRegister uriTemplateMethodRegister = new UriTemplateMethodRegister();
+    private UriTemplateMethodRegister uriTemplateMethodRegister;
 
     @PostConstruct
     private void init() {
+
+        uriTemplateMethodRegister = new UriTemplateMethodRegister(introspectionUtils);
 
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
 
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
             Method method = entry.getValue().getMethod();
-            if (templateBuilderInstrospectionUtils.haveToGenerateTemplateFor(method)) {
+            if (introspectionUtils.haveToGenerateTemplateFor(method)) {
 
                UriTemplate uriTemplate = templateGenerator.generate(method);
 

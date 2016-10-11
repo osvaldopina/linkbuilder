@@ -33,8 +33,11 @@ public class TemplateGeneratorImpl implements TemplateGenerator {
 
         ArgumentResolver argumentResolver;
         for (MethodParameter methodParameter : methodParameters.getParameters()) {
-            argumentResolver = argumentResolvers.getArgumentResolverFor(methodParameter);
-            argumentResolver.augmentTemplate(uriTemplateAugmenter, methodParameter);
+            argumentResolver = argumentResolvers.getArgumentResolverFor(
+                    methodParameter.getMethod(), methodParameter.getParameterIndex());
+
+            argumentResolver.augmentTemplate(
+                    uriTemplateAugmenter, methodParameter.getMethod(), methodParameter.getParameterIndex());
         }
 
         return uriTemplateAugmenter.getUriTemplate();

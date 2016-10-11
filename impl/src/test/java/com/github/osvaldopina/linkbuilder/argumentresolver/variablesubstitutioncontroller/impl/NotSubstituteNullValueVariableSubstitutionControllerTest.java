@@ -8,19 +8,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.MethodParameter;
 
+import java.lang.reflect.Method;
+
 import static org.junit.Assert.*;
 
-public class NotSubstituteNullValueVariableSubstitutionControllerTest extends EasyMockSupport {
+public class NotSubstituteNullValueVariableSubstitutionControllerTest {
 
-    @Rule
-    public EasyMockRule mocks = new EasyMockRule(this);
-
-    @Mock
-    private MethodParameter methodParameter;
+    private Method method = null;
 
     private String variableName;
 
-    private Object parameterValue;
+    private Object parameterValue = new Object();
 
     @TestSubject
     private NotSubstituteNullValueVariableSubstitutionController notSubstituteNullValueVariableSubstitutionController =
@@ -29,20 +27,14 @@ public class NotSubstituteNullValueVariableSubstitutionControllerTest extends Ea
     @Test
     public void notSubstituteNullValue() throws Exception {
 
-        replayAll();
-        assertFalse(notSubstituteNullValueVariableSubstitutionController.substitute(methodParameter, variableName, parameterValue));
-        verifyAll();
+        assertFalse(notSubstituteNullValueVariableSubstitutionController.substitute(method, 0, variableName, null));
 
     }
 
     @Test
     public void substituteNonNullValue() throws Exception {
 
-        parameterValue = new Object();
-
-        replayAll();
-        assertTrue(notSubstituteNullValueVariableSubstitutionController.substitute(methodParameter, variableName, parameterValue));
-        verifyAll();
+        assertTrue(notSubstituteNullValueVariableSubstitutionController.substitute(method, 0, variableName, parameterValue));
 
     }
 

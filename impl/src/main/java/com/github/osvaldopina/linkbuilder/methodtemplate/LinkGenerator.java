@@ -11,7 +11,7 @@ public interface LinkGenerator {
     Link generate(MethodCall methodCall, boolean templated, String rel,
                          VariableSubstitutionController variableSubstitutionController);
 
-    Link generate(com.github.osvaldopina.linkbuilder.annotation.Link linkAnnotation, ResourceSupport payLoad,
+    Link generate(com.github.osvaldopina.linkbuilder.annotation.Link linkAnnotation, Object payLoad,
                          Object[] params);
 
 }

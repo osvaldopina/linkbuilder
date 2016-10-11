@@ -1,28 +1,22 @@
 package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder;
 
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.utils.TemplateBuilderInstrospectionUtils;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.lang.reflect.Method;
 
 public class CurrentCallBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
-    private TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils = new TemplateBuilderInstrospectionUtils();
+    @Autowired
+    private IntrospectionUtils introspectionUtils;
 
     private ApplicationContext applicationContext;
-
-
-    public CurrentCallBeanPostProcessor() {
-    }
-
-    protected CurrentCallBeanPostProcessor(TemplateBuilderInstrospectionUtils templateBuilderInstrospectionUtils) {
-        this.templateBuilderInstrospectionUtils = templateBuilderInstrospectionUtils;
-    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -31,9 +25,8 @@ public class CurrentCallBeanPostProcessor implements BeanPostProcessor, Applicat
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (templateBuilderInstrospectionUtils.isRestController(bean)) {
-            for (Method method : templateBuilderInstrospectionUtils.
-                    getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class)) {
+        if (introspectionUtils.isRestController(bean)) {
+            for (Method method : introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)) {
                 ProxyFactory factory = new ProxyFactory();
                 factory.addAdvice(new CurrentCallRecorderMethodInterceptor(applicationContext));
                 factory.setTarget(bean);

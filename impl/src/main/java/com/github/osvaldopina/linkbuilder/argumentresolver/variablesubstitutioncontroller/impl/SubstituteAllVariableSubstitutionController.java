@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 public class SubstituteAllVariableSubstitutionController implements VariableSubstitutionController {
 
     @Override
-    public boolean substitute(MethodParameter methodParameter, String variableName, Object parameterValue) {
+    public boolean substitute(Method method, int parameterIndexMethodParameter, String variableName, Object parameterValue) {
        return true;
     }
 }
