@@ -2,8 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.extensions.templategenerator;
 
 
 import com.github.osvaldopina.linkbuilder.configuration.CustomLinkBuilderConfigurer;
-import com.github.osvaldopina.linkbuilder.example.extensions.requestpartsfactorylist.*;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -22,7 +21,7 @@ public class Application extends CustomLinkBuilderConfigurer {
     }
 
     @Override
-    public TemplateGenerator templateGenerator() {
-        return new CustomTemplateGenerator();
+    public MethodTemplateGenerator templateGenerator() {
+        return new CustomMethodTemplateGenerator();
     }
 }

@@ -1,6 +1,5 @@
 package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
-import com.github.osvaldopina.linkbuilder.impl.LinkBuilderImpl;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;
@@ -10,12 +9,12 @@ import org.springframework.beans.BeanUtils;
 
 public class ControllerProxy {
 
-    public static <T> T createProxy(Class<T> clazz, LinkBuilderImpl builder) {
+    public static <T> T createProxy(Class<T> clazz, CallRecorder callRecorder) {
 
         T controller = BeanUtils.instantiate(clazz);
 
         Pointcut pc = new ControllerPointcut();
-        Advice advice = new ControllerAdvice(builder);
+        Advice advice = new ControllerAdvice(callRecorder);
         Advisor advisor = new DefaultPointcutAdvisor(pc, advice);
 
         ProxyFactory pf = new ProxyFactory();

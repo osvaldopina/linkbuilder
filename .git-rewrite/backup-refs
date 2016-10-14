@@ -1,0 +1,10 @@
+c1bbd395aec8ff255f3a08eb31a21cda1921a743 commit	refs/heads/master
+bbe34df636ba8e9c7c063d5e7af79e8588b27f55 commit	refs/remotes/origin/HEAD
+bbe34df636ba8e9c7c063d5e7af79e8588b27f55 commit	refs/remotes/origin/master
+a8afba74b160f71695df6a54711e60a43387d299 commit	refs/stash
+f59c7a84d85581a8f17ad74628722259ef4c7d38 tag	refs/tags/v0.1.0
+437c4872f6169303c1a3e5729c01afad4535b134 tag	refs/tags/v0.1.2
+8633240b089fb1fae11a8aa6b77ccbc2b0be3c88 commit	refs/tags/v0.1.3
+c1d37b6f179539ca8e2e8e1dd3dfa03fbc03ea10 tag	refs/tags/v0.1.4
+1604229c064a8782963b225480796dc0c587c942 tag	refs/tags/v0.1.5
+3f5bb052b5ac38f01b5b1b535b1c385a8c8b9d92 tag	refs/tags/v0.1.6

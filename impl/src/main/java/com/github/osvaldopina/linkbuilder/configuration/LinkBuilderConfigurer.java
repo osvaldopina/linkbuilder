@@ -1,14 +1,14 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 
 public interface LinkBuilderConfigurer {
 
-    TemplateGenerator templateGenerator();
+    MethodTemplateGenerator templateGenerator();
 
     RequestPartsFactoryList requestPartsFactoryList();
 
@@ -16,5 +16,5 @@ public interface LinkBuilderConfigurer {
 
     BaseUriDiscover baseUriDiscover();
 
-    LinkGenerator linkGenerator();
+    MethodCallUriGenerator linkGenerator();
 }

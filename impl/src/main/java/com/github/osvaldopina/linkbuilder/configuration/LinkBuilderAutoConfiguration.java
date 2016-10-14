@@ -7,25 +7,35 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.basic.QueryVariableAn
 import com.github.osvaldopina.linkbuilder.argumentresolver.basic.RequestBodyAnnotationArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableClassIsPresent;
-import com.github.osvaldopina.linkbuilder.direct.DirectLinkTargetBeanPostProcessor;
+import com.github.osvaldopina.linkbuilder.direct.impl.DirectLinkTargetBeanPostProcessor;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCall;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallBeanPostProcessor;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCall;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallBeanPostProcessor;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallLocatorImpl;
 import com.github.osvaldopina.linkbuilder.impl.LinksBuilderFactoryImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.*;
+import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.impl.SpringHateoasLinkCreator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.SpringLinkAnnotatedMethodUriGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.impl.UriTemplateMethodMappingsImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.AnnotatedLinkCreator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerators;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGeneratorsImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import com.github.osvaldopina.linkbuilder.utils.impl.IntrospectionUtilsImpl;
+import com.github.osvaldopina.linkbuilder.utils.impl.StringHateoasIntrospectionUtilsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+import java.util.List;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -47,11 +57,11 @@ public class LinkBuilderAutoConfiguration {
     }
 
     @Bean
-    public TemplateGenerator templateGenerator() {
+    public MethodTemplateGenerator templateGenerator() {
         if (customLinkBuilderConfigurer != null) {
-            TemplateGenerator templateGenerator = customLinkBuilderConfigurer.templateGenerator();
-            if (templateGenerator != null) {
-                return templateGenerator;
+            MethodTemplateGenerator methodTemplateGenerator = customLinkBuilderConfigurer.templateGenerator();
+            if (methodTemplateGenerator != null) {
+                return methodTemplateGenerator;
             }
         }
         return defaultLinkBuilderConfigurer.templateGenerator();
@@ -91,11 +101,11 @@ public class LinkBuilderAutoConfiguration {
     }
 
     @Bean
-    public LinkGenerator linkGenerator() {
+    public MethodCallUriGenerator linkGenerator() {
         if (customLinkBuilderConfigurer != null) {
-            LinkGenerator linkGenerator = customLinkBuilderConfigurer.linkGenerator();
-            if (linkGenerator != null) {
-                return linkGenerator;
+            MethodCallUriGenerator methodCallUriGenerator = customLinkBuilderConfigurer.linkGenerator();
+            if (methodCallUriGenerator != null) {
+                return methodCallUriGenerator;
             }
         }
         return defaultLinkBuilderConfigurer.linkGenerator();
@@ -109,7 +119,12 @@ public class LinkBuilderAutoConfiguration {
 
     @Bean
     public IntrospectionUtils introspectionUtils() {
-        return new IntrospectionUtilsImpl();
+        return new StringHateoasIntrospectionUtilsImpl();
+    }
+
+    @Bean
+    public CurrentCallLocator currentCallLocator() {
+        return new CurrentCallLocatorImpl();
     }
 
 
@@ -131,6 +146,28 @@ public class LinkBuilderAutoConfiguration {
         return new PathVariableAnnotationArgumentResolver(introspectionUtils);
     }
 
+    @Bean
+    @Autowired
+    public AnnotatedLinkCreator annotatedLinkCreator(ExpressionExecutor expressionExecutor) {
+        return new SpringHateoasLinkCreator(expressionExecutor);
+    }
+
+    @Bean
+    @Autowired
+    public AnnotatedMethodUriGenerators annotatedMethodUriGenerators(
+            List<AnnotatedMethodUriGenerator> annotatedMethodUriGenerators) {
+        return new AnnotatedMethodUriGeneratorsImpl(annotatedMethodUriGenerators);
+    }
+
+    @Bean
+    public SpringLinkAnnotatedMethodUriGeneratorImpl springLinkAnnotatedMethodUriGenerator() {
+        return new SpringLinkAnnotatedMethodUriGeneratorImpl();
+    }
+
+    @Bean
+    public AnnotatedMethodUriGenerator annotatedMethodUriGenerator() {
+        return new SpringLinkAnnotatedMethodUriGeneratorImpl();
+    }
 
     @Bean
     public ArgumentResolvers argumentResolvers() {
@@ -142,6 +179,9 @@ public class LinkBuilderAutoConfiguration {
     public PageableArgumentResolver pageableArgumentResolver() {
         return new PageableArgumentResolver();
     }
+
+
+
 
     @Bean
     public static BeanPostProcessor directLinkTargetBeanPostProcessor() {
