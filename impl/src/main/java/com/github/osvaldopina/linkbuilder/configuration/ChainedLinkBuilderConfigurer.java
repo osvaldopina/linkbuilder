@@ -1,8 +1,8 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
@@ -19,7 +19,7 @@ public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public TemplateGenerator templateGenerator() {
+    public MethodTemplateGenerator templateGenerator() {
         return getConfigurer().templateGenerator();
     }
 
@@ -39,7 +39,7 @@ public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public LinkGenerator linkGenerator() {
+    public MethodCallUriGenerator linkGenerator() {
         return getConfigurer().linkGenerator();
     }
 

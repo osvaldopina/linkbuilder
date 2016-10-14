@@ -18,7 +18,6 @@ public interface LinkBuilder<T> {
      * Sets the link rel attribute.
      *
      * @param rel link rel attribute
-     *
      * @return LinkBuilder link builder.
      */
     LinkBuilder<T> withRel(String rel);
@@ -27,7 +26,6 @@ public interface LinkBuilder<T> {
      * Sets the payload variable in expression expression context so it can be used in expressions
      *
      * @param payload Object to be setted as 'payload' variable in expression context
-     *
      * @return LinkBuilder link builder.
      */
     LinkBuilder<T> setExpressionPayload(Object payload);
@@ -37,16 +35,16 @@ public interface LinkBuilder<T> {
      * be rendered in buildAll()
      *
      * @param expression Spel expression
-     *
      * @return linkBuilder link builder.
      */
     LinkBuilder<T> when(String expression);
+
     /**
      * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
      * are changed with a aspect that records the method and the list of parameters.
      *
-     * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
      * @return LinkBuilder link builder.
+     * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
      */
     LinkBuilder<T> fromCurrentCall();
 
@@ -55,7 +53,6 @@ public interface LinkBuilder<T> {
      * as a template variable. The resulted link will be a template.
      *
      * @param paramNumber The parameter index the should not be substituted
-     *
      * @return LinkBuilder link builder.
      */
     LinkBuilder<T> variableAsTemplate(int paramNumber);
@@ -65,13 +62,11 @@ public interface LinkBuilder<T> {
      * as a template variable. The resulted link will be a template. It is important to note that the parameter
      * name is obtained by <code>RequestParam</code> and <code>PathVariable</code> annotation.
      *
-     * @see org.springframework.web.bind.annotation.RequestParam
-     * @see org.springframework.web.bind.annotation.PathVariable
-     *
      * @param templateParamName The parameter name obtained by introspecting <code>RequestParam</code> and
      *                          <code>PathVariable</code>
-     *
      * @return LinkBuilder link builder.
+     * @see org.springframework.web.bind.annotation.RequestParam
+     * @see org.springframework.web.bind.annotation.PathVariable
      */
     LinkBuilder<T> variableAsTemplate(String templateParamName);
 
@@ -96,11 +91,10 @@ public interface LinkBuilder<T> {
      * Sets the link parameters from a call to a rest controller.
      *
      * @param controllerClass Controller class.
-     * @param <E> Controller type
-     *
+     * @param <E>             Controller type
      * @return LinkBuilder link builder.
      */
-     <E> E fromControllerCall(Class<E> controllerClass);
+    <E> E fromControllerCall(Class<E> controllerClass);
 
     /**
      * Creates a new <code>LinkBuilder</code>.
@@ -122,4 +116,5 @@ public interface LinkBuilder<T> {
      * @return List of links configured in the same <code>LinksBuilder</code>.
      */
     List<T> buildAll();
+
 }

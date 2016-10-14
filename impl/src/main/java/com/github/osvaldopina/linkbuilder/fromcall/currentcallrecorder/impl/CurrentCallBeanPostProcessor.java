@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.direct;
+package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.aop.framework.ProxyFactory;
@@ -10,13 +10,12 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Method;
 
-public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
+public class CurrentCallBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
     @Autowired
     private IntrospectionUtils introspectionUtils;
 
     private ApplicationContext applicationContext;
-
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -26,9 +25,9 @@ public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, App
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (introspectionUtils.isRestController(bean)) {
-            for (Method method : introspectionUtils.getLinksAnnotatedMethods(bean)) {
+            for (Method method : introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)) {
                 ProxyFactory factory = new ProxyFactory();
-                factory.addAdvice(new AddLinksToResourceMethodInterceptor(applicationContext));
+                factory.addAdvice(new CurrentCallRecorderMethodInterceptor(applicationContext));
                 factory.setTarget(bean);
                 return factory.getProxy();
             }
@@ -40,4 +39,6 @@ public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, App
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
+
 }

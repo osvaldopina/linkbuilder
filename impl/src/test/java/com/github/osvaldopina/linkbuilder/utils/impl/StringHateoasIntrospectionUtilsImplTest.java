@@ -11,11 +11,11 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
-public class IntrospectionUtilsImplTest {
+public class StringHateoasIntrospectionUtilsImplTest {
 
     private Method method;
 
-    private IntrospectionUtilsImpl annotationUtilsImpl;
+    private StringHateoasIntrospectionUtilsImpl annotationUtilsImpl;
 
     private Method nonAnnotatedMethodNonAnnotatedClass;
     private Method nonAnnotatedMethodAnnotatedClass;
@@ -25,7 +25,7 @@ public class IntrospectionUtilsImplTest {
 
     @Before
     public void setUp() throws Exception {
-        method = IntrospectionUtilsImplTest.class.getMethod("method", String.class, String.class, String.class);
+        method = StringHateoasIntrospectionUtilsImplTest.class.getMethod("method", String.class, String.class, String.class);
 
         nonAnnotatedMethodNonAnnotatedClass = NonAnnotatedClass.class.getMethod("nonAnnotatedMethod");
         nonAnnotatedMethodAnnotatedClass = AnnotatedClass.class.getDeclaredMethod("nonAnnotatedMethod");
@@ -33,7 +33,7 @@ public class IntrospectionUtilsImplTest {
         annotatedMethodAnnotatedClass = AnnotatedClass.class.getDeclaredMethod("annotatedMethod");
 
 
-        annotationUtilsImpl = new IntrospectionUtilsImpl();
+        annotationUtilsImpl = new StringHateoasIntrospectionUtilsImpl();
 
 
     }

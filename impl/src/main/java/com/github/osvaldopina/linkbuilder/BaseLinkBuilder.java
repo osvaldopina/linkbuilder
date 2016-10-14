@@ -1,15 +1,12 @@
-package com.github.osvaldopina.linkbuilder.impl;
+package com.github.osvaldopina.linkbuilder;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilder;
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.*;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCall;
-import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
-import com.github.osvaldopina.linkbuilder.methodtemplate.LinkGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.hateoas.Link;
+import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
+import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
+import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,75 +15,66 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public class LinkBuilderImpl implements LinkBuilder<Link> {
+public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder {
 
     private String rel;
     private boolean fromCurrentCall;
-    private ApplicationContext applicationContext;
-    private LinksBuilderImpl linksBuilderImpl;
+    private LinksBuilder linksBuilder;
     private VariableSubstitutionControllers variableSubstitutionControllers = new VariableSubstitutionControllers();
     private Object payload;
-    private LinkGenerator linkGenerator;
+    private MethodCallUriGenerator methodCallUriGenerator;
     private MethodCall methodCall;
-
     private ExpressionExecutor expressionExecutor;
+    private CurrentCallLocator currentCallLocator;
 
     private String expression;
 
-    public LinkBuilderImpl(ApplicationContext applicationContext, LinksBuilderImpl linksBuilderImpl, Object payload) {
-        this.applicationContext = applicationContext;
-        this.linksBuilderImpl = linksBuilderImpl;
+    public BaseLinkBuilder(
+            LinksBuilder linksBuilder,
+            ExpressionExecutor expressionExecutor,
+            MethodCallUriGenerator methodCallUriGenerator,
+            CurrentCallLocator currentCallLocator,
+            Object payload) {
+
+        this.linksBuilder = linksBuilder;
+        this.expressionExecutor = expressionExecutor;
+        this.methodCallUriGenerator = methodCallUriGenerator;
+        this.currentCallLocator = currentCallLocator;
         this.payload = payload;
-        init();
     }
-
-    public void init() {
-        expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
-        linkGenerator = applicationContext.getBean(LinkGenerator.class);
-
-    }
-
-    public void setMethodCall(MethodCall methodCall) {
-        this.methodCall = methodCall;
-    }
-
-    public MethodCall getMethodCall() {
-        return methodCall;
-    }
-
 
     @Override
-    public LinkBuilder<Link> withSelfRel() {
+    public LinkBuilder<T> withSelfRel() {
         this.rel = "self";
         return this;
     }
 
     @Override
-    public LinkBuilder<Link> withRel(String rel) {
+    public LinkBuilder<T> withRel(String rel) {
         this.rel = rel;
         return this;
     }
 
     @Override
-    public LinkBuilder<Link> setExpressionPayload(Object payload) {
+    public LinkBuilder<T> setExpressionPayload(Object payload) {
         this.payload = payload;
         return this;
     }
 
     @Override
-    public LinkBuilder<Link> when(String expression) {
+    public LinkBuilder<T> when(String expression) {
         this.expression = expression;
         return this;
     }
 
     @Override
-    public LinkBuilder<Link> fromCurrentCall() {
+    public LinkBuilder<T> fromCurrentCall() {
         this.fromCurrentCall = true;
         return this;
     }
 
     @Override
-    public LinkBuilder<Link> variableAsTemplate(int paramIndex) {
+    public LinkBuilder<T> variableAsTemplate(int paramIndex) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteParameterIndexVariableSubstitutionController(paramIndex)
         );
@@ -94,7 +82,7 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
     }
 
     @Override
-    public LinkBuilder<Link> variableAsTemplate(String variableName) {
+    public LinkBuilder<T> variableAsTemplate(String variableName) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteVariableNameVariableSubstitutionController(variableName)
         );
@@ -102,7 +90,7 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
     }
 
     @Override
-    public LinkBuilder<Link> nullVariablesAsTemplate() {
+    public LinkBuilder<T> nullVariablesAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteNullValueVariableSubstitutionController()
         );
@@ -110,7 +98,7 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
     }
 
     @Override
-    public LinkBuilder<Link> allParamsAsTemplate() {
+    public LinkBuilder<T> allParamsAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new SubstituteNoneVariableSubstitutionController()
         );
@@ -123,18 +111,19 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
     }
 
     @Override
-    public LinkBuilder<Link> link() {
-        return linksBuilderImpl.link();
+    public LinkBuilder<T> link() {
+        return linksBuilder.link();
     }
 
     @Override
-    public Link build() {
+    public T build() {
         if (fromCurrentCall) {
-            CurrentCall currentCall = applicationContext.getBean(CurrentCall.class);
-            methodCall = currentCall.getMethodCall();
+           methodCall = currentCallLocator.getCurrentCall();
         }
 
-        return  linkGenerator.generate(methodCall, isTemplated(), rel, variableSubstitutionControllers);
+        String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
+
+        return createLink(uri);
 
     }
 
@@ -154,8 +143,8 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
     }
 
     @Override
-    public List<Link> buildAll() {
-        return linksBuilderImpl.buildAll();
+    public List<T> buildAll() {
+        return linksBuilder.buildAll();
     }
 
     private boolean isTemplated() {
@@ -171,5 +160,15 @@ public class LinkBuilderImpl implements LinkBuilder<Link> {
         return servletRequest;
     }
 
+    @Override
+    public void record(MethodCall methodCall) {
+        this.methodCall = methodCall;
+    }
+
+    protected String getRel() {
+        return rel;
+    }
+
+    protected abstract T createLink(String uri);
 }
 

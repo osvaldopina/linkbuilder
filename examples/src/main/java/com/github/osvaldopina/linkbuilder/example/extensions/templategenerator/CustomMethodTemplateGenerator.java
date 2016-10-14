@@ -1,12 +1,11 @@
 package com.github.osvaldopina.linkbuilder.example.extensions.templategenerator;
 
 import com.damnhandy.uri.template.UriTemplate;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
-import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 
 import java.lang.reflect.Method;
 
-public class CustomTemplateGenerator implements TemplateGenerator {
+public class CustomMethodTemplateGenerator implements MethodTemplateGenerator {
 
     @Override
     public UriTemplate generate(Method method) {

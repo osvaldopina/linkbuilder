@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.extensions.templategenerator;
+package com.github.osvaldopina.linkbuilder.example.hal;
 
 
 import com.github.osvaldopina.linkbuilder.configuration.CustomLinkBuilderConfigurer;
@@ -14,14 +14,10 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @Configuration
 @Import(WebSecurityConfig.class)
-public class Application extends CustomLinkBuilderConfigurer {
+public class Application {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
     }
 
-    @Override
-    public MethodTemplateGenerator templateGenerator() {
-        return new CustomMethodTemplateGenerator();
-    }
 }

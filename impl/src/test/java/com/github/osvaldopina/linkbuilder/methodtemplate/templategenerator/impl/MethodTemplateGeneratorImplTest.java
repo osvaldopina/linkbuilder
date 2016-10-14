@@ -1,9 +1,9 @@
-package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
+package com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.methodtemplate.impl.TemplateGeneratorImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.impl.TemplatePathDiscover;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.MethodTemplateGeneratorImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.TemplatePathDiscover;
 import org.easymock.*;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
@@ -12,23 +12,21 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.core.MethodParameter;
 import org.springframework.hateoas.core.MethodParameters;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 @Ignore
-public class TemplateGeneratorImplTest extends EasyMockSupport {
+public class MethodTemplateGeneratorImplTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
 
     @TestSubject
-    TemplateGeneratorImpl templateGeneratorImpl = new TemplateGeneratorImpl();
+    MethodTemplateGeneratorImpl templateGeneratorImpl = new MethodTemplateGeneratorImpl();
 
     @Mock
     private TemplatePathDiscover templatePathDiscover;
@@ -41,7 +39,7 @@ public class TemplateGeneratorImplTest extends EasyMockSupport {
 
 
     @Mock
-    private TemplateGeneratorImpl.MethodParametersFactory methodParametersFactory;
+    private MethodTemplateGeneratorImpl.MethodParametersFactory methodParametersFactory;
 
     @Mock
     private ArgumentResolvers argumentResolvers;

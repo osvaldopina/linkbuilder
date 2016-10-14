@@ -14,7 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class IntrospectionUtilsImpl implements IntrospectionUtils {
+public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
     public boolean isPathVariableParameter(Method method, int parameterIndex) {

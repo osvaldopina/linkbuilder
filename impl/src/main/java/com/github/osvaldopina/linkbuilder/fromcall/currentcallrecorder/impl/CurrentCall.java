@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder;
+package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import org.springframework.context.annotation.Scope;

@@ -3,7 +3,7 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import org.apache.commons.logging.Log;
@@ -31,7 +31,7 @@ public class UriTemplateMethodMappingsImpl implements UriTemplateMethodMappings 
     private BaseUriDiscover baseUriDiscover;
 
     @Autowired
-    private TemplateGenerator templateGenerator;
+    private MethodTemplateGenerator methodTemplateGenerator;
 
     @Autowired
     private IntrospectionUtils introspectionUtils;
@@ -49,7 +49,7 @@ public class UriTemplateMethodMappingsImpl implements UriTemplateMethodMappings 
             Method method = entry.getValue().getMethod();
             if (introspectionUtils.haveToGenerateTemplateFor(method)) {
 
-               UriTemplate uriTemplate = templateGenerator.generate(method);
+               UriTemplate uriTemplate = methodTemplateGenerator.generate(method);
 
                uriTemplateMethodRegister.register(method, uriTemplate);
 

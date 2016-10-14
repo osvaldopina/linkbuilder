@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
+package com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl;
 
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.springframework.hateoas.core.AnnotationMappingDiscoverer;

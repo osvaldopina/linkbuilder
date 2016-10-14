@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = Application.class)
-public class TemplateGeneratorExtensionTest {
+public class MethodTemplateGeneratorExtensionTest {
 
     @Autowired
     private WebApplicationContext wac;

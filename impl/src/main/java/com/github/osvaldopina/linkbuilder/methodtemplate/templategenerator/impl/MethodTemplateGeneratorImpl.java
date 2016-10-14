@@ -1,9 +1,9 @@
-package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
+package com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
-import com.github.osvaldopina.linkbuilder.methodtemplate.TemplateGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -11,7 +11,7 @@ import org.springframework.hateoas.core.MethodParameters;
 
 import java.lang.reflect.Method;
 
-public class TemplateGeneratorImpl implements TemplateGenerator {
+public class MethodTemplateGeneratorImpl implements MethodTemplateGenerator {
 
     private TemplatePathDiscover templatePathDiscover = new TemplatePathDiscover();
 
