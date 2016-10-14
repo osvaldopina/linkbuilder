@@ -1,13 +1,13 @@
-package com.github.osvaldopina.linkbuilder.impl;
+package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 import com.github.osvaldopina.linkbuilder.BaseLinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
-import org.springframework.hateoas.Link;
 
-public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder<Link>  {
+public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
 
 
     public SpringHateoasLinkBuilderImpl(
@@ -15,15 +15,17 @@ public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder<Link>  {
             ExpressionExecutor expressionExecutor,
             MethodCallUriGenerator methodCallUriGenerator,
             CurrentCallLocator currentCallLocator,
+            LinkCreators linkCreators,
             Object payload) {
 
-        super(linksBuilder, expressionExecutor, methodCallUriGenerator, currentCallLocator, payload);
+        super(linksBuilder, expressionExecutor, methodCallUriGenerator, currentCallLocator, linkCreators, payload);
     }
 
-    @Override
-    protected Link createLink(String uri) {
-        return new Link(uri, getRel());
+    public String getRel() {
+        return super.getRel();
     }
+
+
 
 
 }

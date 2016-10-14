@@ -1,14 +1,12 @@
-package com.github.osvaldopina.linkbuilder.impl;
+package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.hateoas.Link;
-import org.springframework.stereotype.Component;
 
-public class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory<Link> {
+public class LinksBuilderFactoryImpl implements ApplicationContextAware, LinksBuilderFactory {
 
     private ApplicationContext applicationContext;
 

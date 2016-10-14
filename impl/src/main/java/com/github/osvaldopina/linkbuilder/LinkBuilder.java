@@ -5,14 +5,14 @@ import java.util.List;
 /**
  * Builder to configure and create a <code>Link</code>
  */
-public interface LinkBuilder<T> {
+public interface LinkBuilder {
 
     /**
      * Sets the link rel to "self".
      *
      * @return LinkBuilder Link builder.
      */
-    LinkBuilder<T> withSelfRel();
+    LinkBuilder withSelfRel();
 
     /**
      * Sets the link rel attribute.
@@ -20,7 +20,7 @@ public interface LinkBuilder<T> {
      * @param rel link rel attribute
      * @return LinkBuilder link builder.
      */
-    LinkBuilder<T> withRel(String rel);
+    LinkBuilder withRel(String rel);
 
     /**
      * Sets the payload variable in expression expression context so it can be used in expressions
@@ -28,7 +28,7 @@ public interface LinkBuilder<T> {
      * @param payload Object to be setted as 'payload' variable in expression context
      * @return LinkBuilder link builder.
      */
-    LinkBuilder<T> setExpressionPayload(Object payload);
+    LinkBuilder setExpressionPayload(Object payload);
 
     /**
      * Defines expression condition expression for link rendering. If expression evaluates to true the link will
@@ -37,7 +37,7 @@ public interface LinkBuilder<T> {
      * @param expression Spel expression
      * @return linkBuilder link builder.
      */
-    LinkBuilder<T> when(String expression);
+    LinkBuilder when(String expression);
 
     /**
      * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
@@ -46,7 +46,7 @@ public interface LinkBuilder<T> {
      * @return LinkBuilder link builder.
      * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
      */
-    LinkBuilder<T> fromCurrentCall();
+    LinkBuilder fromCurrentCall();
 
     /**
      * Indicates that the nth method parameter should not be substituted by the parameter value and leaved
@@ -55,7 +55,7 @@ public interface LinkBuilder<T> {
      * @param paramNumber The parameter index the should not be substituted
      * @return LinkBuilder link builder.
      */
-    LinkBuilder<T> variableAsTemplate(int paramNumber);
+    LinkBuilder variableAsTemplate(int paramNumber);
 
     /**
      * Indicates that parameter with this name should not be substituted by the parameter value and leaved
@@ -68,7 +68,7 @@ public interface LinkBuilder<T> {
      * @see org.springframework.web.bind.annotation.RequestParam
      * @see org.springframework.web.bind.annotation.PathVariable
      */
-    LinkBuilder<T> variableAsTemplate(String templateParamName);
+    LinkBuilder variableAsTemplate(String templateParamName);
 
 
     /**
@@ -77,7 +77,7 @@ public interface LinkBuilder<T> {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder<T> nullVariablesAsTemplate();
+    LinkBuilder nullVariablesAsTemplate();
 
     /**
      * Indicates that all parameters should not be substituted by the parameter value and leaved
@@ -85,7 +85,7 @@ public interface LinkBuilder<T> {
      *
      * @return LinkBuilder link builder.
      */
-    LinkBuilder<T> allParamsAsTemplate();
+    LinkBuilder allParamsAsTemplate();
 
     /**
      * Sets the link parameters from a call to a rest controller.
@@ -101,20 +101,20 @@ public interface LinkBuilder<T> {
      *
      * @return LinkBuilder new link builder.
      */
-    LinkBuilder<T> link();
+    LinkBuilder link();
 
     /**
      * Creates the <code>Link</code>.
      *
      * @return Link link.
      */
-    T build();
+    <T> T build(Class<T> linkType);
 
     /**
      * Creates all links configured in the same <code>LinksBuilder</code>.
      *
      * @return List of links configured in the same <code>LinksBuilder</code>.
      */
-    List<T> buildAll();
+    <T> List<T> buildAll(Class<T> linkType);
 
 }

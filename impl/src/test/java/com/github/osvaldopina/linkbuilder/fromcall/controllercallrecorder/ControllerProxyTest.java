@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
-import com.github.osvaldopina.linkbuilder.impl.SpringHateoasLinkBuilderImpl;
+import com.github.osvaldopina.linkbuilder.impl.springhateoas.SpringHateoasLinkBuilderImpl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class ControllerProxyTest {
     @Before
     public void setUp() throws Exception {
         applicationContext = new FakeApplicationContext();
-        springHateoasLinkBuilderImpl = new SpringHateoasLinkBuilderImpl(null,null, null, null, null);
+        springHateoasLinkBuilderImpl = new SpringHateoasLinkBuilderImpl(null,null, null, null, null, null);
 
         method = ControllerProxyTest.class.getMethod("method", String.class);
 

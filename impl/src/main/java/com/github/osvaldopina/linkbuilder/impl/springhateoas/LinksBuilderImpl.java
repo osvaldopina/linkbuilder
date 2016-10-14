@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.impl;
+package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 
 
@@ -6,9 +6,9 @@ import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import org.springframework.context.ApplicationContext;
-import org.springframework.hateoas.Link;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +39,14 @@ class LinksBuilderImpl implements LinksBuilder {
         ExpressionExecutor expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
         MethodCallUriGenerator methodCallUriGenerator = applicationContext.getBean(MethodCallUriGenerator.class);
         CurrentCallLocator currentCallLocator = applicationContext.getBean(CurrentCallLocator.class);
+        LinkCreators linkCreators = applicationContext.getBean(LinkCreators.class);
+
         SpringHateoasLinkBuilderImpl linkBuilder = new SpringHateoasLinkBuilderImpl(
                 this,
                 expressionExecutor,
                 methodCallUriGenerator,
                 currentCallLocator,
+                linkCreators,
                 payload
         );
         linkBuilders.add(linkBuilder);
@@ -51,13 +54,15 @@ class LinksBuilderImpl implements LinksBuilder {
     }
 
     @Override
-    public List<Link> buildAll() {
-        List<Link> links = new ArrayList<Link>();
-        for(SpringHateoasLinkBuilderImpl linkBuilder:linkBuilders) {
+    public <T> List<T> buildAll(Class<T> linkType) {
+        List<T> links = new ArrayList<T>();
+
+        for(SpringHateoasLinkBuilderImpl linkBuilder: linkBuilders) {
             if (linkBuilder.whenExpressionIsTrue()) {
-                links.add(linkBuilder.build());
+                links.add(linkBuilder.build(linkType));
             }
         }
         return links;
     }
+
 }

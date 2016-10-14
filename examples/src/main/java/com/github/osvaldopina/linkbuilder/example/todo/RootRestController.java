@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory<Link> linksBuilderFactory;
+    private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
@@ -24,7 +24,7 @@ public class RootRestController {
 
         Payload payload = new Payload();
 
-        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create();
+        LinksBuilder linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
 
@@ -65,7 +65,7 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        payload.add(linksBuilder.buildAll());
+        payload.add(linksBuilder.buildAll(Link.class));
 
         return payload;
     }

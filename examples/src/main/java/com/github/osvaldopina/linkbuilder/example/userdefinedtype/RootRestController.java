@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory<Link> linksBuilderFactory;
+    private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
     @GenerateUriTemplateFor
@@ -25,14 +25,14 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create();
+        LinksBuilder linksBuilder = linksBuilderFactory.create();
 
         linksBuilder.link()
                 .withRel("rel")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        payload.add(linksBuilder.buildAll());
+        payload.add(linksBuilder.buildAll(Link.class));
 
         return payload;
     }
