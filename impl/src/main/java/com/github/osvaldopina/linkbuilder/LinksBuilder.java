@@ -8,7 +8,7 @@ import java.util.List;
  * Builder for Links. This builder should be used to create a list of <code>Link</code>. The method <code>link</code>
  * should be used to create a builder for a link.
  */
-public interface LinksBuilder<T> {
+public interface LinksBuilder {
 
     /**
      * Creates a new link builder. The linkBuilder should be used to customize the link.
@@ -16,12 +16,16 @@ public interface LinksBuilder<T> {
      * @see LinkBuilder
      * @return LinkBuilder Builder to customize the link.
      */
-    LinkBuilder<T> link();
+    LinkBuilder link();
 
     /**
      * Creates the list of all links created by <code>link()</code>.
      *
      * @return List of all links.
      */
-    List<T> buildAll();
+    <T> List<T> buildAll(Class<T> linkType);
+
+
+
+
 }

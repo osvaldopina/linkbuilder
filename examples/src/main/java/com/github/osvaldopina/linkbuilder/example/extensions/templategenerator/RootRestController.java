@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @Autowired
-    private LinksBuilderFactory<Link> linksBuilderFactory;
+    private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
@@ -22,14 +22,14 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder<Link> linksBuilder = linksBuilderFactory.create(payload);
+        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
 
         linksBuilder.link()
                 .withRel("rel")
                 .fromControllerCall(RootRestController.class)
                 .root("query-value");
 
-        payload.add(linksBuilder.buildAll());
+        payload.add(linksBuilder.buildAll(Link.class));
 
         return payload;
     }

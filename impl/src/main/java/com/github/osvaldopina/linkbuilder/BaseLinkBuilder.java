@@ -5,6 +5,8 @@ import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import org.springframework.util.Assert;
@@ -15,7 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder {
+public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     private String rel;
     private boolean fromCurrentCall;
@@ -26,6 +28,7 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
     private MethodCall methodCall;
     private ExpressionExecutor expressionExecutor;
     private CurrentCallLocator currentCallLocator;
+    private LinkCreators linkCreators;
 
     private String expression;
 
@@ -34,47 +37,49 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
             ExpressionExecutor expressionExecutor,
             MethodCallUriGenerator methodCallUriGenerator,
             CurrentCallLocator currentCallLocator,
+            LinkCreators linkCreators,
             Object payload) {
 
         this.linksBuilder = linksBuilder;
         this.expressionExecutor = expressionExecutor;
         this.methodCallUriGenerator = methodCallUriGenerator;
         this.currentCallLocator = currentCallLocator;
+        this.linkCreators = linkCreators;
         this.payload = payload;
     }
 
     @Override
-    public LinkBuilder<T> withSelfRel() {
+    public LinkBuilder withSelfRel() {
         this.rel = "self";
         return this;
     }
 
     @Override
-    public LinkBuilder<T> withRel(String rel) {
+    public LinkBuilder withRel(String rel) {
         this.rel = rel;
         return this;
     }
 
     @Override
-    public LinkBuilder<T> setExpressionPayload(Object payload) {
+    public LinkBuilder setExpressionPayload(Object payload) {
         this.payload = payload;
         return this;
     }
 
     @Override
-    public LinkBuilder<T> when(String expression) {
+    public LinkBuilder when(String expression) {
         this.expression = expression;
         return this;
     }
 
     @Override
-    public LinkBuilder<T> fromCurrentCall() {
+    public LinkBuilder fromCurrentCall() {
         this.fromCurrentCall = true;
         return this;
     }
 
     @Override
-    public LinkBuilder<T> variableAsTemplate(int paramIndex) {
+    public LinkBuilder variableAsTemplate(int paramIndex) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteParameterIndexVariableSubstitutionController(paramIndex)
         );
@@ -82,7 +87,7 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
     }
 
     @Override
-    public LinkBuilder<T> variableAsTemplate(String variableName) {
+    public LinkBuilder variableAsTemplate(String variableName) {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteVariableNameVariableSubstitutionController(variableName)
         );
@@ -90,7 +95,7 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
     }
 
     @Override
-    public LinkBuilder<T> nullVariablesAsTemplate() {
+    public LinkBuilder nullVariablesAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new NotSubstituteNullValueVariableSubstitutionController()
         );
@@ -98,7 +103,7 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
     }
 
     @Override
-    public LinkBuilder<T> allParamsAsTemplate() {
+    public LinkBuilder allParamsAsTemplate() {
         variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
                 new SubstituteNoneVariableSubstitutionController()
         );
@@ -111,21 +116,28 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
     }
 
     @Override
-    public LinkBuilder<T> link() {
+    public LinkBuilder link() {
         return linksBuilder.link();
     }
 
     @Override
-    public T build() {
+    public <T> T build(Class<T> linkType) {
         if (fromCurrentCall) {
-           methodCall = currentCallLocator.getCurrentCall();
+            methodCall = currentCallLocator.getCurrentCall();
         }
 
         String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
 
-        return createLink(uri);
+        LinkCreator linkCreator = linkCreators.get(this.getClass(), linkType);
+
+        return (T) linkCreator.create(uri, this);
 
     }
+
+    public <T> List<T> buildAll(Class<T> linkType) {
+        return linksBuilder.buildAll(linkType);
+    }
+
 
     public boolean whenExpressionIsTrue() {
         if (expression != null) {
@@ -133,7 +145,6 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
         } else {
             return true;
         }
-
     }
 
     private void checkIfMethodCallIsPresent() {
@@ -142,10 +153,6 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
         }
     }
 
-    @Override
-    public List<T> buildAll() {
-        return linksBuilder.buildAll();
-    }
 
     private boolean isTemplated() {
         return variableSubstitutionControllers.hasVariableSubstitutionController();
@@ -169,6 +176,6 @@ public abstract class BaseLinkBuilder<T> implements LinkBuilder<T>, CallRecorder
         return rel;
     }
 
-    protected abstract T createLink(String uri);
+
 }
 

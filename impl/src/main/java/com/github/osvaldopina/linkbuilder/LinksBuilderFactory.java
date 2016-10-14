@@ -4,7 +4,7 @@ package com.github.osvaldopina.linkbuilder;
  * Factory for <code>LinksBuilder</code> creation. This is the entry point for linkbuilder framework.
  * Just inject it by using <code>@Autowired</code>
  */
-public interface LinksBuilderFactory<T> {
+public interface LinksBuilderFactory {
 
     /**
      * Creates a new LinksBuilder
@@ -12,7 +12,7 @@ public interface LinksBuilderFactory<T> {
      * @see LinksBuilder
      * @return New LinksBuilder
      */
-    LinksBuilder<T> create();
+    LinksBuilder create();
 
     /**
      * Creates a new LinkBuilder and includes payload as
@@ -21,5 +21,5 @@ public interface LinksBuilderFactory<T> {
      * @see LinksBuilder
      * @return New LinkBuilder
      */
-     LinksBuilder<T> create(Object payload);
+     LinksBuilder create(Object payload);
 }

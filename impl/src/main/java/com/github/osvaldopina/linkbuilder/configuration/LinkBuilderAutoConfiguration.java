@@ -13,7 +13,10 @@ import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCa
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCall;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallBeanPostProcessor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallLocatorImpl;
-import com.github.osvaldopina.linkbuilder.impl.LinksBuilderFactoryImpl;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
+import com.github.osvaldopina.linkbuilder.linkcreator.impl.LinkCreatorsImpl;
+import com.github.osvaldopina.linkbuilder.impl.springhateoas.LinksBuilderFactoryImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.*;
 import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.impl.SpringHateoasLinkCreator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
@@ -24,7 +27,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDisc
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerators;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGeneratorsImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.AnnotatedMethodUriGeneratorsImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.impl.StringHateoasIntrospectionUtilsImpl;
@@ -127,6 +130,16 @@ public class LinkBuilderAutoConfiguration {
         return new CurrentCallLocatorImpl();
     }
 
+    @Bean
+    public LinkCreator linkCreator() {
+        return new com.github.osvaldopina.linkbuilder.linkcreator.impl.SpringHateoasLinkCreator();
+    }
+
+    @Bean
+    @Autowired
+    public LinkCreators linkCreators(List<LinkCreator> linkCreators) {
+        return new LinkCreatorsImpl(linkCreators);
+    }
 
     @Bean
     @Autowired
