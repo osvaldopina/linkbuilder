@@ -29,7 +29,7 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .root("query-value");
 
-        payload.add(linksBuilder.buildAll(Link.class));
+        linksBuilder.buildAndSetAll();
 
         return payload;
     }

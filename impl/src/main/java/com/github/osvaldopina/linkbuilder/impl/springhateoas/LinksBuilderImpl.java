@@ -54,15 +54,13 @@ class LinksBuilderImpl implements LinksBuilder {
     }
 
     @Override
-    public <T> List<T> buildAll(Class<T> linkType) {
-        List<T> links = new ArrayList<T>();
+    public void buildAndSetAll() {
 
-        for(SpringHateoasLinkBuilderImpl linkBuilder: linkBuilders) {
+        for(LinkBuilder linkBuilder: linkBuilders) {
             if (linkBuilder.whenExpressionIsTrue()) {
-                links.add(linkBuilder.build(linkType));
+                linkBuilder.builAndSet();
             }
         }
-        return links;
     }
 
 }

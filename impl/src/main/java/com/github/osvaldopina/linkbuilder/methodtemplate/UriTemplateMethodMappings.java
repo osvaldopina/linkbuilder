@@ -23,7 +23,7 @@ public interface UriTemplateMethodMappings {
      *
      * @param controller Controller class
      * @param target t
-     * @return
+     * @return UriTemplate
      */
     UriTemplate createNewTemplateForLinkTarget(Class<?> controller, String target);
 }

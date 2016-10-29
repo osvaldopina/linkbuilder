@@ -19,15 +19,14 @@ public class LinkCreatorsImpl implements LinkCreators{
 
 
     @Override
-    public  LinkCreator get(Class<?> linkBuilderType, Class<?> linkType) {
+    public  LinkCreator get(LinkBuilder linkBuilder) {
 
         for(LinkCreator linkCreator: linkCreators) {
-            if (linkCreator.canCreate(linkBuilderType, linkType)) {
+            if (linkCreator.canCreate(linkBuilder)) {
                 return linkCreator;
             }
         }
         throw new LinkBuilderException(
-                "Could not find LinkCreator for linkbuiler type " + linkBuilderType + " and link type " + linkType
-        );
+                "Could not find LinkCreator for linkbuiler type " + linkBuilder.getClass());
     }
 }

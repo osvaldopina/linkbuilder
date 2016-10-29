@@ -39,13 +39,16 @@ public interface LinkBuilder {
      */
     LinkBuilder when(String expression);
 
-    /**
-     * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
-     * are changed with a aspect that records the method and the list of parameters.
-     *
-     * @return LinkBuilder link builder.
-     * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
-     */
+
+    boolean whenExpressionIsTrue();
+
+        /**
+         * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
+         * are changed with a aspect that records the method and the list of parameters.
+         *
+         * @return LinkBuilder link builder.
+         * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
+         */
     LinkBuilder fromCurrentCall();
 
     /**
@@ -108,13 +111,12 @@ public interface LinkBuilder {
      *
      * @return Link link.
      */
-    <T> T build(Class<T> linkType);
+    Object build();
 
     /**
      * Creates all links configured in the same <code>LinksBuilder</code>.
      *
-     * @return List of links configured in the same <code>LinksBuilder</code>.
      */
-    <T> List<T> buildAll(Class<T> linkType);
+    void builAndSet();
 
 }
