@@ -25,14 +25,14 @@ public class RootRestController {
 
         ResourceSupport payload = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create();
+        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
 
         linksBuilder.link()
                 .withRel("rel")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        payload.add(linksBuilder.buildAll(Link.class));
+        linksBuilder.buildAndSetAll();
 
         return payload;
     }

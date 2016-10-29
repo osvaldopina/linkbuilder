@@ -28,7 +28,7 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .root();
 
-        payload.add(linksBuilder.buildAll(Link.class));
+        linksBuilder.buildAndSetAll();
 
         return payload;
     }

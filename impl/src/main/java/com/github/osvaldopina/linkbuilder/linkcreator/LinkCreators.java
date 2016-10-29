@@ -4,6 +4,6 @@ import com.github.osvaldopina.linkbuilder.LinkBuilder;
 
 public interface LinkCreators {
 
-     LinkCreator get(Class<?> linkBuilderType, Class<?> linkType);
+     LinkCreator get(LinkBuilder linkBuilder);
 
 }

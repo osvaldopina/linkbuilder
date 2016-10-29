@@ -21,11 +21,7 @@ public interface LinksBuilder {
     /**
      * Creates the list of all links created by <code>link()</code>.
      *
-     * @return List of all links.
      */
-    <T> List<T> buildAll(Class<T> linkType);
-
-
-
+    void buildAndSetAll();
 
 }

@@ -121,21 +121,30 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     }
 
     @Override
-    public <T> T build(Class<T> linkType) {
+    public Object build() {
         if (fromCurrentCall) {
             methodCall = currentCallLocator.getCurrentCall();
         }
 
         String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
 
-        LinkCreator linkCreator = linkCreators.get(this.getClass(), linkType);
+        LinkCreator linkCreator = linkCreators.get(this);
 
-        return (T) linkCreator.create(uri, this);
+        return linkCreator.create(uri, this);
 
     }
 
-    public <T> List<T> buildAll(Class<T> linkType) {
-        return linksBuilder.buildAll(linkType);
+    public void builAndSet() {
+        if (fromCurrentCall) {
+            methodCall = currentCallLocator.getCurrentCall();
+        }
+
+        String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
+
+        LinkCreator linkCreator = linkCreators.get(this);
+
+        linkCreator.createAndSet(uri, this, payload);
+
     }
 
 
@@ -146,13 +155,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
             return true;
         }
     }
-
-    private void checkIfMethodCallIsPresent() {
-        if (methodCall == null) {
-            throw new LinkBuilderException("Could not determine which method call to get template!");
-        }
-    }
-
 
     private boolean isTemplated() {
         return variableSubstitutionControllers.hasVariableSubstitutionController();

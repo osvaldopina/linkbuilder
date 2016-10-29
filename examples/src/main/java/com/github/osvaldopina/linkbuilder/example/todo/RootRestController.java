@@ -65,7 +65,7 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        payload.add(linksBuilder.buildAll(Link.class));
+        linksBuilder.buildAndSetAll();
 
         return payload;
     }
