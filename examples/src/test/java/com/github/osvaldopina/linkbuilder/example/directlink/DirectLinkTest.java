@@ -41,9 +41,11 @@ public class DirectLinkTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._links.self.href")
                         .value("http://localhost/"))
-                .andExpect(jsonPath("$._links.direct.href")
+                .andExpect(jsonPath("$._links.direct-link.href")
                         .value("http://localhost/direct-link/anyPathValue?query=anyQueryValue"))
-                .andExpect(jsonPath("$._links.direct-templated.href")
+                .andExpect(jsonPath("$._links.direct-link-overrided.href")
+                        .value("http://localhost/direct-link/anyPathValue?query=anyQueryValue"))
+                .andExpect(jsonPath("$._links.direct-link-templated.href")
                         .value("http://localhost/direct-link/templated?templated=templated-value{&non_templated}"));
 
     }

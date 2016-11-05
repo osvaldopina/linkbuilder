@@ -16,15 +16,15 @@ public interface UriTemplateMethodMappings {
      * @param method Method to gatter template information
      * @return UriTemplate correspondent to method http path
      */
-    UriTemplate createNewTemplateForMethod(Method method);
+    UriTemplate createTemplateForMethod(Method method);
 
     /**
      * Creates a new Template for a given Controller and target
      *
      * @param controller Controller class
-     * @param target t
+     * @param rel t
      * @return UriTemplate
      */
-    UriTemplate createNewTemplateForLinkTarget(Class<?> controller, String target);
+    UriTemplate createTemplateForLinkTarget(Class<?> controller, String rel);
 
 }

@@ -57,13 +57,13 @@ public class UriTemplateMethodMappingsImpl implements UriTemplateMethodMappings 
         }
     }
 
-    public UriTemplate createNewTemplateForMethod( Method method) {
+    public UriTemplate createTemplateForMethod(Method method) {
         return UriTemplate.buildFromTemplate(baseUriDiscover.getBaseUri() +
                 uriTemplateMethodRegister.get(method).getTemplate()).build();
     }
 
     @Override
-    public UriTemplate createNewTemplateForLinkTarget(Class<?> controller, String target) {
+    public UriTemplate createTemplateForLinkTarget(Class<?> controller, String target) {
         return UriTemplate.buildFromTemplate(baseUriDiscover.getBaseUri() +
                 uriTemplateMethodRegister.get(controller, target).getTemplate()).build();
     }

@@ -17,17 +17,17 @@ public class RootRestController {
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
     @Links({
-            @Link(destination = RootRestController.class, target = "target-link",relation = "direct", params = {
+            @Link(destination = RootRestController.class, rel = "direct-link", params = {
                     @Param(name = "query", value = "#payload.queryValue"),
                     @Param(name = "path", value = "#payload.pathValue")
             }),
-            @Link(destination = RootRestController.class, target = "target-link", relation = "direct-overrided", params = {
-                    @Param(name = "query", value = "#payload.queryValue"),
-                    @Param(name = "path", value = "#payload.pathValue")
-            }),
+            @Link(destination = RootRestController.class, rel = "direct-link", overrideRel = "direct-link-overrided",
+                    params = {
+                            @Param(name = "query", value = "#payload.queryValue"),
+                            @Param(name = "path", value = "#payload.pathValue")
+                    }),
             @Link(destination = RootRestController.class,
-                    target = "target-link-templated",
-                    relation = "direct-templated",
+                    rel = "direct-link-templated",
                     templated = true,
                     params = {
                             @Param(name = "templated", value = "'templated-value'")
@@ -43,14 +43,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @LinkTarget(rel = "target-link")
+    @GenerateUriTemplateFor(rel = "direct-link")
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @LinkTarget(rel = "target-link-templated")
+    @GenerateUriTemplateFor(rel = "direct-link-templated")
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

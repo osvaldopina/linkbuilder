@@ -28,19 +28,9 @@ class UriTemplateMethodRegister {
 
         methodTemplates.put(method, uriTemplate);
 
-        String linkTarget = null;
+        String rel = introspectionUtils.getMethodRel(method);
 
-
-        if (introspectionUtils.isLinkTargetMethod(method)) {
-            linkTarget = introspectionUtils.getLinkTarget(method);
-            targetTemplates.put(linkTarget, uriTemplate);
-        }
-        logger.info("Registered for method:"
-                + method
-                + ", uri template:"
-                + uriTemplate.getTemplate()
-                + (linkTarget!= null?(", link target:" + linkTarget):""));
-
+        targetTemplates.put(method.getDeclaringClass().getName() + ":" + rel, uriTemplate);
     }
 
     public UriTemplate get(Method method) {
@@ -57,13 +47,13 @@ class UriTemplateMethodRegister {
 
     }
 
-    public UriTemplate get(Class<?> controller, String target) {
-        UriTemplate template = targetTemplates.get(controller.getName() + ":" + target);
+    public UriTemplate get(Class<?> controller, String rel) {
+        UriTemplate template = targetTemplates.get(controller.getName() + ":" + rel);
 
         if (template == null) {
-            throw new LinkBuilderException("Could not find template for @LinkTarget controller " +
-                    controller + " with target " + target +
-                    ".\n Was this method annotated with @EnableSelfFromCurrentCall or @GenerateUriTemplateFor?");
+            throw new LinkBuilderException("Could not find template for @GenerateUriTemplateFor controller " +
+                    controller + " with rel " + rel +
+                    ".\n Was this method annotated with @GenerateUriTemplateFor?");
         }
         else {
             return template;

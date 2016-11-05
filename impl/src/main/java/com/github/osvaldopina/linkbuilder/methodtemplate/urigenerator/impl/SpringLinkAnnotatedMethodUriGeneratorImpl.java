@@ -81,9 +81,9 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
 
         ExpressionExecutor expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
 
-        UriTemplate template = uriTemplateMethodMappingsImpl.createNewTemplateForLinkTarget(
+        UriTemplate template = uriTemplateMethodMappingsImpl.createTemplateForLinkTarget(
                 link.destination(),
-                link.target()
+                link.rel()
         );
 
         for (Param param : link.params()) {

@@ -11,9 +11,9 @@ public @interface Link {
 
     Class<?> destination();
 
-    String target();
+    String rel();
 
-    String relation() default "";
+    String overrideRel() default "";
 
     String when() default "";
 

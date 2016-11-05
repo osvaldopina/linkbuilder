@@ -1,9 +1,7 @@
 package com.github.osvaldopina.linkbuilder.utils.impl;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
 import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.core.MethodParameter;
@@ -57,8 +55,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
                 (AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null ||
                         AnnotationUtils.findAnnotation(method.getDeclaringClass(), EnableSelfFromCurrentCall.class) != null ||
                         AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null ||
-                        AnnotationUtils.findAnnotation(method.getDeclaringClass(), GenerateUriTemplateFor.class) != null ||
-                        AnnotationUtils.findAnnotation(method, LinkTarget.class) != null);
+                        AnnotationUtils.findAnnotation(method.getDeclaringClass(), GenerateUriTemplateFor.class) != null);
     }
 
     @Override
@@ -74,21 +71,6 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     @Override
     public Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean) {
         return getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class);
-    }
-
-    @Override
-    public boolean isLinkTargetMethod(Method method) {
-        return (AnnotationUtils.findAnnotation(method, LinkTarget.class) != null);
-    }
-
-    public String getLinkTarget(Method method) {
-        LinkTarget linkTarget = AnnotationUtils.findAnnotation(method, LinkTarget.class);
-
-        if (linkTarget.rel() == null || "" .equals(linkTarget.rel())) {
-            throw new LinkBuilderException("@LinkTarget for " + method + " must not be null of empty string!");
-        }
-
-        return (method.getDeclaringClass().getName() + ":" + linkTarget.rel());
     }
 
     @Override

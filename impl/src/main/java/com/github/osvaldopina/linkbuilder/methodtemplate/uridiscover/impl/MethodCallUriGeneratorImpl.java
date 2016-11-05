@@ -35,7 +35,7 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
         UriTemplateMethodMappings uriTemplateMethodMappings =
                 applicationContext.getBean(UriTemplateMethodMappings.class);
 
-        UriTemplate template = uriTemplateMethodMappings.createNewTemplateForMethod(methodCall.getMethod());
+        UriTemplate template = uriTemplateMethodMappings.createTemplateForMethod(methodCall.getMethod());
 
         ArgumentResolvers argumentResolvers = applicationContext.getBean(ArgumentResolvers.class);
 
