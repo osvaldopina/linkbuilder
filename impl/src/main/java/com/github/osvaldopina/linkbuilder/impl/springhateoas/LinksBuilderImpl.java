@@ -8,6 +8,7 @@ import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ class LinksBuilderImpl implements LinksBuilder {
         MethodCallUriGenerator methodCallUriGenerator = applicationContext.getBean(MethodCallUriGenerator.class);
         CurrentCallLocator currentCallLocator = applicationContext.getBean(CurrentCallLocator.class);
         LinkCreators linkCreators = applicationContext.getBean(LinkCreators.class);
+        IntrospectionUtils introspectionUtils = applicationContext.getBean(IntrospectionUtils.class);
 
         SpringHateoasLinkBuilderImpl linkBuilder = new SpringHateoasLinkBuilderImpl(
                 this,
@@ -47,7 +49,8 @@ class LinksBuilderImpl implements LinksBuilder {
                 methodCallUriGenerator,
                 currentCallLocator,
                 linkCreators,
-                payload
+                payload,
+                introspectionUtils
         );
         linkBuilders.add(linkBuilder);
         return linkBuilder;

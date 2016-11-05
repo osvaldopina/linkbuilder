@@ -34,7 +34,7 @@ public class LinksToResourceMethodInterceptor<T> implements AfterReturningAdvice
             T link;
             for(Annotation linkAnnotation : annotatedMethodUriGenerator.getLinksAnnotation(method)) {
                 uri = annotatedMethodUriGenerator.generate(method, linkAnnotation,returnValue, args);
-                link = annotatedLinkCreator.createLink(linkAnnotation, uri, returnValue, args);
+                link = annotatedLinkCreator.createLink(method, linkAnnotation, uri, returnValue, args);
                 if (link != null) {
                     linkList.add(link);
                 }
@@ -42,7 +42,7 @@ public class LinksToResourceMethodInterceptor<T> implements AfterReturningAdvice
             Annotation selfLinkAnnotion = annotatedMethodUriGenerator.getSelfLinkAnnotaiton(method);
             uri = annotatedMethodUriGenerator.generate(method, selfLinkAnnotion, returnValue, args);
             if (uri != null) {
-                linkList.add(annotatedLinkCreator.createLink(selfLinkAnnotion, uri, returnValue, args));
+                linkList.add(annotatedLinkCreator.createLink(method, selfLinkAnnotion, uri, returnValue, args));
             }
             annotatedLinkCreator.setLinks(returnValue, linkList);
 

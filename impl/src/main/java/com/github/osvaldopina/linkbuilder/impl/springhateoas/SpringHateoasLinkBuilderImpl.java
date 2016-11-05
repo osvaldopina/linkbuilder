@@ -6,6 +6,7 @@ import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 
 public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
 
@@ -16,9 +17,16 @@ public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
             MethodCallUriGenerator methodCallUriGenerator,
             CurrentCallLocator currentCallLocator,
             LinkCreators linkCreators,
-            Object payload) {
+            Object payload,
+            IntrospectionUtils introspectionUtils) {
 
-        super(linksBuilder, expressionExecutor, methodCallUriGenerator, currentCallLocator, linkCreators, payload);
+        super(linksBuilder,
+                expressionExecutor,
+                methodCallUriGenerator,
+                currentCallLocator,
+                linkCreators,
+                payload,
+                introspectionUtils);
     }
 
     public String getRel() {

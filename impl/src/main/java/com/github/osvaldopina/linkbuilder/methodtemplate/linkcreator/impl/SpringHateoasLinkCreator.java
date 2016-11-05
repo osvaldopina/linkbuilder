@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.AnnotatedLinkCreator;
 import org.springframework.hateoas.Link;
@@ -9,6 +10,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class SpringHateoasLinkCreator implements AnnotatedLinkCreator<Link> {
@@ -20,14 +22,25 @@ public class SpringHateoasLinkCreator implements AnnotatedLinkCreator<Link> {
     }
 
     @Override
-    public Link createLink(Annotation annotation, String uri, Object payload, Object[] params) {
+    public Link createLink(Method method, Annotation annotation, String uri, Object payload, Object[] params) {
         if (annotation instanceof com.github.osvaldopina.linkbuilder.annotation.Link) {
             com.github.osvaldopina.linkbuilder.annotation.Link link =
                     (com.github.osvaldopina.linkbuilder.annotation.Link) annotation;
 
 
             if ("".equals(link.when().trim()) || expressionExecutor.isTrue(link.when(), payload, params)) {
-                return new Link(uri, ((com.github.osvaldopina.linkbuilder.annotation.Link) annotation).relation());
+                String rel = ((com.github.osvaldopina.linkbuilder.annotation.Link) annotation).relation();
+
+//                if (rel == null || "".equals(rel)) {
+//                    // refator to move to introspection utils
+//                    rel = method.getAnnotation(LinkTarget.class).rel();
+//                }
+
+                if (rel == null || "".equals(rel)) {
+                    throw new LinkBuilderException("Could not determine link relation.");
+                }
+
+                return new Link(uri, rel);
             } else {
                 return null;
             }

@@ -25,7 +25,7 @@ public class ControllerProxyTest {
     @Before
     public void setUp() throws Exception {
         applicationContext = new FakeApplicationContext();
-        springHateoasLinkBuilderImpl = new SpringHateoasLinkBuilderImpl(null,null, null, null, null, null);
+        springHateoasLinkBuilderImpl = new SpringHateoasLinkBuilderImpl(null,null, null, null, null, null, null);
 
         method = ControllerProxyTest.class.getMethod("method", String.class);
 

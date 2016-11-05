@@ -33,5 +33,7 @@ public interface IntrospectionUtils {
 
     String getLinkTarget(Method method);
 
+    String getMethodRel(Method method);
+
 
 }

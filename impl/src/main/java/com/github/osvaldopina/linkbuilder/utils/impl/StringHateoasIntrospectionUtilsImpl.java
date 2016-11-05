@@ -1,7 +1,10 @@
 package com.github.osvaldopina.linkbuilder.utils.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.annotation.*;
+import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
+import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
@@ -49,7 +54,9 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     @Override
     public boolean haveToGenerateTemplateFor(Method method) {
         return !method.getDeclaringClass().getPackage().getName().startsWith("org.springframework") &&
-                (AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null ||
+                (AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null ||
+                        AnnotationUtils.findAnnotation(method.getDeclaringClass(), EnableSelfFromCurrentCall.class) != null ||
+                        AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null ||
                         AnnotationUtils.findAnnotation(method.getDeclaringClass(), GenerateUriTemplateFor.class) != null ||
                         AnnotationUtils.findAnnotation(method, LinkTarget.class) != null);
     }
@@ -65,7 +72,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     }
 
     @Override
-    public Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean)  {
+    public Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean) {
         return getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class);
     }
 
@@ -77,13 +84,26 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     public String getLinkTarget(Method method) {
         LinkTarget linkTarget = AnnotationUtils.findAnnotation(method, LinkTarget.class);
 
-        if (linkTarget.value() == null || "".equals(linkTarget.value())) {
+        if (linkTarget.rel() == null || "" .equals(linkTarget.rel())) {
             throw new LinkBuilderException("@LinkTarget for " + method + " must not be null of empty string!");
         }
 
-        return (method.getDeclaringClass().getName() + ":" + linkTarget.value());
+        return (method.getDeclaringClass().getName() + ":" + linkTarget.rel());
     }
 
+    @Override
+    public String getMethodRel(Method method) {
+        GenerateUriTemplateFor generateUriTemplateFor =
+                AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class);
+
+        if (generateUriTemplateFor != null &&
+                generateUriTemplateFor.rel() != null &&
+                (!"" .equals(generateUriTemplateFor.rel().trim()))) {
+            return generateUriTemplateFor.rel();
+        } else {
+            return null;
+        }
+    }
 
 
     private Set<Method> getAnnotatedMethods(Object bean, Class<? extends Annotation> annotationType) {
@@ -95,12 +115,6 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
         }
         return Collections.unmodifiableSet(annotatedMethods);
     }
-
-
-
-
-
-
 
 
 }

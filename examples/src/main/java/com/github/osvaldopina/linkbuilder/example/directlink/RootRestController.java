@@ -17,7 +17,11 @@ public class RootRestController {
     @RequestMapping("/")
     @EnableSelfFromCurrentCall
     @Links({
-            @Link(destination = RootRestController.class, target = "target-link", relation = "direct", params = {
+            @Link(destination = RootRestController.class, target = "target-link",relation = "direct", params = {
+                    @Param(name = "query", value = "#payload.queryValue"),
+                    @Param(name = "path", value = "#payload.pathValue")
+            }),
+            @Link(destination = RootRestController.class, target = "target-link", relation = "direct-overrided", params = {
                     @Param(name = "query", value = "#payload.queryValue"),
                     @Param(name = "path", value = "#payload.pathValue")
             }),
@@ -39,14 +43,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @LinkTarget("target-link")
+    @LinkTarget(rel = "target-link")
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @LinkTarget("target-link-templated")
+    @LinkTarget(rel = "target-link-templated")
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

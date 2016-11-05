@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.example.todo;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
 import com.github.osvaldopina.linkbuilder.annotation.LinkTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -72,7 +73,7 @@ public class RootRestController {
 
     @RequestMapping("/no-query-parameter/{id}")
     @EnableSelfFromCurrentCall
-    @LinkTarget("a-method")
+    @GenerateUriTemplateFor(rel = "a-method")
     public void methodWithoutQueryParameter(@PathVariable("id") String id, @RequestBody String payload) {
 
     }

@@ -13,7 +13,7 @@ public @interface Link {
 
     String target();
 
-    String relation();
+    String relation() default "";
 
     String when() default "";
 

@@ -9,6 +9,7 @@ import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,6 +30,7 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     private ExpressionExecutor expressionExecutor;
     private CurrentCallLocator currentCallLocator;
     private LinkCreators linkCreators;
+    private IntrospectionUtils introspectionUtils;
 
     private String expression;
 
@@ -38,7 +40,8 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
             MethodCallUriGenerator methodCallUriGenerator,
             CurrentCallLocator currentCallLocator,
             LinkCreators linkCreators,
-            Object payload) {
+            Object payload,
+            IntrospectionUtils introspectionUtils) {
 
         this.linksBuilder = linksBuilder;
         this.expressionExecutor = expressionExecutor;
@@ -46,6 +49,7 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         this.currentCallLocator = currentCallLocator;
         this.linkCreators = linkCreators;
         this.payload = payload;
+        this.introspectionUtils = introspectionUtils;
     }
 
     @Override
@@ -172,6 +176,12 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     @Override
     public void record(MethodCall methodCall) {
         this.methodCall = methodCall;
+        if (rel == null) {
+            String annotationRel = introspectionUtils.getMethodRel(methodCall.getMethod());
+            if (annotationRel != null) {
+                rel = annotationRel;
+            }
+        }
     }
 
     protected String getRel() {
