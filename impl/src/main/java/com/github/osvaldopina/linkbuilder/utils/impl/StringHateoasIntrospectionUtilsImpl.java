@@ -69,8 +69,18 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     }
 
     @Override
+    public boolean isLinksAnnotatedMethod(Method method) {
+        return AnnotationUtils.findAnnotation(method, Links.class) != null;
+    }
+
+    @Override
     public Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean) {
         return getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class);
+    }
+
+    @Override
+    public boolean isEnableSelfFromCurrentCallMethod(Method method) {
+        return AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null;
     }
 
     @Override

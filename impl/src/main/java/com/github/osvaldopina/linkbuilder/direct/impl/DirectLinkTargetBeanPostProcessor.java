@@ -37,7 +37,8 @@ public class DirectLinkTargetBeanPostProcessor implements BeanPostProcessor, App
             for (Method method : introspectionUtils.getLinksAnnotatedMethods(bean)) {
                 ProxyFactory factory = new ProxyFactory();
                 factory.addAdvice(
-                        new LinksToResourceMethodInterceptor(annotatedLinkCreator, annotatedMethodUriGenerators)
+                        new LinksToResourceMethodInterceptor(annotatedLinkCreator,
+                                annotatedMethodUriGenerators, introspectionUtils)
                 );
                 factory.setTarget(bean);
                 return factory.getProxy();

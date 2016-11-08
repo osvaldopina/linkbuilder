@@ -21,7 +21,11 @@ public interface IntrospectionUtils {
 
     Set<Method> getLinksAnnotatedMethods(Object bean);
 
+    boolean isLinksAnnotatedMethod(Method method);
+
     Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean);
+
+    boolean isEnableSelfFromCurrentCallMethod(Method method);
 
     String getMethodRel(Method method);
 

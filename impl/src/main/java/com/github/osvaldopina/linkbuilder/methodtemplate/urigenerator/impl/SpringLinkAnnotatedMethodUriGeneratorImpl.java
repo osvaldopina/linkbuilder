@@ -8,10 +8,10 @@ import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.annotation.Param;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -22,6 +22,7 @@ import org.springframework.hateoas.ResourceSupport;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMethodUriGenerator, ApplicationContextAware {
@@ -30,14 +31,21 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
 
     @Override
     public boolean isAnnotated(Method method) {
-        return AnnotationUtils.findAnnotation(method, Links.class) != null;
+        return AnnotationUtils.findAnnotation(method, Links.class) != null ||
+                AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null;
     }
 
     @Override
     public List<? extends Annotation> getLinksAnnotation(Method method) {
+
         Links links = AnnotationUtils.findAnnotation(method, Links.class);
 
-        return Arrays.asList(links.value());
+        if (links == null) {
+            return Collections.emptyList();
+        }
+        else {
+            return Arrays.asList(links.value());
+        }
     }
 
     @Override

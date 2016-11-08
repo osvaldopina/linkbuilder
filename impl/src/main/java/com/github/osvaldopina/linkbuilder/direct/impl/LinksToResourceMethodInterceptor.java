@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.direct.impl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.AnnotatedLinkCreator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerators;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.aop.AfterReturningAdvice;
 
 import java.lang.annotation.Annotation;
@@ -16,14 +17,23 @@ public class LinksToResourceMethodInterceptor<T> implements AfterReturningAdvice
 
     private AnnotatedMethodUriGenerators annotatedMethodUriGenerators;
 
-    public LinksToResourceMethodInterceptor(AnnotatedLinkCreator<T> annotatedLinkCreator, AnnotatedMethodUriGenerators annotatedMethodUriGenerators) {
+    private IntrospectionUtils introspectionUtils;
+
+    public LinksToResourceMethodInterceptor(AnnotatedLinkCreator<T> annotatedLinkCreator,
+                                            AnnotatedMethodUriGenerators annotatedMethodUriGenerators,
+                                            IntrospectionUtils introspectionUtils) {
         this.annotatedLinkCreator = annotatedLinkCreator;
         this.annotatedMethodUriGenerators = annotatedMethodUriGenerators;
+        this.introspectionUtils = introspectionUtils;
     }
 
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
         if (returnValue != null) {
+
+            if (! introspectionUtils.isLinksAnnotatedMethod(method)) {
+                return;
+            }
 
             AnnotatedMethodUriGenerator annotatedMethodUriGenerator =
                     annotatedMethodUriGenerators.getAnnotatedMethodUriGenerator(method);
@@ -40,9 +50,11 @@ public class LinksToResourceMethodInterceptor<T> implements AfterReturningAdvice
                 }
             }
             Annotation selfLinkAnnotion = annotatedMethodUriGenerator.getSelfLinkAnnotaiton(method);
-            uri = annotatedMethodUriGenerator.generate(method, selfLinkAnnotion, returnValue, args);
-            if (uri != null) {
-                linkList.add(annotatedLinkCreator.createLink(method, selfLinkAnnotion, uri, returnValue, args));
+            if (selfLinkAnnotion != null) {
+                uri = annotatedMethodUriGenerator.generate(method, selfLinkAnnotion, returnValue, args);
+                if (uri != null) {
+                    linkList.add(annotatedLinkCreator.createLink(method, selfLinkAnnotion, uri, returnValue, args));
+                }
             }
             annotatedLinkCreator.setLinks(returnValue, linkList);
 
