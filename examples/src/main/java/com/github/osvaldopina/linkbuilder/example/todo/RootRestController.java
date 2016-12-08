@@ -23,46 +23,43 @@ public class RootRestController {
 
         Payload payload = new Payload();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create();
+        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
 
         linksBuilder.link()
-                .setExpressionPayload(payload)
                 .withRel("a-link-with-expression-payload-check")
-                .when("#payload.awaysTrueProperty")
                 .fromControllerCall(RootRestController.class)
                 .root();
 
         linksBuilder.link()
-                .withRel("no-query-parameter")
+           //     .withRel("no-query-parameter")
                 .fromControllerCall(RootRestController.class)
                 .methodWithoutQueryParameter("value", null);
 
         linksBuilder.link()
                 .withRel("user-defined-type-for-authenticated")
-                .when("isAuthenticated()")
                 .fromControllerCall(RootRestController.class)
-                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+                .queryParameterForUserDefinedType();
 
         linksBuilder.link()
                 .withRel("using-bean-in-expression-always-true")
                 .when("@anyBean.isAlwaysTrue()")
                 .fromControllerCall(RootRestController.class)
-                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+                .queryParameterForUserDefinedType();
 
         linksBuilder.link()
                 .withRel("using-bean-in-expression-always-false")
-                .when("@anyBean.isAlwaysFalse()")
+//                .when("@anyBean.isAlwaysFalse() && isAutenticated()")
+//                .when("isAutenticated()")
                 .fromControllerCall(RootRestController.class)
-                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+                .queryParameterForUserDefinedType();
 
 
         linksBuilder.link()
                 .withRel("user-defined-type-for-non-authenticated")
-                .when("not isAuthenticated()")
                 .fromControllerCall(RootRestController.class)
-                .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
+                .queryParameterForUserDefinedType();
 
         linksBuilder.buildAndSetAll();
 
@@ -71,17 +68,17 @@ public class RootRestController {
 
     @RequestMapping("/no-query-parameter/{id}")
     @EnableSelfFromCurrentCall
-    @GenerateUriTemplateFor(rel = "a-method")
+    @GenerateUriTemplateFor(rel = "rel")
     public void methodWithoutQueryParameter(@PathVariable("id") String id, @RequestBody String payload) {
 
     }
 
     @RequestMapping("/user-defined-type")
     @EnableSelfFromCurrentCall
-    public void queryParameterForUserDefinedType(UserDefinedType userDefinedType) {
+    public void queryParameterForUserDefinedType() {
 
     }
 
 
-  }
+}
 

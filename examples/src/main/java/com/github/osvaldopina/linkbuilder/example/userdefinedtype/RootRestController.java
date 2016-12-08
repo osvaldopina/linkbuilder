@@ -1,8 +1,10 @@
 package com.github.osvaldopina.linkbuilder.example.userdefinedtype;
 
+import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,14 @@ public class RootRestController {
 
         LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
 
-        linksBuilder.link()
+        LinkBuilder lb = linksBuilder.link();
+
+        lb
                 .withRel("rel")
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        linksBuilder.buildAndSetAll();
+       payload.add((org.springframework.hateoas.Link) lb.build());
 
         return payload;
     }

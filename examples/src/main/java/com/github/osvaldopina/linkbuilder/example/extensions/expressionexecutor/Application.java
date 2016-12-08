@@ -13,7 +13,6 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 @SpringBootApplication
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @Configuration
-@Import(WebSecurityConfig.class)
 public class Application extends CustomLinkBuilderConfigurer {
 
     public static void main(String[] args) throws Exception {

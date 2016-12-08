@@ -1,8 +1,10 @@
 package com.github.osvaldopina.linkbuilder.example.extensions.requestpartsfactorylist;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactory;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.*;
+
+
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactory;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactoryList;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ServletRequestRequestPartsFactory;
 
 import java.util.Arrays;
 import java.util.Collections;

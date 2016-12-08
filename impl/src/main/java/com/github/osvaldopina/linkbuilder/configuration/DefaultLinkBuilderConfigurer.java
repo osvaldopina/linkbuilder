@@ -1,22 +1,13 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.MethodTemplateGeneratorImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.MethodCallUriGeneratorImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.RequestPartsFactoryListImpl;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.impl.BaseUriDiscoverImpl;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactoryList;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.RequestPartsFactoryListImpl;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.expression.impl.ExpressionExecutorImpl;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.ExpressionExecutorImpl;
 
 public class DefaultLinkBuilderConfigurer implements LinkBuilderConfigurer {
-
-    @Override
-    public MethodTemplateGenerator templateGenerator() {
-        return new MethodTemplateGeneratorImpl();
-    }
 
     @Override
     public RequestPartsFactoryList requestPartsFactoryList() {
@@ -33,8 +24,4 @@ public class DefaultLinkBuilderConfigurer implements LinkBuilderConfigurer {
         return new BaseUriDiscoverImpl();
     }
 
-    @Override
-    public MethodCallUriGenerator linkGenerator() {
-        return new MethodCallUriGeneratorImpl();
-    }
 }

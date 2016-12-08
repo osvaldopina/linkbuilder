@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Set;
 
@@ -19,15 +20,12 @@ public interface IntrospectionUtils {
 
     boolean isRestController(Object bean);
 
-    Set<Method> getLinksAnnotatedMethods(Object bean);
-
-    boolean isLinksAnnotatedMethod(Method method);
-
     Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean);
 
     boolean isEnableSelfFromCurrentCallMethod(Method method);
 
     String getMethodRel(Method method);
 
+    String getMethodDestination(Method method);
 
-}
+  }

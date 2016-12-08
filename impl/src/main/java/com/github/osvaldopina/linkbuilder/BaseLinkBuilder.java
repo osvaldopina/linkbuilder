@@ -1,122 +1,132 @@
 package com.github.osvaldopina.linkbuilder;
 
-import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.*;
-import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
+import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactory;
+import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
+import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
-import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
+import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.RecordCallInterceptorCreator;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
-import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
-import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
-import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import org.springframework.util.Assert;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreator;
+import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteAny;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteNullValue;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteParameterIndex;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteVariableName;
 
 public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
-    private String rel;
-    private boolean fromCurrentCall;
     private LinksBuilder linksBuilder;
-    private VariableSubstitutionControllers variableSubstitutionControllers = new VariableSubstitutionControllers();
-    private Object payload;
-    private MethodCallUriGenerator methodCallUriGenerator;
-    private MethodCall methodCall;
-    private ExpressionExecutor expressionExecutor;
     private CurrentCallLocator currentCallLocator;
-    private LinkCreators linkCreators;
-    private IntrospectionUtils introspectionUtils;
-
-    private String expression;
+    private LinkPropertiesLinkCreators linkPropertiesLinkCreators;
+    private LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry;
+    private LinkProperties linkProperties;
+    private RecordCallInterceptorCreator recordCallInterceptorCreator = RecordCallInterceptorCreator.INSTANCE;
 
     public BaseLinkBuilder(
             LinksBuilder linksBuilder,
-            ExpressionExecutor expressionExecutor,
-            MethodCallUriGenerator methodCallUriGenerator,
             CurrentCallLocator currentCallLocator,
-            LinkCreators linkCreators,
-            Object payload,
-            IntrospectionUtils introspectionUtils) {
+            LinkPropertiesLinkCreators linkPropertiesLinkCreators,
+            LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
+            Object payload
+    ) {
 
         this.linksBuilder = linksBuilder;
-        this.expressionExecutor = expressionExecutor;
-        this.methodCallUriGenerator = methodCallUriGenerator;
         this.currentCallLocator = currentCallLocator;
-        this.linkCreators = linkCreators;
-        this.payload = payload;
-        this.introspectionUtils = introspectionUtils;
+        this.linkPropertiesLinkCreators = linkPropertiesLinkCreators;
+        this.linkBuilderExtensionFactoryRegistry = linkBuilderExtensionFactoryRegistry;
+        this.linkProperties = new BaseLinkProperties();
+        this.linkProperties.setPayload(payload);
+    }
+
+    public BaseLinkBuilder(BaseLinkBuilder baseLinkBuilder) {
+        this.linksBuilder = baseLinkBuilder.linksBuilder;
+        this.currentCallLocator = baseLinkBuilder.currentCallLocator();
+        this.linkPropertiesLinkCreators = baseLinkBuilder.linkPropertiesLinkCreators;
+        this.linkBuilderExtensionFactoryRegistry = baseLinkBuilder.linkBuilderExtensionFactoryRegistry;
+        this.linkProperties = new LinkPropertiesDelegate(baseLinkBuilder.getLinkProperties());
+    }
+
+
+    public void setLinkProperties(LinkProperties linkProperties) {
+        this.linkProperties = linkProperties;
+    }
+
+    public LinkProperties getLinkProperties() {
+        return linkProperties;
+    }
+
+    protected CurrentCallLocator currentCallLocator() {
+        return currentCallLocator;
     }
 
     @Override
     public LinkBuilder withSelfRel() {
-        this.rel = "self";
+        linkProperties.setRel("self");
         return this;
     }
 
     @Override
     public LinkBuilder withRel(String rel) {
-        this.rel = rel;
+        linkProperties.setRel(rel);
         return this;
     }
 
     @Override
     public LinkBuilder setExpressionPayload(Object payload) {
-        this.payload = payload;
+        linkProperties.setPayload(payload);
         return this;
     }
 
     @Override
     public LinkBuilder when(String expression) {
-        this.expression = expression;
+        linkProperties.setWhenExpression(expression);
         return this;
     }
 
     @Override
     public LinkBuilder fromCurrentCall() {
-        this.fromCurrentCall = true;
+        linkProperties.setMethodCall(currentCallLocator.getCurrentCall());
         return this;
     }
 
     @Override
-    public LinkBuilder variableAsTemplate(int paramIndex) {
-        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
-                new NotSubstituteParameterIndexVariableSubstitutionController(paramIndex)
-        );
+    public LinkBuilder dontSubstituteParameterIndex(int paramIndex) {
+        linkProperties.addConditionalVariableSubstitutionStrategy(new DontSubstituteParameterIndex(paramIndex));
         return this;
     }
 
     @Override
-    public LinkBuilder variableAsTemplate(String variableName) {
-        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
-                new NotSubstituteVariableNameVariableSubstitutionController(variableName)
-        );
+    public LinkBuilder dontSubstitute(String variableName) {
+        linkProperties.addConditionalVariableSubstitutionStrategy(new DontSubstituteVariableName(variableName));
         return this;
     }
 
     @Override
-    public LinkBuilder nullVariablesAsTemplate() {
-        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
-                new NotSubstituteNullValueVariableSubstitutionController()
-        );
+    public LinkBuilder dontSubstituteNullValues() {
+        linkProperties.addConditionalVariableSubstitutionStrategy(new DontSubstituteNullValue());
         return this;
     }
 
     @Override
-    public LinkBuilder allParamsAsTemplate() {
-        variableSubstitutionControllers.addVariableSubstitutionControllerAggregator(
-                new SubstituteNoneVariableSubstitutionController()
-        );
+    public LinkBuilder dontSubstituteAny() {
+        linkProperties.addConditionalVariableSubstitutionStrategy(new DontSubstituteAny());
+        return this;
+    }
+
+    public LinkBuilder templated() {
+        linkProperties.setTemplated(true);
         return this;
     }
 
     @Override
     public <E> E fromControllerCall(Class<E> controllerClass) {
-        return ControllerProxy.createProxy(controllerClass, this);
+        return recordCallInterceptorCreator.createCallRecorderForClass(controllerClass, this);
+    }
+
+    @Override
+    public <E extends LinkBuilder> E extendTo(Class<E> extensionType) {
+        LinkBuilderExtensionFactory linkBuilderExtensionFactory = linkBuilderExtensionFactoryRegistry.get(extensionType);
+        return linkBuilderExtensionFactory.createExtension(extensionType, this);
     }
 
     @Override
@@ -126,68 +136,25 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     @Override
     public Object build() {
-        if (fromCurrentCall) {
-            methodCall = currentCallLocator.getCurrentCall();
-        }
-
-        String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
-
-        LinkCreator linkCreator = linkCreators.get(this);
-
-        return linkCreator.create(uri, this);
-
+        LinkPropertiesLinkCreator linkPropertiesLinkCreator = linkPropertiesLinkCreators.get(linkProperties);
+        return linkPropertiesLinkCreator.create(linkProperties);
     }
 
     public void builAndSet() {
-        if (fromCurrentCall) {
-            methodCall = currentCallLocator.getCurrentCall();
-        }
+        LinkPropertiesLinkCreator linkPropertiesLinkCreator = linkPropertiesLinkCreators.get(linkProperties);
 
-        String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
+        linkPropertiesLinkCreator.createAndSet(linkProperties);
 
-        LinkCreator linkCreator = linkCreators.get(this);
-
-        linkCreator.createAndSet(uri, this, payload);
-
-    }
-
-
-    public boolean whenExpressionIsTrue() {
-        if (expression != null) {
-            return expressionExecutor.isTrue(expression, payload, null);
-        } else {
-            return true;
-        }
-    }
-
-    private boolean isTemplated() {
-        return variableSubstitutionControllers.hasVariableSubstitutionController();
-    }
-
-    private HttpServletRequest getCurrentRequest() {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        Assert.state(requestAttributes != null, "Could not find current request via RequestContextHolder");
-        Assert.isInstanceOf(ServletRequestAttributes.class, requestAttributes);
-        HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
-        Assert.state(servletRequest != null, "Could not find current HttpServletRequest");
-        return servletRequest;
     }
 
     @Override
     public void record(MethodCall methodCall) {
-        this.methodCall = methodCall;
-        if (rel == null) {
-            String annotationRel = introspectionUtils.getMethodRel(methodCall.getMethod());
-            if (annotationRel != null) {
-                rel = annotationRel;
-            }
-        }
-    }
-
-    protected String getRel() {
-        return rel;
+        linkProperties.setMethodCall(methodCall);
     }
 
 
+    protected CurrentCallLocator getCurrentCallLocator() {
+        return currentCallLocator;
+    }
 }
 

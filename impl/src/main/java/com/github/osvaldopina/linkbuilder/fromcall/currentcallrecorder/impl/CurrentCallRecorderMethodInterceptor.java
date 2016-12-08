@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCall;
-import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
+import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
+import com.github.osvaldopina.linkbuilder.fromcall.MethodCallFactory;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.context.ApplicationContext;
 
@@ -11,6 +11,8 @@ public class CurrentCallRecorderMethodInterceptor implements MethodBeforeAdvice 
 
     private ApplicationContext applicationContext;
 
+    private MethodCallFactory methodCallFactory = MethodCallFactory.INSTANCE;
+
     public CurrentCallRecorderMethodInterceptor(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
@@ -19,6 +21,10 @@ public class CurrentCallRecorderMethodInterceptor implements MethodBeforeAdvice 
     public void before(Method method, Object[] params, Object target) throws Throwable {
         CurrentCall currentCall = applicationContext.getBean(CurrentCall.class);
 
-        currentCall.setMethodCall(new MethodCall(method, params));
+        currentCall.setMethodCall(methodCallFactory.create(method, params));
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 }

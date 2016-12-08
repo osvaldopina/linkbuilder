@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.example.extensions.requestpartsfactorylist;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactory;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.ChainedRequestParts;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactory;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ChainedRequestParts;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

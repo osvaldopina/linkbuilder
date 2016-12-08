@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
+import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import org.springframework.context.annotation.Scope;
 
 @Scope("request")

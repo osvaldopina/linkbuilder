@@ -1,5 +1,10 @@
 package com.github.osvaldopina.linkbuilder;
 
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteAny;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteNullValue;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteParameterIndex;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteVariableName;
+
 import java.util.List;
 
 /**
@@ -40,55 +45,15 @@ public interface LinkBuilder {
     LinkBuilder when(String expression);
 
 
-    boolean whenExpressionIsTrue();
-
-        /**
-         * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
-         * are changed with a aspect that records the method and the list of parameters.
-         *
-         * @return LinkBuilder link builder.
-         * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
-         */
     LinkBuilder fromCurrentCall();
 
-    /**
-     * Indicates that the nth method parameter should not be substituted by the parameter value and leaved
-     * as a template variable. The resulted link will be a template.
-     *
-     * @param paramNumber The parameter index the should not be substituted
-     * @return LinkBuilder link builder.
-     */
-    LinkBuilder variableAsTemplate(int paramNumber);
+    LinkBuilder dontSubstituteParameterIndex(int paramIndex);
 
-    /**
-     * Indicates that parameter with this name should not be substituted by the parameter value and leaved
-     * as a template variable. The resulted link will be a template. It is important to note that the parameter
-     * name is obtained by <code>RequestParam</code> and <code>PathVariable</code> annotation.
-     *
-     * @param templateParamName The parameter name obtained by introspecting <code>RequestParam</code> and
-     *                          <code>PathVariable</code>
-     * @return LinkBuilder link builder.
-     * @see org.springframework.web.bind.annotation.RequestParam
-     * @see org.springframework.web.bind.annotation.PathVariable
-     */
-    LinkBuilder variableAsTemplate(String templateParamName);
+    LinkBuilder dontSubstitute(String variableName);
 
+    LinkBuilder dontSubstituteNullValues();
 
-    /**
-     * Indicates that all null parameters should no be substituted and should be leaved as a template variable.
-     * The resulted link will be a template.
-     *
-     * @return LinkBuilder link builder.
-     */
-    LinkBuilder nullVariablesAsTemplate();
-
-    /**
-     * Indicates that all parameters should not be substituted by the parameter value and leaved
-     * as a template variable. The resulted link will be a template.
-     *
-     * @return LinkBuilder link builder.
-     */
-    LinkBuilder allParamsAsTemplate();
+    LinkBuilder dontSubstituteAny();
 
     /**
      * Sets the link parameters from a call to a rest controller.
@@ -99,10 +64,15 @@ public interface LinkBuilder {
      */
     <E> E fromControllerCall(Class<E> controllerClass);
 
+
+    <E extends LinkBuilder> E extendTo(Class<E> extension);
+
     /**
      * Creates a new <code>LinkBuilder</code>.
      *
      * @return LinkBuilder new link builder.
+     *
+     *
      */
     LinkBuilder link();
 

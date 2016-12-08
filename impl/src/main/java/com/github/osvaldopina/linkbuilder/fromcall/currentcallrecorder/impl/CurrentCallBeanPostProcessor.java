@@ -1,44 +1,46 @@
 package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
+import java.lang.reflect.Method;
+
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.lang.reflect.Method;
-
 public class CurrentCallBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {
 
-    @Autowired
-    private IntrospectionUtils introspectionUtils;
+	private IntrospectionUtils introspectionUtils;
 
-    private ApplicationContext applicationContext;
+	private CurrentCallRecorderMethodInterceptorCreator currentCallRecorderMethodInterceptorCreator =
+			CurrentCallRecorderMethodInterceptorCreator.INSTANCE;
 
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        return bean;
-    }
+	private ApplicationContext applicationContext;
 
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (introspectionUtils.isRestController(bean)) {
-            for (Method method : introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)) {
-                ProxyFactory factory = new ProxyFactory();
-                factory.addAdvice(new CurrentCallRecorderMethodInterceptor(applicationContext));
-                factory.setTarget(bean);
-                return factory.getProxy();
-            }
-        }
-        return bean;
-    }
+	public CurrentCallBeanPostProcessor(IntrospectionUtils introspectionUtils) {
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+		this.introspectionUtils = introspectionUtils;
+	}
 
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
 
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		if (introspectionUtils.isRestController(bean)) {
+			for (Method method : introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)) {
+				return currentCallRecorderMethodInterceptorCreator.
+						addInterceptorToMethods(bean, applicationContext);
+			}
+		}
+		return bean;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

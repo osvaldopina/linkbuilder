@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
+import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 
 public interface CallRecorder {
 

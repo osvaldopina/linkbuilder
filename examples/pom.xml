@@ -32,6 +32,12 @@
             <version>4.0.3.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons-core</artifactId>
+            <version>1.4.0.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.osvaldopina</groupId>
             <artifactId>linkbuilder</artifactId>
             <version>0.3.0-SNAPSHOT</version>

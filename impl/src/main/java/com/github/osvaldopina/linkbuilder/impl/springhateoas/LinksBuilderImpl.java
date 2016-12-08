@@ -1,13 +1,13 @@
 package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 
-
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
+import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
+import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -23,34 +23,36 @@ class LinksBuilderImpl implements LinksBuilder {
     private Object payload;
 
     private List<SpringHateoasLinkBuilderImpl> linkBuilders = new ArrayList<SpringHateoasLinkBuilderImpl>();
+    private CurrentCallLocator currentCallLocator;
+    private  LinkPropertiesLinkCreators linkPropertiesLinkCreators;
+    private LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry;
 
-    private ApplicationContext applicationContext;
-
-    protected LinksBuilderImpl(ApplicationContext applicationContext) {
-        this(applicationContext, null);
+    protected LinksBuilderImpl(CurrentCallLocator currentCallLocator,
+                               LinkPropertiesLinkCreators linkPropertiesLinkCreators,
+                               LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry) {
+        this(currentCallLocator, linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry, null);
     }
 
-    protected LinksBuilderImpl(ApplicationContext applicationContext, Object payload) {
-        this.applicationContext = applicationContext;
+    protected LinksBuilderImpl(
+            CurrentCallLocator currentCallLocator,
+            LinkPropertiesLinkCreators linkPropertiesLinkCreators,
+            LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
+            Object payload) {
+
+        this.currentCallLocator = currentCallLocator;
+        this.linkPropertiesLinkCreators = linkPropertiesLinkCreators;
+        this.linkBuilderExtensionFactoryRegistry = linkBuilderExtensionFactoryRegistry;
         this.payload = payload;
     }
 
     @Override
     public LinkBuilder link() {
-        ExpressionExecutor expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
-        MethodCallUriGenerator methodCallUriGenerator = applicationContext.getBean(MethodCallUriGenerator.class);
-        CurrentCallLocator currentCallLocator = applicationContext.getBean(CurrentCallLocator.class);
-        LinkCreators linkCreators = applicationContext.getBean(LinkCreators.class);
-        IntrospectionUtils introspectionUtils = applicationContext.getBean(IntrospectionUtils.class);
-
         SpringHateoasLinkBuilderImpl linkBuilder = new SpringHateoasLinkBuilderImpl(
                 this,
-                expressionExecutor,
-                methodCallUriGenerator,
                 currentCallLocator,
-                linkCreators,
-                payload,
-                introspectionUtils
+                linkPropertiesLinkCreators,
+                linkBuilderExtensionFactoryRegistry,
+                payload
         );
         linkBuilders.add(linkBuilder);
         return linkBuilder;
@@ -59,10 +61,8 @@ class LinksBuilderImpl implements LinksBuilder {
     @Override
     public void buildAndSetAll() {
 
-        for(LinkBuilder linkBuilder: linkBuilders) {
-            if (linkBuilder.whenExpressionIsTrue()) {
-                linkBuilder.builAndSet();
-            }
+        for (LinkBuilder linkBuilder : linkBuilders) {
+            linkBuilder.builAndSet();
         }
     }
 

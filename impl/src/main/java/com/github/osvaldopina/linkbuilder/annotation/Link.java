@@ -5,15 +5,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Link {
 
-    Class<?> destination();
+    String destination() default "";
 
-    String rel();
+    Class<?> controller() default NullDestination.class;
 
-    String overrideRel() default "";
+    String rel() default "";
+
+    String overridedRel() default "";
 
     String when() default "";
 
@@ -21,4 +23,8 @@ public @interface Link {
 
     Param[] params() default {};
 
+    static class NullDestination {
+
+    }
 }
+

@@ -1,6 +1,13 @@
 package com.github.osvaldopina.linkbuilder.utils;
 
+
 public class UrlPathContatenator {
+
+    public static final UrlPathContatenator INSTANCE = new UrlPathContatenator();
+
+    UrlPathContatenator() {
+
+    }
 
     public String concat(String...parts) {
         StringBuilder tmp = new StringBuilder(parts[0]);
