@@ -45,14 +45,6 @@ public class VariableValuesTest {
     }
 
     @Test
-    public void getVariableValueNames() throws Exception {
-
-        assertThat(variableValues.getVariableNames(),hasSize(1));
-        assertThat(variableValues.getVariableNames(),hasItem("var1"));
-
-    }
-
-    @Test
     public void getVariableValues() throws Exception {
 
         assertThat(variableValues.getVariableValueList(),hasSize(1));

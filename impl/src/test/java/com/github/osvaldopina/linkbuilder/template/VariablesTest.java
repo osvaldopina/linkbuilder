@@ -40,12 +40,4 @@ public class VariablesTest {
 
     }
 
-    @Test
-    public void getVariableNames() throws Exception {
-
-        assertThat(variables.getVariableNames(),hasSize(1));
-        assertThat(variables.getVariableNames(),hasItem("var1"));
-
-    }
-
 }

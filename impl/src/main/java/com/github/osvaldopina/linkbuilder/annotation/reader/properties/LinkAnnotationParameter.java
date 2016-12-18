@@ -4,13 +4,13 @@ public class LinkAnnotationParameter {
 
     private String name;
 
-    private String expression;
+    private String value;
 
     private String when;
 
-    public LinkAnnotationParameter(String name, String expression, String when) {
+    public LinkAnnotationParameter(String name, String value, String when) {
         this.name = name;
-        this.expression = expression;
+        this.value = value;
         this.when = when;
     }
 
@@ -18,8 +18,8 @@ public class LinkAnnotationParameter {
         return name;
     }
 
-    public String getExpression() {
-        return expression;
+    public String getValue() {
+        return value;
     }
 
     public String getWhen() {

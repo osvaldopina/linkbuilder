@@ -153,8 +153,27 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     }
 
 
-    protected CurrentCallLocator getCurrentCallLocator() {
+    public LinksBuilder getLinksBuilder() {
+        return linksBuilder;
+    }
+
+    public CurrentCallLocator getCurrentCallLocator() {
         return currentCallLocator;
     }
+
+    public LinkPropertiesLinkCreators getLinkPropertiesLinkCreators() {
+        return  linkPropertiesLinkCreators;
+
+    }
+
+    public LinkBuilderExtensionFactoryRegistry getLinkBuilderExtensionFactoryRegistry() {
+        return linkBuilderExtensionFactoryRegistry;
+    }
+
+    public Object getPayload() {
+        return linkProperties.getPayload();
+    }
+
+
 }
 

@@ -31,22 +31,19 @@ public class SpringHateoasLinkPropertiesLinkCreator implements LinkPropertiesLin
 
     @Override
     public boolean canCreate(LinkProperties linkProperties) {
-        return LinkProperties.class == linkProperties.getClass() ||
-                BaseLinkProperties.class == linkProperties.getClass();
+        return BaseLinkProperties.class == linkProperties.getClass();
     }
 
     @Override
     public Object create(LinkProperties linkProperties) {
 
-        if (linkProperties.getWhenExpression() == null ||
-                expressionExecutor.isTrue(
-                        linkProperties.getWhenExpression(),
-                        linkProperties.getPayload(),
-                        linkProperties.getMethodCall().getParams()
-                )) {
+        String whenExpression = linkProperties.getWhenExpression();
+        if (whenExpression == null ||
+                expressionExecutor.isTrue(whenExpression, linkProperties.getPayload(),
+                        linkProperties.getMethodCall().getParams())) {
             String uri = methodCallUriGenerator.generateUri(linkProperties.getMethodCall(), linkProperties.getPayload());
             String rel = linkProperties.getRel();
-            if (linkProperties.getRel() == null) {
+            if (rel == null) {
                 rel = introspectionUtils.getMethodRel(linkProperties.getMethodCall().getMethod());
             }
             return new Link(uri, rel);
@@ -58,10 +55,6 @@ public class SpringHateoasLinkPropertiesLinkCreator implements LinkPropertiesLin
 
     @Override
     public void createAndSet(LinkProperties linkProperties) {
-        Assert.notNull(linkProperties.getPayload());
-        Assert.isAssignable(ResourceSupport.class, linkProperties.getPayload().getClass(), "payload must be a subclass of "
-                + ResourceSupport.class);
-
         Link link = (Link) create(linkProperties);
         if (link != null) {
             ResourceSupport resourceSupport = (ResourceSupport) linkProperties.getPayload();

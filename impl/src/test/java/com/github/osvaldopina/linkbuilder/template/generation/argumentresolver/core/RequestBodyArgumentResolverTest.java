@@ -1,102 +1,69 @@
 package com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.core;
 
-import com.damnhandy.uri.template.UriTemplate;
-import com.damnhandy.uri.template.UriTemplateBuilder;
-import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
-import org.easymock.*;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.github.osvaldopina.linkbuilder.template.Variable;
+import com.github.osvaldopina.linkbuilder.template.VariableType;
+import com.github.osvaldopina.linkbuilder.template.Variables;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class RequestBodyArgumentResolverTest extends EasyMockSupport {
 
-    @Rule
-    public EasyMockRule mocks = new EasyMockRule(this);
+	@Rule
+	public EasyMockRule mocks = new EasyMockRule(this);
 
-    @Mock
-    IntrospectionUtils introspectionUtils;
+	@Mock
+	IntrospectionUtils introspectionUtils;
 
-//    @TestSubject
-//    private RequestBodyAnnotationArgumentResolver requestBodyAnnotationArgumentResolver =
-//            new RequestBodyAnnotationArgumentResolver(introspectionUtils);
+	Method method = Object.class.getMethods()[0];
 
-    private UriTemplateBuilder uriTemplateBuilder;
+	int parameterIndex = 1;
 
-    @Mock
-    private UriTemplate uriTemplate;
+	@TestSubject
+	RequestBodyArgumentResolver requestBodyArgumentResolver = new RequestBodyArgumentResolver(introspectionUtils);
 
-    private Method method;
+	@Test
+	public void resolveFor_isQueryVariableParameter() throws Exception {
+		expect(introspectionUtils.isRequestBodyVariableParameter(method, parameterIndex)).andReturn(true);
 
-    @Mock
-    private UriTemplateAugmenter.Factory uriTemplateAugmentFactory;
+		replayAll();
 
-    @Mock
-    private UriTemplateAugmenter uriTemplateAugmenter;
+		assertThat(requestBodyArgumentResolver.resolveFor(method, parameterIndex), is(true));
 
-//    @Mock
-//    private VariableSubstitutionController variableSubstitutionController;
+		verifyAll();
+	}
 
+	@Test
+	public void resolveFor_isNotQueryVariableParameter() throws Exception {
+		expect(introspectionUtils.isRequestBodyVariableParameter(method, parameterIndex)).andReturn(false);
 
-    @Before
-    public void setUp() throws Exception {
+		replayAll();
 
-        uriTemplateBuilder = UriTemplate.createBuilder();
+		assertThat(requestBodyArgumentResolver.resolveFor(method, parameterIndex), is(false));
 
-        method = RequestBodyArgumentResolverTest.class.getMethod("equals", Object.class);
-    }
+		verifyAll();
+	}
 
+	@Test
+	public void create() throws Exception {
 
-    @Test
-    public void resolveForAnnotatedMethod() throws Exception {
+		replayAll();
 
-  //      EasyMock.expect(introspectionUtils.isRequestBodyVariableParameter(method, 0)).andReturn(true);
+		Variables variables = requestBodyArgumentResolver.create(method, parameterIndex);
 
-        replayAll();
+		verifyAll();
 
-//        assertTrue(requestBodyAnnotationArgumentResolver.resolveFor(method, 0));
-
-        verifyAll();
-
-    }
-
-    @Test
-    public void resolveForNonAnnotatedMethod() throws Exception {
-
- //       EasyMock.expect(introspectionUtils.isRequestBodyVariableParameter(method, 0)).andReturn(false);
-
-        replayAll();
-
-//        assertFalse(requestBodyAnnotationArgumentResolver.resolveFor(method, 0));
-
-        verifyAll();
-
-    }
-
-    @Test
-    public void augmentTemplate() throws Exception {
-
-        replayAll();
-
-//        requestBodyAnnotationArgumentResolver.augmentTemplate(uriTemplateAugmenter, method, 0);
-
-        verifyAll();
-    }
-
-    @Test
-    public void setTemplateVariables() throws Exception {
-
-        replayAll();
-
-//        requestBodyAnnotationArgumentResolver.setTemplateVariables(uriTemplate, method, 0, "value" , variableSubstitutionController);
-
-        verifyAll();
-    }
-
+		assertThat(variables, is(notNullValue()));
+		assertThat(variables.getVariableList(), hasSize(0));
+	}
 }
-

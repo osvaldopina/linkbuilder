@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder;
 
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategy;
 
 public interface LinkProperties {
@@ -14,7 +14,7 @@ public interface LinkProperties {
 
     MethodCall getMethodCall();
 
-    ConditionalVariableSubstituionStrategies getConditionalVariableSubstituionStrategies();
+    ConditionalVariableSubstitutionStrategies getConditionalVariableSubstituionStrategies();
 
     void addConditionalVariableSubstitutionStrategy(
             ConditionalVariableSubstitutionStrategy conditionalVariableSubstitutionStrategy);

@@ -5,11 +5,12 @@ import com.github.osvaldopina.linkbuilder.template.TemplateRegistry;
 import com.github.osvaldopina.linkbuilder.template.VariableValue;
 import com.github.osvaldopina.linkbuilder.template.VariableValues;
 import com.github.osvaldopina.linkbuilder.template.Variables;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.MethodCallVariableValuesDiscover;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.ParameterVariableValueDiscover;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.ParameterVariableValueDiscoverRegistry;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,24 +29,20 @@ public class MethodCallVariableValuesDiscoverImpl implements MethodCallVariableV
     }
 
     @Override
-    public VariableValues getVariableValues(
-            Variables variables, MethodCall destinationMethodCall, Object payload,
-            ConditionalVariableSubstituionStrategies conditionalVariableSubstituionStrategies) {
+    public VariableValues getVariableValues(Variables variables, MethodCall destinationMethodCall, Object payload,
+            ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         List<VariableValue> variableValueList = new ArrayList<VariableValue>();
 
-        for (int i = 0; i < destinationMethodCall.getMethod().getParameterTypes().length; i++) {
+        Method method = destinationMethodCall.getMethod();
+        for (int i = 0; i < method.getParameterTypes().length; i++) {
 
             ParameterVariableValueDiscover parameterVariableValueDiscover =
                     parameterVariableValueDiscoverRegistry.get(variables, destinationMethodCall, payload, i);
 
             variableValueList.addAll(
                     parameterVariableValueDiscover.getVariableValues(
-                            variables, destinationMethodCall, payload, i, conditionalVariableSubstituionStrategies
-                    )
-            );
-
-
+                            variables, destinationMethodCall, payload, i, conditionalVariableSubstitutionStrategies));
         }
 
         return new VariableValues(variableValueList);

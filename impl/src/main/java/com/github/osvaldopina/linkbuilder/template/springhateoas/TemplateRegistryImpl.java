@@ -15,10 +15,6 @@ public class TemplateRegistryImpl implements TemplateRegistry {
 
     private Map<Method, Template> templates;
 
-    private ResourceMethodRegistry resourceMethodRegistry;
-
-    private TemplateGenerator templateGenerator;
-
     public TemplateRegistryImpl(Map<Method,Template> templates) {
         this.templates = new HashMap<Method, Template>(templates);
     }

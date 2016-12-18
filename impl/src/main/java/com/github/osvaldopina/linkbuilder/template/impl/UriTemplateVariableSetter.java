@@ -8,6 +8,14 @@ import com.github.osvaldopina.linkbuilder.template.Variables;
 
 public class UriTemplateVariableSetter {
 
+
+    public static final UriTemplateVariableSetter INSTANCE = new UriTemplateVariableSetter();
+
+
+    UriTemplateVariableSetter() {
+
+    }
+
     public UriTemplate createNewTemplateAndSetVariables(
             UriTemplate uriTemplate,
             Variables variables,

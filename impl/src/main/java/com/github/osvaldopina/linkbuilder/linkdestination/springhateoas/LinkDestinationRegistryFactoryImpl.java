@@ -7,6 +7,7 @@ import com.github.osvaldopina.linkbuilder.linkdestination.LinkDestinationRegistr
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,6 @@ public class LinkDestinationRegistryFactoryImpl implements LinkDestinationRegist
                     destinations.put(destination, method);
                 }
             }
-//            throw new LinkBuilderException("Could not determine destination for method " + method);
         }
 
         return new LinkDestinationRegistryImpl(destinations);

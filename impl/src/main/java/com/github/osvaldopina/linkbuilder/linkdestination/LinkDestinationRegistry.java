@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 public interface LinkDestinationRegistry {
 
-    Method getTemplate(String destination);
+    Method getTemplatedMethod(String destination);
 
 
 }

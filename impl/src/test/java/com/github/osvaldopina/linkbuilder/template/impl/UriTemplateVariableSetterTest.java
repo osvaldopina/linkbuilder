@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class UriTemplateVariableSetterTest {
 
-    private UriTemplateVariableSetter uriTemplateVariableSetter;
+	private UriTemplateVariableSetter uriTemplateVariableSetter;
 
     private UriTemplate uriTemplate;
 
@@ -31,7 +31,7 @@ public class UriTemplateVariableSetterTest {
 
         variable = new Variable("var1", VariableType.QUERY, Object.class.getMethod("toString"), 0);
 
-        variables = new Variables(Arrays.asList(variable));
+        variables = VariablesFactory.INSTANCE.create(Arrays.asList(variable));
 
         variableValue = new VariableValue(variable, "value");
 
