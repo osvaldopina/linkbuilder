@@ -34,8 +34,8 @@ public class HalLinkAnnotationReader implements AnnotationReader {
     }
 
     @Override
-    public boolean canRead(Class<?> payload) {
-        return halLinkAnnotationRetriever.getLinksAnnotation(payload.getDeclaredAnnotations()) != null;
+    public boolean canRead(Class<?> resourceType) {
+        return halLinkAnnotationRetriever.getLinksAnnotation(resourceType.getDeclaredAnnotations()) != null;
     }
 
     @Override
@@ -44,8 +44,8 @@ public class HalLinkAnnotationReader implements AnnotationReader {
     }
 
     @Override
-    public List<LinkAnnotationProperties> read(Class<?> payloadType) {
-        return readHalLinkProperties(payloadType.getDeclaredAnnotations());
+    public List<LinkAnnotationProperties> read(Class<?> resourceType) {
+        return readHalLinkProperties(resourceType.getDeclaredAnnotations());
     }
 
     private List<LinkAnnotationProperties> readHalLinkProperties(Annotation[] annotations) {

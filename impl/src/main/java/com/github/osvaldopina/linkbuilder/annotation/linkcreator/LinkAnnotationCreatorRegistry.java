@@ -9,7 +9,7 @@ public interface LinkAnnotationCreatorRegistry {
 
     LinkAnnotationCreator get(Method method);
 
-    LinkAnnotationCreator get(Object payload);
+    LinkAnnotationCreator get(Object resource);
 
 }
 

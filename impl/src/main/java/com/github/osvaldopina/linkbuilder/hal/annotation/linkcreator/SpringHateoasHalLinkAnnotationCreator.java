@@ -67,36 +67,36 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
     }
 
     @Override
-    public void createAndSetForMethodAnnotations(MethodCall methodCall, Object payload) {
+    public void createAndSetForMethodAnnotations(MethodCall methodCall, Object resource) {
         List<LinkAnnotationProperties> linksProperties = annotationReader.read(methodCall.getMethod());
 
         for (LinkAnnotationProperties linkProperties : linksProperties) {
-            createAndSet(linkProperties, methodCall, payload);
+            createAndSet(linkProperties, methodCall, resource);
         }
 
-        createAndSetSelfLinkIfNeeded(methodCall, payload);
+        createAndSetSelfLinkIfNeeded(methodCall, resource);
 
     }
 
     @Override
-    public boolean canCreate(Object payload) {
+    public boolean canCreate(Object resource) {
         return introspectionUtils.
-                hasComposedAnnotation(payload.getClass(), HalLinks.class);
+                hasComposedAnnotation(resource.getClass(), HalLinks.class);
     }
 
     @Override
-    public void createAndSetForResourceAnnotations(MethodCall methodCall, Object payload) {
-        List<LinkAnnotationProperties> linksProperties = annotationReader.read(payload.getClass());
+    public void createAndSetForResourceAnnotations(MethodCall methodCall, Object resource) {
+        List<LinkAnnotationProperties> linksProperties = annotationReader.read(resource.getClass());
 
         for (LinkAnnotationProperties linkProperties : linksProperties) {
-            createAndSet(linkProperties, methodCall, payload);
+            createAndSet(linkProperties, methodCall, resource);
         }
 
-        Method embeddedReadMethod = embeddePropertyCache.getReaderMethodForHalEmbedded(objectMapper, payload.getClass());
+        Method embeddedReadMethod = embeddePropertyCache.getReaderMethodForHalEmbedded(objectMapper, resource.getClass());
 
         if (embeddedReadMethod != null &&  Map.class.isAssignableFrom(embeddedReadMethod.getReturnType())) {
             try {
-                Map<?,?> embeddedMap = (Map<?,?>) embeddedReadMethod.invoke(payload);
+                Map<?,?> embeddedMap = (Map<?,?>) embeddedReadMethod.invoke(resource);
                 for(Object embeddedValue : embeddedMap.values()) {
                     if (Collection.class.isAssignableFrom(embeddedValue.getClass())) {
                        Collection<?> embeddedCollectionItems = (Collection<?>) embeddedValue;
@@ -133,12 +133,12 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
 
     }
 
-    private void createAndSet(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object payload) {
+    private void createAndSet(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
         HalLinkAnnotationProperties halLinkAnnotationProperties = (HalLinkAnnotationProperties) linkAnnotationProperties;
-        if (payload instanceof ResourceSupport) {
+        if (resource instanceof ResourceSupport) {
             String baseUri = baseUriDiscover.getBaseUri();
-            String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, payload);
-            ((ResourceSupport) payload).add(
+            String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
+            ((ResourceSupport) resource).add(
                     new HalLink(urlPathContatenator.concat(baseUri, linkUri),
                             linkAnnotationProperties.getRel(),
                             halLinkAnnotationProperties.getHreflang())
@@ -146,12 +146,12 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
         }
     }
 
-    private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object payload) {
+    private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object resource) {
 
         if (introspectionUtils.isEnableSelfFromCurrentCallMethod(currentMethodCall.getMethod())) {
 
-           ((ResourceSupport) payload).add(
-                    new HalLink(methodCallUriGenerator.generateUri(currentMethodCall, payload),
+           ((ResourceSupport) resource).add(
+                    new HalLink(methodCallUriGenerator.generateUri(currentMethodCall, resource),
                             "self",
                             null)
             );

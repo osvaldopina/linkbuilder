@@ -33,13 +33,13 @@ public class LinkAnnotationCreatorRegistryImpl implements LinkAnnotationCreatorR
     }
 
     @Override
-    public LinkAnnotationCreator get(Object payload) {
+    public LinkAnnotationCreator get(Object resource) {
         for(LinkAnnotationCreator linkAnnotationCreator : linkAnnotationCreators) {
-            if (linkAnnotationCreator.canCreate(payload)) {
+            if (linkAnnotationCreator.canCreate(resource)) {
                 return linkAnnotationCreator;
             }
         }
-        throw new LinkBuilderException("Could not find LinkAnnotationPropertiesLinkCreator for resource type" + payload.getClass());
+        throw new LinkBuilderException("Could not find LinkAnnotationPropertiesLinkCreator for resource type" + resource.getClass());
     }
 
  }

@@ -8,7 +8,7 @@ import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.Cond
 public interface MethodCallVariableValuesDiscover {
 
     VariableValues getVariableValues(
-            Variables variables, MethodCall destinationMethodCall, Object payload,
+            Variables variables, MethodCall destinationMethodCall, Object resource,
             ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies);
 
 }

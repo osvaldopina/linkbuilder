@@ -1,8 +1,8 @@
-package com.github.osvaldopina.linkbuilder.example.annotation.controller.simple;
+package com.github.osvaldopina.linkbuilder.example.hal.annotation.resource.composed;
 
 import org.springframework.hateoas.ResourceSupport;
 
-public class Payload extends ResourceSupport {
+public class Resource extends ResourceSupport {
 
     private String queryValue;
 

@@ -3,9 +3,6 @@ package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
@@ -23,7 +20,7 @@ public class LinksBuilderImplTest extends EasyMockSupport {
 	public EasyMockRule mocks = new EasyMockRule(this);
 
 	@Mock
-	private Object payload;
+	private Object resource;
 
 	@Mock
 	private CurrentCallLocator currentCallLocator;
@@ -40,7 +37,7 @@ public class LinksBuilderImplTest extends EasyMockSupport {
 	@Before
 	public void setUp() {
 		linksBuilderImpl = new LinksBuilderImpl(currentCallLocator, linkPropertiesLinkCreators,
-				linkBuilderExtensionFactoryRegistry, payload);
+				linkBuilderExtensionFactoryRegistry, resource);
 	}
 
 	@Test
@@ -58,7 +55,7 @@ public class LinksBuilderImplTest extends EasyMockSupport {
 		assertThat(springHateoasLinkBuilderImpl.getCurrentCallLocator(), is(currentCallLocator));
 		assertThat(springHateoasLinkBuilderImpl.getLinkPropertiesLinkCreators(), is(linkPropertiesLinkCreators));
 		assertThat(springHateoasLinkBuilderImpl.getLinkBuilderExtensionFactoryRegistry(), is(linkBuilderExtensionFactoryRegistry));
-		assertThat(springHateoasLinkBuilderImpl.getPayload() , is(payload));
+		assertThat(springHateoasLinkBuilderImpl.getResource() , is(resource));
 		assertThat(springHateoasLinkBuilderImpl.getLinksBuilder().getClass(), is(typeCompatibleWith(LinksBuilderImpl.class)));
 		assertThat((LinksBuilderImpl) springHateoasLinkBuilderImpl.getLinksBuilder(),is(sameInstance(linksBuilderImpl)));
 

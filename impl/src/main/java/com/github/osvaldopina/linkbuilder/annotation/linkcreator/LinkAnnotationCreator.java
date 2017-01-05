@@ -12,11 +12,11 @@ public interface LinkAnnotationCreator {
 
     boolean canCreate(Method method);
 
-    void createAndSetForMethodAnnotations(MethodCall methodCall, Object payload);
+    void createAndSetForMethodAnnotations(MethodCall methodCall, Object resource);
 
-    boolean canCreate(Object payload);
+    boolean canCreate(Object resource);
 
-    void createAndSetForResourceAnnotations(MethodCall methodCall, Object payload);
+    void createAndSetForResourceAnnotations(MethodCall methodCall, Object resource);
 
 }
 

@@ -16,13 +16,13 @@ public class RootRestController {
 
     @RequestMapping("/")
     @GenerateUriTemplateFor(rel = "root")
-    public Payload root() {
-        Payload payload = new Payload();
+    public Resource root() {
+        Resource resource = new Resource();
 
-        payload.setQueryValue("anyQueryValue");
-        payload.setPathValue("anyPathValue");
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/direct-link/{path}")

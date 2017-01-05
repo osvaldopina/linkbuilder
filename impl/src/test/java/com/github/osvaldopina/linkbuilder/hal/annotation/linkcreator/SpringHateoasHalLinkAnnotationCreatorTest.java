@@ -55,7 +55,7 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
 	Method method = Object.class.getMethods()[0];
 
-	Object payloadNotResourceSupport = new Object();
+	Object resourceNotResourceSupport = new Object();
 
 //	@TestSubject
 //	SpringHateoasHalLinkAnnotationCreator springHateoasHalLinkAnnotationCreator =
@@ -63,7 +63,7 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 //					annotationUriGenerator, introspectionUtils, methodCallUriGenerator);
 
 	@Test
-	public void canCreate_linkAnnotationIsHalLinkAnnotationAndPayloadIsResourceSupport() throws Exception {
+	public void canCreate_linkAnnotationIsHalLinkAnnotationAndResourceIsResourceSupport() throws Exception {
 
 		replayAll();
 //		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(halLinkAnnotationProperties, resourceSupport), is(true));
@@ -71,23 +71,23 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 	}
 
 	@Test
-	public void canCreate_linkAnnotationIsHalLinkAnnotationAndPayloadIsNotResourceSupport() throws Exception {
+	public void canCreate_linkAnnotationIsHalLinkAnnotationAndResourceIsNotResourceSupport() throws Exception {
 
 		replayAll();
-//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(halLinkAnnotationProperties, payloadNotResourceSupport), is(false));
+//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(halLinkAnnotationProperties, resourceNotResourceSupport), is(false));
 		verifyAll();
 	}
 
 	@Test
-	public void canCreate_linkAnnotationIsNotHalLinkAnnotationAndPayloadIsNotResourceSupport() throws Exception {
+	public void canCreate_linkAnnotationIsNotHalLinkAnnotationAndResourceIsNotResourceSupport() throws Exception {
 
 		replayAll();
-//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(linkAnnotationProperties, payloadNotResourceSupport), is(false));
+//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceNotResourceSupport), is(false));
 		verifyAll();
 	}
 
 	@Test
-	public void canCreate_linkAnnotationIsNotHalLinkAnnotationAndPayloadIsResourceSupport() throws Exception {
+	public void canCreate_linkAnnotationIsNotHalLinkAnnotationAndResourceIsResourceSupport() throws Exception {
 
 		replayAll();
 //		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceSupport), is(false));
@@ -106,7 +106,7 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 	public void canCreateMethodCall_notResourceSupport() throws Exception {
 
 		replayAll();
-//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(methodCall, payloadNotResourceSupport), is(false));
+//		assertThat(springHateoasHalLinkAnnotationCreator.canCreate(methodCall, resourceNotResourceSupport), is(false));
 		verifyAll();
 	}
 
@@ -137,7 +137,7 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
 		replayAll();
 
-//		springHateoasHalLinkAnnotationCreator.createAndSetForMethodAnnotations(halLinkAnnotationProperties, methodCall, payloadNotResourceSupport);
+//		springHateoasHalLinkAnnotationCreator.createAndSetForMethodAnnotations(halLinkAnnotationProperties, methodCall, resourceNotResourceSupport);
 		assertThat(resourceSupport.getLinks(), hasSize(0));
 
 		verifyAll();

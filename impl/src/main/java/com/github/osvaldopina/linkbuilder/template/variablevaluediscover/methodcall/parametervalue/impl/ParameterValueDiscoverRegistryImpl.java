@@ -20,7 +20,7 @@ public class ParameterValueDiscoverRegistryImpl implements ParameterVariableValu
 
     @Override
     public ParameterVariableValueDiscover get(Variables variables, MethodCall methodCall,
-                                              Object payload, int parameterIndex) {
+                                              Object resource, int parameterIndex) {
 
         for(ParameterVariableValueDiscover parameterVariableValueDiscover:parameterVariableValueDiscovers) {
             if (parameterVariableValueDiscover.canDiscover(methodCall, parameterIndex)) {

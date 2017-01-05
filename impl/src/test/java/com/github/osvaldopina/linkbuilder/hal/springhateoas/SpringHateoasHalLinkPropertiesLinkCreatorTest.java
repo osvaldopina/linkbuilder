@@ -45,7 +45,7 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 	private MethodCall methodCall;
 
 	@Mock
-	private ResourceSupport payload;
+	private ResourceSupport resource;
 
 	private Object[] params = new Object[]{};
 
@@ -75,8 +75,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 	public void create_WhenExpressionIsNullAndHasRel() throws Exception {
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
-		expect(halLinkProperties.getPayload()).andReturn(payload);
-		expect(methodCallUriGenerator.generateUri(methodCall, payload)).andReturn("uri");
+		expect(halLinkProperties.getResource()).andReturn(resource);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
 
@@ -99,13 +99,13 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 	@Test
 	public void create_WhenExpressionIsNotNullAndHasRel() throws Exception {
 		expect(halLinkProperties.getWhenExpression()).andReturn("when-expression");
-		expect(halLinkProperties.getPayload()).andReturn(payload);
+		expect(halLinkProperties.getResource()).andReturn(resource);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue("when-expression", payload, params)).andReturn(true);
+		expect(expressionExecutor.isTrue("when-expression", resource, params)).andReturn(true);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
-		expect(halLinkProperties.getPayload()).andReturn(payload);
-		expect(methodCallUriGenerator.generateUri(methodCall, payload)).andReturn("uri");
+		expect(halLinkProperties.getResource()).andReturn(resource);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
 
@@ -129,8 +129,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 	public void create_WhenExpressionIsNullAndHasNoRel() throws Exception {
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
-		expect(halLinkProperties.getPayload()).andReturn(payload);
-		expect(methodCallUriGenerator.generateUri(methodCall, payload)).andReturn("uri");
+		expect(halLinkProperties.getResource()).andReturn(resource);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getMethod()).andReturn(method);
@@ -157,14 +157,14 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 	@Test
 	public void createAndSet() throws Exception {
 
-		payload = new ResourceSupport();
+		resource = new ResourceSupport();
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
-		expect(halLinkProperties.getPayload()).andReturn(payload);
-		expect(methodCallUriGenerator.generateUri(methodCall, payload)).andReturn("uri");
+		expect(halLinkProperties.getResource()).andReturn(resource);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
-		expect(halLinkProperties.getPayload()).andReturn(payload);
+		expect(halLinkProperties.getResource()).andReturn(resource);
 
 		replayAll();
 
@@ -172,10 +172,10 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 
 		verifyAll();
 
-		assertThat(payload.getLinks(), hasSize(1));
-		assertThat(payload.getLinks().get(0).getClass(), is(typeCompatibleWith(HalLink.class)));
+		assertThat(resource.getLinks(), hasSize(1));
+		assertThat(resource.getLinks().get(0).getClass(), is(typeCompatibleWith(HalLink.class)));
 
-		HalLink halLink = (HalLink) payload.getLinks().get(0);
+		HalLink halLink = (HalLink) resource.getLinks().get(0);
 
 		assertThat(halLink.getRel(), is("rel"));
 		assertThat(halLink.getHreflang(), is("hreflang"));

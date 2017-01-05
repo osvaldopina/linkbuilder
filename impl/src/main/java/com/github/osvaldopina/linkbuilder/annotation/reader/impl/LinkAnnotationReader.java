@@ -38,8 +38,8 @@ public class LinkAnnotationReader implements AnnotationReader {
     }
 
     @Override
-    public boolean canRead(Class<?> payloadType) {
-        return introspectionUtils.hasComposedAnnotation(payloadType, Links.class);
+    public boolean canRead(Class<?> resourceType) {
+        return introspectionUtils.hasComposedAnnotation(resourceType, Links.class);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class LinkAnnotationReader implements AnnotationReader {
     }
 
     @Override
-    public List<LinkAnnotationProperties> read(Class<?> payloadType) {
-        return readAnnotation(payloadType);
+    public List<LinkAnnotationProperties> read(Class<?> resourceType) {
+        return readAnnotation(resourceType);
     }
 
 

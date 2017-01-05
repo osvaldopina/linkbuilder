@@ -36,7 +36,7 @@ public class RequestBodyParameterVariableValueDiscoverTest extends EasyMockSuppo
 	Variables variables;
 
 	@Mock
-	Object payload;
+	Object resource;
 
 	@Mock
 	ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies;
@@ -54,7 +54,7 @@ public class RequestBodyParameterVariableValueDiscoverTest extends EasyMockSuppo
 		replayAll();
 
 		List<VariableValue> variableValueList = requestBodyParameterVariableValueDiscover.
-				getVariableValues(variables, methodCall, payload, parameterIndex, conditionalVariableSubstitutionStrategies);
+				getVariableValues(variables, methodCall, resource, parameterIndex, conditionalVariableSubstitutionStrategies);
 
 		verifyAll();
 

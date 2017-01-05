@@ -48,10 +48,10 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	@Mock
 	private LinkAnnotationProperties linkAnnotationPropertiesMock;
 
-	ResourceSupport payloadAsResourceSupport;
+	ResourceSupport resourceAsResourceSupport;
 
 	@Mock
-	Object payloadAsObject;
+	Object resourceAsObject;
 
 	@Mock
 	MethodCall methodCall;
@@ -67,51 +67,51 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 //				new SpringHateoasLinkAnnotationCreator(baseUriDiscover,
 //						annotationUriGenerator, introspectionUtils, methodCallUriGenerator);
 
-		payloadAsResourceSupport = new ResourceSupport();
+		resourceAsResourceSupport = new ResourceSupport();
 	}
 
 	@Test
-	public void canCreateLinkAnnotationPropertiesPayload_linkPropertiesIsLinkAnnotationPropertiesClassAndPayloadIsResourceSupport() {
+	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsLinkAnnotationPropertiesClassAndResourceIsResourceSupport() {
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, payloadAsResourceSupport), is(true));
+//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceAsResourceSupport), is(true));
 
 		verifyAll();
 	}
 
 	@Test
-	public void canCreateLinkAnnotationPropertiesPayload_linkPropertiesIsNotLinkAnnotationPropertiesClassAndPayloadIsResourceSupport() {
+	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsNotLinkAnnotationPropertiesClassAndResourceIsResourceSupport() {
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationPropertiesMock, payloadAsResourceSupport), is(false));
+//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationPropertiesMock, resourceAsResourceSupport), is(false));
 
 		verifyAll();
 	}
 
 	@Test
-	public void canCreateLinkAnnotationPropertiesPayload_linkPropertiesIsLinkAnnotationPropertiesClassAndPayloadIsNotResourceSupport() {
+	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsLinkAnnotationPropertiesClassAndResourceIsNotResourceSupport() {
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, payloadAsObject), is(false));
+//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceAsObject), is(false));
 
 		verifyAll();
 	}
 
 	@Test
-	public void canCreateMethodCallPayLoad() {
+	public void canCreateMethodCallResource() {
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, payloadAsResourceSupport), is(true));
+//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, resourceAsResourceSupport), is(true));
 
 		verifyAll();
 	}
 
 	@Test
-	public void canCreateMethodCallPayLoad_payloadIsNull() {
+	public void canCreateMethodCallResource_resourceIsNull() {
 
 		replayAll();
 
@@ -121,21 +121,21 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	}
 
 	@Test
-	public void canCreateMethodCallPayLoad_isNotResourceSupport() {
+	public void canCreateMethodCallResource_isNotResourceSupport() {
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, payloadAsObject), is(false));
+//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, resourceAsObject), is(false));
 
 		verifyAll();
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void createAndSet_payloadIsNotRessourceSupport() {
+	public void createAndSet_resourceIsNotRessourceSupport() {
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, payloadAsObject);
+//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, resourceAsObject);
 
 		verifyAll();
 
@@ -144,17 +144,17 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	@Test
 	public void createAndSet() {
 		expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-		expect(annotationUriGenerator.generateUri(linkAnnotationPropertiesMock, methodCall, payloadAsResourceSupport)).andReturn("controller-uri");
+		expect(annotationUriGenerator.generateUri(linkAnnotationPropertiesMock, methodCall, resourceAsResourceSupport)).andReturn("controller-uri");
 		expect(linkAnnotationPropertiesMock.getRel()).andReturn("rel");
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, payloadAsResourceSupport);
+//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, resourceAsResourceSupport);
 
 		verifyAll();
 
-		assertThat(payloadAsResourceSupport.getLinks(), hasSize(1));
-		Link link = payloadAsResourceSupport.getLinks().get(0);
+		assertThat(resourceAsResourceSupport.getLinks(), hasSize(1));
+		Link link = resourceAsResourceSupport.getLinks().get(0);
 		assertThat(link.getHref(), is("base-uri/controller-uri"));
 		assertThat(link.getRel(), is("rel"));
 
@@ -166,16 +166,16 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
-		expect(methodCallUriGenerator.generateUri(methodCall, payloadAsResourceSupport)).andReturn("controller-uri");
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsResourceSupport)).andReturn("controller-uri");
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, payloadAsResourceSupport);
+//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsResourceSupport);
 
 		verifyAll();
 
-		assertThat(payloadAsResourceSupport.getLinks(), hasSize(1));
-		Link link = payloadAsResourceSupport.getLinks().get(0);
+		assertThat(resourceAsResourceSupport.getLinks(), hasSize(1));
+		Link link = resourceAsResourceSupport.getLinks().get(0);
 		assertThat(link.getHref(), is("controller-uri"));
 		assertThat(link.getRel(), is("self"));
 
@@ -189,23 +189,23 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, payloadAsResourceSupport);
+//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsResourceSupport);
 
 		verifyAll();
 
-		assertThat(payloadAsResourceSupport.getLinks(), hasSize(0));
+		assertThat(resourceAsResourceSupport.getLinks(), hasSize(0));
 
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void createAndSetSelfLinkIfNeeded_IsAnnotatedWithEnableSelfFromCurrentCallButPayloadIsNotResourceSupport() {
+	public void createAndSetSelfLinkIfNeeded_IsAnnotatedWithEnableSelfFromCurrentCallButResourceIsNotResourceSupport() {
 
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, payloadAsObject);
+//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsObject);
 
 	}
 

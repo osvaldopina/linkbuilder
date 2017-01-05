@@ -27,7 +27,7 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
             CurrentCallLocator currentCallLocator,
             LinkPropertiesLinkCreators linkPropertiesLinkCreators,
             LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
-            Object payload
+            Object resource
     ) {
 
         this.linksBuilder = linksBuilder;
@@ -35,7 +35,7 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         this.linkPropertiesLinkCreators = linkPropertiesLinkCreators;
         this.linkBuilderExtensionFactoryRegistry = linkBuilderExtensionFactoryRegistry;
         this.linkProperties = new BaseLinkProperties();
-        this.linkProperties.setPayload(payload);
+        this.linkProperties.setResource(resource);
     }
 
     public BaseLinkBuilder(BaseLinkBuilder baseLinkBuilder) {
@@ -72,8 +72,8 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     }
 
     @Override
-    public LinkBuilder setExpressionPayload(Object payload) {
-        linkProperties.setPayload(payload);
+    public LinkBuilder setResource(Object resource) {
+        linkProperties.setResource(resource);
         return this;
     }
 
@@ -170,8 +170,8 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         return linkBuilderExtensionFactoryRegistry;
     }
 
-    public Object getPayload() {
-        return linkProperties.getPayload();
+    public Object getResource() {
+        return linkProperties.getResource();
     }
 
 

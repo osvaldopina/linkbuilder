@@ -18,20 +18,20 @@ public class RootRestController {
 
     @RequestMapping("/")
     @GenerateUriTemplateFor(rel = "root")
-    public Payload root() {
-        Payload payload = new Payload();
+    public Resource root() {
+        Resource resource = new Resource();
 
-        payload.setQueryValue("anyQueryValue");
-        payload.setPathValue("anyPathValue");
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
 
         FirstTypeEmbeddedPayload firstType = new FirstTypeEmbeddedPayload(1);
         SecondTypeEmbeddedPayload secondType1 = new SecondTypeEmbeddedPayload("name");
         SecondTypeEmbeddedPayload secondType2 = new SecondTypeEmbeddedPayload("other-name");
 
-        payload.addEmbedded("first", firstType);
-        payload.addEmbedded("second", Arrays.asList(secondType1, secondType2));
+        resource.addEmbedded("first", firstType);
+        resource.addEmbedded("second", Arrays.asList(secondType1, secondType2));
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/first-embedded/{id}")

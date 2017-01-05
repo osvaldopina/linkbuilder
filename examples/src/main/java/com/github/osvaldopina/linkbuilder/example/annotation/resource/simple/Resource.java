@@ -9,13 +9,13 @@ import org.springframework.hateoas.ResourceSupport;
 		@Link(controller = RootRestController.class, rel = "root", overridedRel = "self"),
 		@Link(controller = RootRestController.class, rel = "direct-link",
 				params = {
-						@Param(name = "query", value = "#payload.queryValue"),
-						@Param(name = "path", value = "#payload.pathValue")
+						@Param(name = "query", value = "#resource.queryValue"),
+						@Param(name = "path", value = "#resource.pathValue")
 				}),
 		@Link(controller = RootRestController.class, rel = "direct-link", overridedRel = "direct-link-overrided",
 				params = {
-						@Param(name = "query", value = "#payload.queryValue"),
-						@Param(name = "path", value = "#payload.pathValue")
+						@Param(name = "query", value = "#resource.queryValue"),
+						@Param(name = "path", value = "#resource.pathValue")
 				}),
 		@Link(controller = RootRestController.class,
 				rel = "direct-link-templated",
@@ -24,7 +24,7 @@ import org.springframework.hateoas.ResourceSupport;
 						@Param(name = "templated", value = "'templated-value'")
 				})
 })
-public class Payload extends ResourceSupport {
+public class Resource extends ResourceSupport {
 
 	private String queryValue;
 

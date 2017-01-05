@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
 
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
@@ -13,7 +12,6 @@ import com.github.osvaldopina.linkbuilder.template.Variable;
 import com.github.osvaldopina.linkbuilder.template.VariableValue;
 import com.github.osvaldopina.linkbuilder.template.Variables;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategy;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -49,7 +47,7 @@ public class PathParameterVariableValueDiscoverTest extends EasyMockSupport {
 
 	Object param = new Object();
 
-	Object payload = new Object();
+	Object resource = new Object();
 
 	@Mock
 	ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies;
@@ -68,7 +66,7 @@ public class PathParameterVariableValueDiscoverTest extends EasyMockSupport {
 
 		replayAll();
 
-		List<VariableValue> variableValueList = pathParameterVariableValueDiscover.getVariableValues(variables, methodCall, payload, parameterIndex,
+		List<VariableValue> variableValueList = pathParameterVariableValueDiscover.getVariableValues(variables, methodCall, resource, parameterIndex,
 				conditionalVariableSubstitutionStrategies);
 
 		verifyAll();
@@ -91,7 +89,7 @@ public class PathParameterVariableValueDiscoverTest extends EasyMockSupport {
 
 		replayAll();
 
-		assertThat(pathParameterVariableValueDiscover.getVariableValues(variables, methodCall, payload, parameterIndex,
+		assertThat(pathParameterVariableValueDiscover.getVariableValues(variables, methodCall, resource, parameterIndex,
 				conditionalVariableSubstitutionStrategies), hasSize(0));
 
 		verifyAll();

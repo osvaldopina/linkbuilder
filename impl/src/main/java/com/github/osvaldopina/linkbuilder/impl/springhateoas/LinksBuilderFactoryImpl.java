@@ -29,8 +29,8 @@ public class LinksBuilderFactoryImpl implements LinksBuilderFactory {
     }
 
     @Override
-    public LinksBuilder create(Object payload) {
-        return new LinksBuilderImpl(currentCallLocator, linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry, payload);
+    public LinksBuilder create(Object resource) {
+        return new LinksBuilderImpl(currentCallLocator, linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry, resource);
     }
 
 }

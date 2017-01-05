@@ -10,10 +10,10 @@ public interface AnnotationReader {
 
     boolean canRead(Method method);
 
-    boolean canRead(Class<?> payloadType);
+    boolean canRead(Class<?> resourceType);
 
     List<LinkAnnotationProperties> read(Method method);
 
-    List<LinkAnnotationProperties> read(Class<?> payloadType);
+    List<LinkAnnotationProperties> read(Class<?> resourceType);
 
 }

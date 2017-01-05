@@ -28,7 +28,7 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 	@Mock
 	LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry;
 
-	private Object payload = new Object();
+	private Object resource = new Object();
 
 	LinksBuilderFactoryImpl linksBuilderFactoryImpl;
 
@@ -54,17 +54,17 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
 		assertThat(linksBuilderImpl.getLinkPropertiesLinkCreators(), is(sameInstance(linkPropertiesLinkCreators)));
 		assertThat(linksBuilderImpl.getLinkBuilderExtensionFactoryRegistry(), is(sameInstance(linkBuilderExtensionFactoryRegistry)));
-		assertThat(linksBuilderImpl.getPayload(), is(nullValue()));
+		assertThat(linksBuilderImpl.getResource(), is(nullValue()));
 
 	}
 
 
 	@Test
-	public void create_payload() {
+	public void create_resource() {
 
 		replayAll();
 
-		LinksBuilder linksBuilder = linksBuilderFactoryImpl.create(payload);
+		LinksBuilder linksBuilder = linksBuilderFactoryImpl.create(resource);
 
 		verifyAll();
 
@@ -74,7 +74,7 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
 		assertThat(linksBuilderImpl.getLinkPropertiesLinkCreators(), is(sameInstance(linkPropertiesLinkCreators)));
 		assertThat(linksBuilderImpl.getLinkBuilderExtensionFactoryRegistry(), is(sameInstance(linkBuilderExtensionFactoryRegistry)));
-		assertThat(linksBuilderImpl.getPayload(), is(sameInstance(payload)));
+		assertThat(linksBuilderImpl.getResource(), is(sameInstance(resource)));
 
 	}
 

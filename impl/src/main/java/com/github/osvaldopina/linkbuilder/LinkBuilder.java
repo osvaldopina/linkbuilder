@@ -28,12 +28,12 @@ public interface LinkBuilder {
     LinkBuilder withRel(String rel);
 
     /**
-     * Sets the payload variable in expression expression context so it can be used in expressions
+     * Sets the resource variable in expression expression context so it can be used in expressions
      *
-     * @param payload Object to be setted as 'payload' variable in expression context
+     * @param resource Object to be setted as 'resource' variable in expression context
      * @return LinkBuilder link builder.
      */
-    LinkBuilder setExpressionPayload(Object payload);
+    LinkBuilder setResource(Object resource);
 
     /**
      * Defines expression condition expression for link rendering. If expression evaluates to true the link will

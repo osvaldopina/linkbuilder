@@ -43,7 +43,7 @@ public class QueryParameterVariableValueDiscoverTest extends EasyMockSupport {
 
 	Object param = new Object();
 
-	Object payload = new Object();
+	Object resource = new Object();
 
 	@Mock
 	ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies;
@@ -66,7 +66,7 @@ public class QueryParameterVariableValueDiscoverTest extends EasyMockSupport {
 		replayAll();
 
 		List<VariableValue> variableValueList = queryParameterVariableValueDiscover.
-				getVariableValues(variables, methodCall, payload, parameterIndex, conditionalVariableSubstitutionStrategies);
+				getVariableValues(variables, methodCall, resource, parameterIndex, conditionalVariableSubstitutionStrategies);
 
 		verifyAll();
 
@@ -86,7 +86,7 @@ public class QueryParameterVariableValueDiscoverTest extends EasyMockSupport {
 
 		replayAll();
 
-		assertThat(queryParameterVariableValueDiscover.getVariableValues(variables, methodCall, payload, parameterIndex,
+		assertThat(queryParameterVariableValueDiscover.getVariableValues(variables, methodCall, resource, parameterIndex,
 				conditionalVariableSubstitutionStrategies), hasSize(0));
 
 		verifyAll();

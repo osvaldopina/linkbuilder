@@ -17,13 +17,13 @@ public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
             CurrentCallLocator currentCallLocator,
             LinkPropertiesLinkCreators linkPropertiesLinkCreators,
             LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
-            Object payload) {
+            Object resource) {
 
         super(linksBuilder,
                 currentCallLocator,
                 linkPropertiesLinkCreators,
                 linkBuilderExtensionFactoryRegistry,
-                payload);
+                resource);
     }
 
 

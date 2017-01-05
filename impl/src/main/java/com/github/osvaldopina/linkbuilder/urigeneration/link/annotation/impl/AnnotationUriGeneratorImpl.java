@@ -25,14 +25,14 @@ public class AnnotationUriGeneratorImpl implements AnnotationUriGenerator {
 
 
     @Override
-    public String generateUri(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object payload) {
+    public String generateUri(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
 
         Method destination = linkDestinationRegistry.getTemplatedMethod(linkAnnotationProperties.getDestination());
 
         Template template = templateRegistry.getTemplate(destination);
 
 
-       VariableValues variableValues = annotationVariableValuesDiscover.getVariableValues(template.getVariables(), currentMethodCall, payload, linkAnnotationProperties);
+       VariableValues variableValues = annotationVariableValuesDiscover.getVariableValues(template.getVariables(), currentMethodCall, resource, linkAnnotationProperties);
 
         if (linkAnnotationProperties.isTemplated()) {
             return template.toTemplatedUri(variableValues);

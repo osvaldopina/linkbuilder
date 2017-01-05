@@ -19,9 +19,9 @@ public class RootRestController {
     @EnableSelfFromCurrentCall
     public ResourceSupport root() {
 
-        ResourceSupport payload = new ResourceSupport();
+        ResourceSupport resource = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
+        LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 
         linksBuilder.link()
                 .when("the expressions will always return true!!!")
@@ -31,7 +31,7 @@ public class RootRestController {
 
         linksBuilder.buildAndSetAll();
 
-        return payload;
+        return resource;
     }
 
 }

@@ -21,14 +21,14 @@ public class RootRestController {
     @EnableSelfFromCurrentCall
     public ResourceSupport root() {
 
-        Payload payload = new Payload();
+        Resource resource = new Resource();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
+        LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 
         linksBuilder.link().withSelfRel().fromCurrentCall();
 
         linksBuilder.link()
-                .withRel("a-link-with-expression-payload-check")
+                .withRel("a-link-with-expression-resource-check")
                 .fromControllerCall(RootRestController.class)
                 .root();
 
@@ -63,7 +63,7 @@ public class RootRestController {
 
         linksBuilder.buildAndSetAll();
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/no-query-parameter/{id}")

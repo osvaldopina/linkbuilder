@@ -33,7 +33,7 @@ public class LinkAnnotationCreatorRegistryImplTest extends EasyMockSupport {
 	private LinkAnnotationProperties linkAnnotationProperties;
 
 	@Mock
-	private Object payload;
+	private Object resource;
 
 	@Mock
 	private MethodCall methodCall;
@@ -45,45 +45,45 @@ public class LinkAnnotationCreatorRegistryImplTest extends EasyMockSupport {
 
 
 	@Test
-	public void get_linkAnnotationPropertiesPayloadCanCreateTrue() {
-//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, payload)).andReturn(true);
+	public void get_linkAnnotationPropertiesResourceCanCreateTrue() {
+//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, resource)).andReturn(true);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, payload), is(sameInstance(linkAnnotationCreator)));
+//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, resource), is(sameInstance(linkAnnotationCreator)));
 
 		verifyAll();
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void get_linkAnnotationPropertiesPayloadCanCreateFalse() {
-//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, payload)).andReturn(false);
+	public void get_linkAnnotationPropertiesResourceCanCreateFalse() {
+//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, resource)).andReturn(false);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, payload), is(nullValue()));
+//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, resource), is(nullValue()));
 
 		verifyAll();
 	}
 
 	@Test
-	public void get_MethodCallPayloadCanCreateTrue() {
-//		expect(linkAnnotationCreator.canCreate(methodCall, payload)).andReturn(true);
+	public void get_MethodCallResourceCanCreateTrue() {
+//		expect(linkAnnotationCreator.canCreate(methodCall, resource)).andReturn(true);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, payload), is(sameInstance(linkAnnotationCreator)));
+//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, resource), is(sameInstance(linkAnnotationCreator)));
 
 		verifyAll();
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void get_MethodCallPayloadCanCreateFalse() {
-//		expect(linkAnnotationCreator.canCreate(methodCall, payload)).andReturn(false);
+	public void get_MethodCallResourceCanCreateFalse() {
+//		expect(linkAnnotationCreator.canCreate(methodCall, resource)).andReturn(false);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, payload), is(nullValue()));
+//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, resource), is(nullValue()));
 
 		verifyAll();
 	}

@@ -7,12 +7,12 @@ public class ExpressionExecutorDefinedReturn implements ExpressionExecutor {
     public static boolean returnValue = false;
 
     @Override
-    public boolean isTrue(String expression, Object payload, Object[] params) {
+    public boolean isTrue(String expression, Object resource, Object[] params) {
         return returnValue;
     }
 
     @Override
-    public Object getValue(String expression, Object payload, Object[] params) {
+    public Object getValue(String expression, Object resource, Object[] params) {
         throw new IllegalStateException("Should not be called");
     }
 

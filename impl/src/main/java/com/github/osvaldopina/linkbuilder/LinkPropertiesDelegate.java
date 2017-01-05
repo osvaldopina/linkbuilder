@@ -33,12 +33,12 @@ public class LinkPropertiesDelegate implements LinkProperties {
     }
 
     @Override
-    public Object getPayload() {
-        return linkProperties.getPayload();
+    public Object getResource() {
+        return linkProperties.getResource();
     }
 
     @Override
-    public void setPayload(Object payload) {
+    public void setResource(Object resource) {
 
     }
 

@@ -1,8 +1,12 @@
-package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed;
+package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.simple;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
 
-public class Payload extends ResourceSupport {
+public class Resource extends ResourceSupport {
 
     private String queryValue;
 
@@ -23,4 +27,5 @@ public class Payload extends ResourceSupport {
     public void setPathValue(String pathValue) {
         this.pathValue = pathValue;
     }
+
 }

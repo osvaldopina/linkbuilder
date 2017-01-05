@@ -12,7 +12,7 @@ import java.util.*;
 public class UserDefinedTypeVariableValueDiscover implements ParameterVariableValueDiscover {
 
     @Override
-    public List<VariableValue> getVariableValues(Variables variables, MethodCall methodCall, Object payload, int parameterIndex, ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
+    public List<VariableValue> getVariableValues(Variables variables, MethodCall methodCall, Object resource, int parameterIndex, ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         List<VariableValue> variableValues = new ArrayList<VariableValue>();
 

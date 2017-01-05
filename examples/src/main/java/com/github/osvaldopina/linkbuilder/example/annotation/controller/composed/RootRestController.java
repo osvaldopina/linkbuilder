@@ -23,13 +23,13 @@ public class RootRestController {
     @EnableSelfFromCurrentCall
     @MyLinks(value = {
             @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, params = {
-                    @Param(name = "query", value = "#payload.queryValue"),
-                    @Param(name = "path", value = "#payload.pathValue")
+                    @Param(name = "query", value = "#resource.queryValue"),
+                    @Param(name = "path", value = "#resource.pathValue")
             }),
             @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, overridedRel = "direct-link-overrided",
                     params = {
-                            @Param(name = "query", value = "#payload.queryValue"),
-                            @Param(name = "path", value = "#payload.pathValue")
+                            @Param(name = "query", value = "#resource.queryValue"),
+                            @Param(name = "path", value = "#resource.pathValue")
                     }),
             @MyLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
                     templated = true,
@@ -37,13 +37,13 @@ public class RootRestController {
                             @Param(name = "templated", value = "'templated-value'")
                     })
     })
-    public Payload root() {
-        Payload payload = new Payload();
+    public Resource root() {
+        Resource resource = new Resource();
 
-        payload.setQueryValue("anyQueryValue");
-        payload.setPathValue("anyPathValue");
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/direct-link/{path}")

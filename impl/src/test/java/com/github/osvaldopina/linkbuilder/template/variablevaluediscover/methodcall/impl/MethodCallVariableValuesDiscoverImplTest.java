@@ -39,7 +39,7 @@ public class MethodCallVariableValuesDiscoverImplTest extends EasyMockSupport {
 
 	String variableName = "variable";
 
-	Object payload = new Object();
+	Object resource = new Object();
 
 	Variable variable = new Variable(variableName, VariableType.QUERY, method,0);
 
@@ -67,14 +67,14 @@ public class MethodCallVariableValuesDiscoverImplTest extends EasyMockSupport {
 	@Test
 	public void getVariableValues() {
 		expect(methodCall.getMethod()).andReturn(method);
-		expect(parameterVariableValueDiscoverRegistry.get(variables, methodCall, payload,0)).andReturn(parameterVariableValueDiscover);
-		expect(parameterVariableValueDiscover.getVariableValues(variables, methodCall, payload, 0, conditionalVariableSubstitutionStrategies)).
+		expect(parameterVariableValueDiscoverRegistry.get(variables, methodCall, resource,0)).andReturn(parameterVariableValueDiscover);
+		expect(parameterVariableValueDiscover.getVariableValues(variables, methodCall, resource, 0, conditionalVariableSubstitutionStrategies)).
 				andReturn(variableValues);
 
 		replayAll();
 
 		VariableValues variableValues = methodCallVariableValuesDiscoverImpl.
-				getVariableValues(variables, methodCall, payload, conditionalVariableSubstitutionStrategies);
+				getVariableValues(variables, methodCall, resource, conditionalVariableSubstitutionStrategies);
 
 
 		verifyAll();

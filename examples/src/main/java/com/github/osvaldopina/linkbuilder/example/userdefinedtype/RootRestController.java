@@ -20,9 +20,9 @@ public class RootRestController {
     @GenerateUriTemplateFor
     public ResourceSupport root() {
 
-        ResourceSupport payload = new ResourceSupport();
+        ResourceSupport resource = new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create(payload);
+        LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 
         LinkBuilder lb = linksBuilder.link();
 
@@ -31,9 +31,9 @@ public class RootRestController {
                 .fromControllerCall(RootRestController.class)
                 .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-       payload.add((org.springframework.hateoas.Link) lb.build());
+       resource.add((org.springframework.hateoas.Link) lb.build());
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/user-defined-type")

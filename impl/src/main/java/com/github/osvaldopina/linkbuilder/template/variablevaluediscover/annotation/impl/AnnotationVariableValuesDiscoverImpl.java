@@ -24,7 +24,7 @@ public class AnnotationVariableValuesDiscoverImpl implements AnnotationVariableV
 
 	public VariableValues getVariableValues(
 			Variables variables, MethodCall currentMethodCall,
-			Object payload,
+			Object resource,
 			LinkAnnotationProperties linkAnnotationProperties) {
 
 		Variable variable;
@@ -33,12 +33,12 @@ public class AnnotationVariableValuesDiscoverImpl implements AnnotationVariableV
 			String when = linkAnnotationParameter.getWhen();
 			Object[] params = currentMethodCall.getParams();
 			if (when == null || "".equals(when) ||
-					expressionExecutor.isTrue(when, payload, params)) {
+					expressionExecutor.isTrue(when, resource, params)) {
 
 				variable = variables.get(linkAnnotationParameter.getName());
 
 				variableValueList.add(new VariableValue(variable,
-						expressionExecutor.getValue(linkAnnotationParameter.getValue(), payload, params)));
+						expressionExecutor.getValue(linkAnnotationParameter.getValue(), resource, params)));
 			}
 		}
 

@@ -25,12 +25,12 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
     private ApplicationContext applicationContext;
 
     @Override
-    public boolean isTrue(String expression, Object payload, Object[] params) {
+    public boolean isTrue(String expression, Object resource, Object[] params) {
 
         EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
 
-        if (payload != null) {
-            ctx.setVariable("payload", payload);
+        if (resource != null) {
+            ctx.setVariable("resource", resource);
         }
 
         if (params != null) {
@@ -43,12 +43,12 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
     }
 
     @Override
-    public Object getValue(String expression, Object payload, Object[] params) {
+    public Object getValue(String expression, Object resource, Object[] params) {
 
         EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
 
-        if (payload != null) {
-            ctx.setVariable("payload", payload);
+        if (resource != null) {
+            ctx.setVariable("resource", resource);
         }
 
         if (params != null) {

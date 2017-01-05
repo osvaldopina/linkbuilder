@@ -12,7 +12,7 @@ public class BaseLinkProperties implements LinkProperties {
 
     private String whenExpression;
 
-    private Object payload;
+    private Object resource;
 
     private MethodCall methodCall;
 
@@ -27,7 +27,7 @@ public class BaseLinkProperties implements LinkProperties {
     public BaseLinkProperties(BaseLinkProperties linkProperties) {
         this.rel = linkProperties.getRel();
         this.whenExpression = linkProperties.getWhenExpression();
-        this.payload = linkProperties.getPayload();
+        this.resource = linkProperties.getResource();
         this.methodCall = linkProperties.getMethodCall();
         this.conditionalVariableSubstituionStrategyList = linkProperties.conditionalVariableSubstituionStrategyList;
         this.templated = linkProperties.isTemplated();
@@ -44,8 +44,8 @@ public class BaseLinkProperties implements LinkProperties {
     }
 
     @Override
-    public Object getPayload() {
-        return payload;
+    public Object getResource() {
+        return resource;
     }
 
     @Override
@@ -77,8 +77,8 @@ public class BaseLinkProperties implements LinkProperties {
     }
 
     @Override
-    public void setPayload(Object payload) {
-        this.payload = payload;
+    public void setResource(Object resource) {
+        this.resource = resource;
     }
 
     @Override

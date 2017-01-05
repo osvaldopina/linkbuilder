@@ -10,7 +10,7 @@ public interface LinkProperties {
 
     String getWhenExpression();
 
-    Object getPayload();
+    Object getResource();
 
     MethodCall getMethodCall();
 
@@ -23,7 +23,7 @@ public interface LinkProperties {
 
     void setWhenExpression(String whenExpression);
 
-    void setPayload(Object payload);
+    void setResource(Object resource);
 
     void setMethodCall(MethodCall methodCall);
 

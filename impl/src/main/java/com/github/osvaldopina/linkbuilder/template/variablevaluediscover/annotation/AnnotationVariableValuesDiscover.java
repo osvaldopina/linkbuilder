@@ -8,6 +8,6 @@ import com.github.osvaldopina.linkbuilder.template.Variables;
 public interface AnnotationVariableValuesDiscover {
 
     VariableValues getVariableValues(
-            Variables variables, MethodCall currentMethod, Object payload,
+            Variables variables, MethodCall currentMethod, Object resource,
             LinkAnnotationProperties linkAnnotationProperties);
 }

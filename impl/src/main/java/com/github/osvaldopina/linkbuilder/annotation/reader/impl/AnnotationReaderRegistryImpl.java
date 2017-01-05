@@ -31,9 +31,9 @@ public class AnnotationReaderRegistryImpl implements AnnotationReaderRegistry {
     }
 
     @Override
-    public AnnotationReader get(Class<?> payload) {
+    public AnnotationReader get(Class<?> resource) {
         for(AnnotationReader annotationReader:annotationReaders) {
-            if (annotationReader.canRead(payload)) {
+            if (annotationReader.canRead(resource)) {
                 return annotationReader;
             }
         }

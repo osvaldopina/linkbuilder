@@ -3,13 +3,9 @@ package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
-import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
-import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
-import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +17,7 @@ import java.util.List;
  */
 class LinksBuilderImpl implements LinksBuilder {
 
-    private Object payload;
+    private Object resource;
     private List<SpringHateoasLinkBuilderImpl> linkBuilders = new ArrayList<SpringHateoasLinkBuilderImpl>();
     private CurrentCallLocator currentCallLocator;
     private  LinkPropertiesLinkCreators linkPropertiesLinkCreators;
@@ -37,12 +33,12 @@ class LinksBuilderImpl implements LinksBuilder {
             CurrentCallLocator currentCallLocator,
             LinkPropertiesLinkCreators linkPropertiesLinkCreators,
             LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
-            Object payload) {
+            Object resource) {
 
         this.currentCallLocator = currentCallLocator;
         this.linkPropertiesLinkCreators = linkPropertiesLinkCreators;
         this.linkBuilderExtensionFactoryRegistry = linkBuilderExtensionFactoryRegistry;
-        this.payload = payload;
+        this.resource = resource;
     }
 
     @Override
@@ -52,7 +48,7 @@ class LinksBuilderImpl implements LinksBuilder {
                 currentCallLocator,
                 linkPropertiesLinkCreators,
                 linkBuilderExtensionFactoryRegistry,
-                payload
+                resource
         );
         linkBuilders.add(linkBuilder);
         return linkBuilder;
@@ -66,8 +62,8 @@ class LinksBuilderImpl implements LinksBuilder {
         }
     }
 
-    public Object getPayload() {
-       return payload;
+    public Object getResource() {
+       return resource;
     }
 
     public List<SpringHateoasLinkBuilderImpl> getLinkBuilders() {

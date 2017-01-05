@@ -26,8 +26,8 @@ public class AnnotationReaderCache implements AnnotationReader{
 	}
 
 	@Override
-	public boolean canRead(Class<?> payloadType) {
-		return resourceTypeAnnotations.get(payloadType) != null || annotationReader.canRead(payloadType);
+	public boolean canRead(Class<?> resourceType) {
+		return resourceTypeAnnotations.get(resourceType) != null || annotationReader.canRead(resourceType);
 	}
 
 	@Override
@@ -44,13 +44,13 @@ public class AnnotationReaderCache implements AnnotationReader{
 	}
 
 	@Override
-	public List<LinkAnnotationProperties> read(Class<?> payloadType) {
+	public List<LinkAnnotationProperties> read(Class<?> resourceType) {
 
-		List<LinkAnnotationProperties> linkAnnotationProperties = resourceTypeAnnotations.get(payloadType);
+		List<LinkAnnotationProperties> linkAnnotationProperties = resourceTypeAnnotations.get(resourceType);
 
 		if (linkAnnotationProperties == null) {
-			linkAnnotationProperties = annotationReader.read(payloadType);
-			resourceTypeAnnotations.put(payloadType, linkAnnotationProperties);
+			linkAnnotationProperties = annotationReader.read(resourceType);
+			resourceTypeAnnotations.put(resourceType, linkAnnotationProperties);
 		}
 
 		return linkAnnotationProperties;

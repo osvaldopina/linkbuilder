@@ -13,6 +13,6 @@ public interface AnnotatedMethodUriGenerator {
 
     Annotation getSelfLinkAnnotaiton(Method method);
 
-    String  generate(Method method, Annotation annotation, Object payLoad, Object[] params);
+    String  generate(Method method, Annotation annotation, Object resource, Object[] params);
 
 }

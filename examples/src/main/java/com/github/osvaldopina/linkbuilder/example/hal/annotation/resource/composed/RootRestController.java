@@ -25,15 +25,15 @@ public class RootRestController {
             @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK,
                     hreflang = "href-lang-1" ,
                     params = {
-                    @Param(name = "query", value = "#payload.queryValue"),
-                    @Param(name = "path", value = "#payload.pathValue")
+                    @Param(name = "query", value = "#resource.queryValue"),
+                    @Param(name = "path", value = "#resource.pathValue")
             }),
             @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK,
                     hreflang = "href-lang-2",
                     overridedRel = "direct-link-overrided",
                     params = {
-                            @Param(name = "query", value = "#payload.queryValue"),
-                            @Param(name = "path", value = "#payload.pathValue")
+                            @Param(name = "query", value = "#resource.queryValue"),
+                            @Param(name = "path", value = "#resource.pathValue")
                     }),
             @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
                     hreflang = "href-lang-3",
@@ -42,13 +42,13 @@ public class RootRestController {
                             @Param(name = "templated", value = "'templated-value'")
                     })
     })
-    public Payload root() {
-        Payload payload = new Payload();
+    public Resource root() {
+        Resource resource = new Resource();
 
-        payload.setQueryValue("anyQueryValue");
-        payload.setPathValue("anyPathValue");
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/direct-link/{path}")

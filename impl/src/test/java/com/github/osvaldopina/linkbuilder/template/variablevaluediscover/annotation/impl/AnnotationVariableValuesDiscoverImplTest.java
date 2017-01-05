@@ -41,7 +41,7 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 
 	Object[] params = new Object[] {};
 
-	Object payload = new Object();
+	Object resource = new Object();
 
 	String variableName = "variable";
 
@@ -66,15 +66,15 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationParameter));
 		expect(linkAnnotationParameter.getWhen()).andReturn(whenExpression);
 		expect(currentMethodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue(whenExpression, payload, params)).andReturn(true);
+		expect(expressionExecutor.isTrue(whenExpression, resource, params)).andReturn(true);
 		expect(linkAnnotationParameter.getName()).andReturn(variableName);
 		expect(linkAnnotationParameter.getValue()).andReturn(variableValueExpression);
-		expect(expressionExecutor.getValue(variableValueExpression, payload, params)).andReturn(evaluatedExpressionValue);
+		expect(expressionExecutor.getValue(variableValueExpression, resource, params)).andReturn(evaluatedExpressionValue);
 
 		replayAll();
 
 		VariableValues variableValues = annotationVariableValuesDiscoverImpl.
-				getVariableValues(variables, currentMethodCall, payload, linkAnnotationProperties);
+				getVariableValues(variables, currentMethodCall, resource, linkAnnotationProperties);
 
 		verifyAll();
 
@@ -91,12 +91,12 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationParameter));
 		expect(linkAnnotationParameter.getWhen()).andReturn(whenExpression);
 		expect(currentMethodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue(whenExpression, payload, params)).andReturn(false);
+		expect(expressionExecutor.isTrue(whenExpression, resource, params)).andReturn(false);
 
 		replayAll();
 
 		VariableValues variableValues = annotationVariableValuesDiscoverImpl.
-				getVariableValues(variables, currentMethodCall, payload, linkAnnotationProperties);
+				getVariableValues(variables, currentMethodCall, resource, linkAnnotationProperties);
 
 		verifyAll();
 

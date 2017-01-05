@@ -47,7 +47,7 @@ public class ExpressionExecutorImplTest extends EasyMockSupport {
 
 
     @Test
-    public void isTrueWithoutPayload() throws Exception {
+    public void isTrueWithoutResource() throws Exception {
         String expression = "expression expression";
 
         EasyMock.expect(evaluationContextCreator.create(applicationContext)).andReturn(evaluationContext);
@@ -63,13 +63,13 @@ public class ExpressionExecutorImplTest extends EasyMockSupport {
     }
 
     @Test
-    public void isTrueWithPayload() throws Exception {
+    public void isTrueWithResource() throws Exception {
         String expression = "expression expression";
-        Object payload = new Object();
+        Object resource = new Object();
         Object[] parameters = new Object[] {};
 
         EasyMock.expect(evaluationContextCreator.create(applicationContext)).andReturn(evaluationContext);
-        evaluationContext.setVariable("payload", payload);
+        evaluationContext.setVariable("resource", resource);
         EasyMock.expectLastCall();
         evaluationContext.setVariable("params", parameters);
         EasyMock.expectLastCall();
@@ -78,7 +78,7 @@ public class ExpressionExecutorImplTest extends EasyMockSupport {
 
         replayAll();
 
-        assertThat(spelExecutor.isTrue(expression, payload, parameters), is(true));
+        assertThat(spelExecutor.isTrue(expression, resource, parameters), is(true));
 
         verifyAll();
 

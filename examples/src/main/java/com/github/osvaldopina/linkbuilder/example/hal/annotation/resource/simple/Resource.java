@@ -17,16 +17,16 @@ import org.springframework.hateoas.ResourceSupport;
                 rel = "direct-link",
                 hreflang = "href-lang-1" ,
                 params = {
-                        @Param(name = "query", value = "#payload.queryValue"),
-                        @Param(name = "path", value = "#payload.pathValue")
+                        @Param(name = "query", value = "#resource.queryValue"),
+                        @Param(name = "path", value = "#resource.pathValue")
                 }),
         @HalLink(controller = RootRestController.class,
                 rel = "direct-link",
                 hreflang = "href-lang-2",
                 overridedRel = "direct-link-overrided",
                 params = {
-                        @Param(name = "query", value = "#payload.queryValue"),
-                        @Param(name = "path", value = "#payload.pathValue")
+                        @Param(name = "query", value = "#resource.queryValue"),
+                        @Param(name = "path", value = "#resource.pathValue")
                 }),
         @HalLink(controller = RootRestController.class,
                 rel = "direct-link-templated",
@@ -36,7 +36,7 @@ import org.springframework.hateoas.ResourceSupport;
                         @Param(name = "templated", value = "'templated-value'")
                 })
 })
-public class Payload extends ResourceSupport {
+public class Resource extends ResourceSupport {
 
     private String queryValue;
 

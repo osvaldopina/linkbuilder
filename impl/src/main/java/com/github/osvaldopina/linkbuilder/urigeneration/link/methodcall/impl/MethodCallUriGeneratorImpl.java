@@ -30,23 +30,23 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator {
     }
 
     @Override
-    public String generateUri(MethodCall methodCall, Object payload) {
+    public String generateUri(MethodCall methodCall, Object resource) {
 
 
         Template template = templateRegistry.getTemplate(methodCall.getMethod());
 
-        return generateUri(methodCall, payload, new ConditionalVariableSubstitutionStrategies());
+        return generateUri(methodCall, resource, new ConditionalVariableSubstitutionStrategies());
 
     }
 
     @Override
-    public String generateUri(MethodCall methodCall, Object payload,
+    public String generateUri(MethodCall methodCall, Object resource,
                               ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         Template template = templateRegistry.getTemplate(methodCall.getMethod());
 
         VariableValues variableValues = methodCallVariableValuesDiscover.getVariableValues(
-                template.getVariables(), methodCall, payload, conditionalVariableSubstitutionStrategies);
+                template.getVariables(), methodCall, resource, conditionalVariableSubstitutionStrategies);
 
         return urlPathContatenator.concat(baseUriDiscover.getBaseUri(), template.toUri(variableValues));
 

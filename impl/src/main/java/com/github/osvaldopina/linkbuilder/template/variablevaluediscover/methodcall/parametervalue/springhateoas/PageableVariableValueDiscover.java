@@ -17,7 +17,7 @@ public class PageableVariableValueDiscover implements ParameterVariableValueDisc
 
     @Override
     public List<VariableValue> getVariableValues(
-            Variables variables, MethodCall methodCall, Object payload, int parameterIndex,
+            Variables variables, MethodCall methodCall, Object resource, int parameterIndex,
             ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         Pageable pageable = (Pageable) methodCall.getParam(parameterIndex);

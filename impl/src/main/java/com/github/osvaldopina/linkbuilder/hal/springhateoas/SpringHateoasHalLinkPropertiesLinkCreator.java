@@ -7,7 +7,6 @@ import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkProperties
 import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.util.Assert;
 
 public class SpringHateoasHalLinkPropertiesLinkCreator implements LinkPropertiesLinkCreator {
 
@@ -40,10 +39,10 @@ public class SpringHateoasHalLinkPropertiesLinkCreator implements LinkProperties
 		if (whenExpression == null ||
 				expressionExecutor.isTrue(
 						whenExpression,
-						linkProperties.getPayload(),
+						linkProperties.getResource(),
 						linkProperties.getMethodCall().getParams())) {
 
-			String uri = methodCallUriGenerator.generateUri(linkProperties.getMethodCall(), linkProperties.getPayload());
+			String uri = methodCallUriGenerator.generateUri(linkProperties.getMethodCall(), linkProperties.getResource());
 			String rel = linkProperties.getRel();
 			if (rel == null) {
 				rel = introspectionUtils.getMethodRel(linkProperties.getMethodCall().getMethod());
@@ -60,7 +59,7 @@ public class SpringHateoasHalLinkPropertiesLinkCreator implements LinkProperties
 
 		HalLink link = (HalLink) create(linkProperties);
 		if (link != null) {
-			ResourceSupport resourceSupport = (ResourceSupport) linkProperties.getPayload();
+			ResourceSupport resourceSupport = (ResourceSupport) linkProperties.getResource();
 			resourceSupport.add(link);
 		}
 	}

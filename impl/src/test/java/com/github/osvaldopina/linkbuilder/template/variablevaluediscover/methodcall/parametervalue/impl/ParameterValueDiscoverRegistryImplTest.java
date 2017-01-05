@@ -6,7 +6,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.template.Variables;
@@ -14,7 +13,6 @@ import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodc
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
-import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +32,7 @@ public class ParameterValueDiscoverRegistryImplTest extends EasyMockSupport {
 	MethodCall methodCall;
 
 	@Mock
-	Object payload;
+	Object resource;
 
 	int parameterIndex = 0;
 
@@ -53,7 +51,7 @@ public class ParameterValueDiscoverRegistryImplTest extends EasyMockSupport {
 
 		replayAll();
 
-		assertThat(parameterValueDiscoverRegistryImpl.get(variables, methodCall, payload, parameterIndex),
+		assertThat(parameterValueDiscoverRegistryImpl.get(variables, methodCall, resource, parameterIndex),
 				is(sameInstance(parameterVariableValueDiscover)));
 
 		verifyAll();
@@ -67,7 +65,7 @@ public class ParameterValueDiscoverRegistryImplTest extends EasyMockSupport {
 
 		replayAll();
 
-		assertThat(parameterValueDiscoverRegistryImpl.get(variables, methodCall, payload, parameterIndex),
+		assertThat(parameterValueDiscoverRegistryImpl.get(variables, methodCall, resource, parameterIndex),
 				is(sameInstance(parameterVariableValueDiscover)));
 
 	}

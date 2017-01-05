@@ -51,52 +51,52 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 	}
 
 	@Override
-	public void createAndSetForMethodAnnotations(MethodCall methodCall, Object payload) {
+	public void createAndSetForMethodAnnotations(MethodCall methodCall, Object resource) {
 
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(methodCall.getMethod());
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			createAndSetForMethodAnnotations(linkProperties, methodCall, payload);
+			createAndSetForMethodAnnotations(linkProperties, methodCall, resource);
 		}
 
-		createAndSetSelfLinkIfNeeded(methodCall, payload);
+		createAndSetSelfLinkIfNeeded(methodCall, resource);
 	}
 
 	@Override
-	public void createAndSetForResourceAnnotations(MethodCall methodCall, Object payload) {
+	public void createAndSetForResourceAnnotations(MethodCall methodCall, Object resource) {
 
-		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(payload.getClass());
+		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(resource.getClass());
 
 		LinkAnnotationCreator linkAnnotationCreator = null;
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			createAndSetForMethodAnnotations(linkProperties, methodCall, payload);
+			createAndSetForMethodAnnotations(linkProperties, methodCall, resource);
 		}
 	}
 
 	@Override
-	public boolean canCreate(Object payload) {
-		return payload != null && introspectionUtils.
-				hasComposedAnnotation(payload.getClass(), com.github.osvaldopina.linkbuilder.annotation.Links.class);
+	public boolean canCreate(Object resource) {
+		return resource != null && introspectionUtils.
+				hasComposedAnnotation(resource.getClass(), com.github.osvaldopina.linkbuilder.annotation.Links.class);
 	}
 
-	private void createAndSetForMethodAnnotations(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object payload) {
-		if (payload instanceof ResourceSupport) {
+	private void createAndSetForMethodAnnotations(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
+		if (resource instanceof ResourceSupport) {
 			String baseUri = baseUriDiscover.getBaseUri();
-			String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, payload);
-			((ResourceSupport) payload).add(new Link(urlPathContatenator.concat(baseUri, linkUri), linkAnnotationProperties.getRel()));
+			String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
+			((ResourceSupport) resource).add(new Link(urlPathContatenator.concat(baseUri, linkUri), linkAnnotationProperties.getRel()));
 		} else {
-			throw new LinkBuilderException("Can only set link to instances of ResourceSupport by pyaload is " + payload.getClass());
+			throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
 		}
 	}
 
-	private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object payload) {
+	private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object resource) {
 		if (introspectionUtils.isEnableSelfFromCurrentCallMethod(currentMethodCall.getMethod())) {
-			if (payload instanceof ResourceSupport) {
-				((ResourceSupport) payload).add(
-						new Link(methodCallUriGenerator.generateUri(currentMethodCall, payload), "self"));
+			if (resource instanceof ResourceSupport) {
+				((ResourceSupport) resource).add(
+						new Link(methodCallUriGenerator.generateUri(currentMethodCall, resource), "self"));
 			} else {
-				throw new LinkBuilderException("Can only set link to instances of ResourceSupport by pyaload is " + payload.getClass());
+				throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
 			}
 		}
 	}

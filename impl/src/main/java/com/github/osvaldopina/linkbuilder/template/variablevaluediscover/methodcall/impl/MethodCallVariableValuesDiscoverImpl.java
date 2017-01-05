@@ -29,7 +29,7 @@ public class MethodCallVariableValuesDiscoverImpl implements MethodCallVariableV
     }
 
     @Override
-    public VariableValues getVariableValues(Variables variables, MethodCall destinationMethodCall, Object payload,
+    public VariableValues getVariableValues(Variables variables, MethodCall destinationMethodCall, Object resource,
             ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         List<VariableValue> variableValueList = new ArrayList<VariableValue>();
@@ -38,11 +38,11 @@ public class MethodCallVariableValuesDiscoverImpl implements MethodCallVariableV
         for (int i = 0; i < method.getParameterTypes().length; i++) {
 
             ParameterVariableValueDiscover parameterVariableValueDiscover =
-                    parameterVariableValueDiscoverRegistry.get(variables, destinationMethodCall, payload, i);
+                    parameterVariableValueDiscoverRegistry.get(variables, destinationMethodCall, resource, i);
 
             variableValueList.addAll(
                     parameterVariableValueDiscover.getVariableValues(
-                            variables, destinationMethodCall, payload, i, conditionalVariableSubstitutionStrategies));
+                            variables, destinationMethodCall, resource, i, conditionalVariableSubstitutionStrategies));
         }
 
         return new VariableValues(variableValueList);

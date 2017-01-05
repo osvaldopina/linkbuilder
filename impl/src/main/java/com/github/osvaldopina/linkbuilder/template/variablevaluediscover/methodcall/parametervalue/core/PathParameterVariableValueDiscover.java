@@ -24,7 +24,7 @@ public class PathParameterVariableValueDiscover implements ParameterVariableValu
 	@Override
 	public List<VariableValue> getVariableValues(
 			Variables variables, MethodCall methodCall,
-			Object payload, int parameterIndex,
+			Object resource, int parameterIndex,
 			ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
 		String variableName = introspectionUtils.getPathVariableName(methodCall.getMethod(), parameterIndex);

@@ -5,6 +5,6 @@ import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 
 public interface AnnotationUriGenerator {
 
-    String generateUri(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object payload);
+    String generateUri(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource);
 
 }

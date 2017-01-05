@@ -9,13 +9,13 @@ import org.springframework.hateoas.ResourceSupport;
 @MyLinks(value = {
         @MyLink(destination = LINK_DESTINATION.ROOT, overridedRel = "self"),
         @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, params = {
-                @Param(name = "query", value = "#payload.queryValue"),
-                @Param(name = "path", value = "#payload.pathValue")
+                @Param(name = "query", value = "#resource.queryValue"),
+                @Param(name = "path", value = "#resource.pathValue")
         }),
         @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, overridedRel = "direct-link-overrided",
                 params = {
-                        @Param(name = "query", value = "#payload.queryValue"),
-                        @Param(name = "path", value = "#payload.pathValue")
+                        @Param(name = "query", value = "#resource.queryValue"),
+                        @Param(name = "path", value = "#resource.pathValue")
                 }),
         @MyLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
                 templated = true,
@@ -23,7 +23,7 @@ import org.springframework.hateoas.ResourceSupport;
                         @Param(name = "templated", value = "'templated-value'")
                 })
 })
-public class Payload extends ResourceSupport {
+public class Resource extends ResourceSupport {
 
     private String queryValue;
 

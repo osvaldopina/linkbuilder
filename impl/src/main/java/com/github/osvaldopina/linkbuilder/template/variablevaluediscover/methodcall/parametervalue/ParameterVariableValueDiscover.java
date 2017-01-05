@@ -12,7 +12,7 @@ public interface ParameterVariableValueDiscover {
 
 
     List<VariableValue> getVariableValues(
-            Variables variables, MethodCall methodCall, Object payload, int parameterIndex,
+            Variables variables, MethodCall methodCall, Object resource, int parameterIndex,
             ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies);
 
     boolean canDiscover(MethodCall methodCall, int parameterIndex);

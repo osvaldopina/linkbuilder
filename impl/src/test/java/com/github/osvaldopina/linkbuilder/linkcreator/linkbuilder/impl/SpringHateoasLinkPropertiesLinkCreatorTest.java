@@ -46,7 +46,7 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 
 	private SpringHateoasLinkPropertiesLinkCreator springHateoasLinkPropertiesLinkCreator;
 
-	private ResourceSupport payLoadAsRessourceSupport;
+	private ResourceSupport resourceAsRessourceSupport;
 
 	private Method method = Object.class.getMethods()[0];
 
@@ -55,7 +55,7 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 	@Before
 	public void setUp() {
 
-		payLoadAsRessourceSupport = new ResourceSupport();
+		resourceAsRessourceSupport = new ResourceSupport();
 
 		springHateoasLinkPropertiesLinkCreator =
 				new SpringHateoasLinkPropertiesLinkCreator(methodCallUriGenerator, expressionExecutor, introspectionUtils);
@@ -86,8 +86,8 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, payLoadAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
 
 		replayAll();
@@ -107,8 +107,8 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, payLoadAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getMethod()).andReturn(method);
@@ -130,13 +130,13 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 	public void createWhenExpressionIsTrueAndLinkPropertiesHasRel() {
 
 		expect(linkProperties.getWhenExpression()).andReturn("expression");
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue("expression", payLoadAsRessourceSupport, params)).andReturn(true);
+		expect(expressionExecutor.isTrue("expression", resourceAsRessourceSupport, params)).andReturn(true);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, payLoadAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
 
 		replayAll();
@@ -155,10 +155,10 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 	public void createWhenExpressionIsFalse() {
 
 		expect(linkProperties.getWhenExpression()).andReturn("expression");
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue("expression", payLoadAsRessourceSupport, params)).andReturn(false);
+		expect(expressionExecutor.isTrue("expression", resourceAsRessourceSupport, params)).andReturn(false);
 
 		replayAll();
 
@@ -172,17 +172,17 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, payLoadAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
 
 		replayAll();
 
 		springHateoasLinkPropertiesLinkCreator.createAndSet(linkProperties);
 
-		assertThat(payLoadAsRessourceSupport.getLinks(), hasSize(1));
-		Link link = payLoadAsRessourceSupport.getLinks().get(0);
+		assertThat(resourceAsRessourceSupport.getLinks(), hasSize(1));
+		Link link = resourceAsRessourceSupport.getLinks().get(0);
 		assertThat(link.getHref(), is("controller-uri"));
 		assertThat(link.getRel(), is("rel"));
 
@@ -193,16 +193,16 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 	public void createAndSetLinkIsNull() {
 
 		expect(linkProperties.getWhenExpression()).andReturn("expression");
-		expect(linkProperties.getPayload()).andReturn(payLoadAsRessourceSupport);
+		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getParams()).andReturn(params);
-		expect(expressionExecutor.isTrue("expression", payLoadAsRessourceSupport, params)).andReturn(false);
+		expect(expressionExecutor.isTrue("expression", resourceAsRessourceSupport, params)).andReturn(false);
 
 		replayAll();
 
 		springHateoasLinkPropertiesLinkCreator.createAndSet(linkProperties);
 
-		assertThat(payLoadAsRessourceSupport.getLinks(), hasSize(0));
+		assertThat(resourceAsRessourceSupport.getLinks(), hasSize(0));
 
 		verifyAll();
 	}

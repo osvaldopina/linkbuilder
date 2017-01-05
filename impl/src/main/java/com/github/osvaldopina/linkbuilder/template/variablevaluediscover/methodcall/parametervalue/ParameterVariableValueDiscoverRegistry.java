@@ -6,6 +6,6 @@ import com.github.osvaldopina.linkbuilder.template.Variables;
 public interface ParameterVariableValueDiscoverRegistry {
 
 
-    ParameterVariableValueDiscover get(Variables variables, MethodCall methodCall, Object payload, int parameterIndex);
+    ParameterVariableValueDiscover get(Variables variables, MethodCall methodCall, Object resource, int parameterIndex);
 
 }

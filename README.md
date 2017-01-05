@@ -49,14 +49,14 @@ Then  use ```@Links, @Link``` to point to a target method:
     @EnableSelfFromCurrentCall
     @Links({
             @Link(destination = RootRestController.class, target = "direct", relation = "direct", params = {
-                    @Param(name = "query",value = "#payload.queryValue"),
-                    @Param(name = "path",value = "#payload.pathValue")
+                    @Param(name = "query",value = "#resource.queryValue"),
+                    @Param(name = "path",value = "#resource.pathValue")
             })
     })
-    public Payload root() {
+    public Resource root() {
 ...
 ```
-Then when perform a GET on previous controller (GET http://localhost:8080/ calling ```public Payload root()```)
+Then when perform a GET on previous controller (GET http://localhost:8080/ calling ```public Resource root()```)
 you get the following reponse:
 ```json
 {
@@ -82,9 +82,9 @@ you get the following reponse:
 ## Spel expressions for link conditional rendering
 
  ```java
-         ResourceSupport payload = new ResourceSupport();
+         ResourceSupport resource = new ResourceSupport();
 
-         LinksBuilder  linksBuilder = linksBuilderFactory.create();
+         LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
 
          linksBuilder.link()
                  .withRel("link-for-authenticated-users")
@@ -92,27 +92,27 @@ you get the following reponse:
                  .fromControllerCall(ARestController.class)
                  .someControllerMethod();
 
-         payload.add(linksBuilder.buildAll());
+         linksBuilder.buildAndSetAll());
 
-         return payload;
+         return reosurce;
  ```
 
 ## Resource acessible via Spel expressions
 
  ```java
-         ResourceSupport payload = new ResourceSupport();
+         ResourceSupport resource = new ResourceSupport();
 
-         LinksBuilder  linksBuilder = linksBuilderFactory.create(payload);
+         LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
 
          linksBuilder.link()
                  .withRel("link-for-authenticated-users")
-                 .when("#payload.someProperty && isAuthenticated()" )
+                 .when("#resource.someProperty && isAuthenticated()" )
                  .fromControllerCall(ARestController.class)
                  .someControllerMethod();
 
-         payload.add(linksBuilder.buildAll());
+         linksBuilder.buildAndSetAll());
 
-         return payload;
+         return resource;
  ```
 
 
@@ -162,7 +162,7 @@ public class RootRestController {
 ### Create the ```LinksBuilder``` than the ```LinkBuilder```, configure them, and then build the links.
 
 ```java
-        LinksBuilder  linksBuilder = linksBuilderFactory.create();
+        LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
 
         linksBuilder
               .link()
@@ -181,6 +181,6 @@ public class RootRestController {
               .fromControllerCall(RootRestController.class)
               .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
 
-        payload.add(linksBuilder.buildAll());
+        linksBuilder.buildAndSetAll());
  ```
 

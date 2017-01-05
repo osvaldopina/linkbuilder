@@ -15,11 +15,11 @@ public interface LinksBuilderFactory {
     LinksBuilder create();
 
     /**
-     * Creates a new LinkBuilder and includes payload as
-     * @param payload  Object to be setted as 'payload' variable in expression context
+     * Creates a new LinkBuilder and includes resource as
+     * @param resource  Object to be setted as 'resource' variable in expression context
      *
      * @see LinksBuilder
      * @return New LinkBuilder
      */
-     LinksBuilder create(Object payload);
+     LinksBuilder create(Object resource);
 }

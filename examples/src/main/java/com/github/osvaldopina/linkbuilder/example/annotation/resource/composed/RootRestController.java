@@ -1,12 +1,8 @@
 package com.github.osvaldopina.linkbuilder.example.annotation.resource.composed;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
 import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.LINK_DESTINATION;
 import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.MyGenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.MyLink;
-import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.MyLinks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +18,13 @@ public class RootRestController {
 
     @RequestMapping("/")
     @MyGenerateUriTemplateFor(destination = LINK_DESTINATION.ROOT)
-    public Payload root() {
-        Payload payload = new Payload();
+    public Resource root() {
+        Resource resource = new Resource();
 
-        payload.setQueryValue("anyQueryValue");
-        payload.setPathValue("anyPathValue");
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
 
-        return payload;
+        return resource;
     }
 
     @RequestMapping("/direct-link/{path}")

@@ -22,7 +22,7 @@ public class RequestBodyParameterVariableValueDiscover implements ParameterVaria
 
     @Override
     public List<VariableValue> getVariableValues(Variables variables, MethodCall methodCall,
-                                                 Object payload, int parameterIndex, ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
+                                                 Object resource, int parameterIndex, ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
         return Collections.EMPTY_LIST;
     }
 

@@ -7,7 +7,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 @HalLinks({
 		@HalLink(controller = RootRestController.class, overridedRel = "self" , rel = "second",
-				params = {@Param(name = "name", value = "#payload.name")})
+				params = {@Param(name = "name", value = "#resource.name")})
 })
 public class SecondTypeEmbeddedPayload extends ResourceSupport {
 

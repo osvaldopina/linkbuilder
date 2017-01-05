@@ -53,7 +53,7 @@ public class PageableVariableValueDiscoverTest extends EasyMockSupport {
 	@Mock
 	Pageable pageable;
 
-	Object payload = new Object();
+	Object resource = new Object();
 
 	@Mock
 	ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies;
@@ -90,7 +90,7 @@ public class PageableVariableValueDiscoverTest extends EasyMockSupport {
 		replayAll();
 
 		List<VariableValue> variableValueList = pageableParameterVariableValueDiscover.
-				getVariableValues(variables, methodCall, payload, pageableParameterIndex, conditionalVariableSubstitutionStrategies);
+				getVariableValues(variables, methodCall, resource, pageableParameterIndex, conditionalVariableSubstitutionStrategies);
 
 		verifyAll();
 
