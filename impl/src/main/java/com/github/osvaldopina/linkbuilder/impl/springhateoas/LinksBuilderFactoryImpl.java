@@ -24,7 +24,7 @@ public class LinksBuilderFactoryImpl implements LinksBuilderFactory {
     }
 
     @Override
-    public LinksBuilderImpl create() {
+    public LinksBuilder create() {
         return new LinksBuilderImpl(currentCallLocator, linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
     }
 

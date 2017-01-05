@@ -28,6 +28,6 @@ public class ParameterValueDiscoverRegistryImpl implements ParameterVariableValu
             }
         }
         throw new LinkBuilderException("Could not find a ParameterVariableValueDiscover for parameter #" +
-                parameterIndex + " in method " + methodCall.getMethod());
+                parameterIndex + " in controller " + methodCall.getMethod());
     }
 }

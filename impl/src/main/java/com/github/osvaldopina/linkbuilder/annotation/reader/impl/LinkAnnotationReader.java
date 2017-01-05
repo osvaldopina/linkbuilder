@@ -1,6 +1,5 @@
 package com.github.osvaldopina.linkbuilder.annotation.reader.impl;
 
-import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.annotation.Param;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReader;
@@ -8,9 +7,11 @@ import com.github.osvaldopina.linkbuilder.annotation.reader.core.DestinationExtr
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.LinkRelExtractor;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +24,38 @@ public class LinkAnnotationReader implements AnnotationReader {
 
     private ReflectionUtils reflectionUtils = ReflectionUtils.INSTANCE;
 
+    private IntrospectionUtils introspectionUtils;
+
+    public LinkAnnotationReader(IntrospectionUtils introspectionUtils) {
+        this.introspectionUtils = introspectionUtils;
+    }
+
 
     @Override
     public boolean canRead(Method method) {
-
-        return getLinksAnnotation(method) != null;
+        return introspectionUtils.hasComposedAnnotation(method, Links.class);
 
     }
 
     @Override
+    public boolean canRead(Class<?> payloadType) {
+        return introspectionUtils.hasComposedAnnotation(payloadType, Links.class);
+    }
+
+    @Override
     public List<LinkAnnotationProperties> read(Method method) {
-        Annotation  linksAnnotation = getLinksAnnotation(method);
+        return readAnnotation(method);
+    }
+
+    @Override
+    public List<LinkAnnotationProperties> read(Class<?> payloadType) {
+        return readAnnotation(payloadType);
+    }
+
+
+
+    private List<LinkAnnotationProperties> readAnnotation(AnnotatedElement annotatedElement) {
+        Annotation  linksAnnotation = introspectionUtils.getComposedAnnotation(annotatedElement, Links.class);
 
         List<LinkAnnotationProperties> linkAnnotationProperties = new ArrayList<LinkAnnotationProperties>();
         for(Annotation link :reflectionUtils.callMethod(Annotation[].class, linksAnnotation, "value")) {
@@ -42,16 +64,7 @@ public class LinkAnnotationReader implements AnnotationReader {
         return linkAnnotationProperties;
     }
 
-    private Annotation getLinksAnnotation(Method method) {
-        for(Annotation annotation: method.getDeclaredAnnotations()) {
-            if (Links.class == annotation.annotationType() ||
-                    annotation.annotationType().getAnnotation(Links.class) != null)  {
-                return annotation;
-            }
-        }
-        return null;
 
-    }
 
     private LinkAnnotationProperties readLinkAnnotion(Annotation linkAnnotation) {
         String destination = destinationExtractor.extract(linkAnnotation);

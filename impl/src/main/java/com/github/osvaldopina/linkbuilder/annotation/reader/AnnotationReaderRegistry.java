@@ -7,4 +7,7 @@ public interface AnnotationReaderRegistry {
 
     AnnotationReader get(Method method);
 
+    AnnotationReader get(Class<?> payload);
+
+
 }

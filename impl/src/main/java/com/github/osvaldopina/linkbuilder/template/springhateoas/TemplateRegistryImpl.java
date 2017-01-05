@@ -16,24 +16,40 @@ public class TemplateRegistryImpl implements TemplateRegistry {
     private Map<Method, Template> templates;
 
     private ResourceMethodRegistry resourceMethodRegistry;
-
     private TemplateGenerator templateGenerator;
 
-    public TemplateRegistryImpl(Map<Method,Template> templates) {
-        this.templates = new HashMap<Method, Template>(templates);
+    public TemplateRegistryImpl(ResourceMethodRegistry resourceMethodRegistry, TemplateGenerator templateGenerator) {
+        this.resourceMethodRegistry = resourceMethodRegistry;
+        this.templateGenerator = templateGenerator;
     }
 
 
     @Override
     public Template getTemplate(Method method) {
+
+
+        if (templates == null) {
+               templates = createTempates();
+        }
+
         Template template = templates.get(method);
 
         if (template == null) {
             throw new LinkBuilderException(
-                    "Could not generate template for method " +
+                    "Could not generate template for controller " +
                             method + " check if its annotated with @" + GenerateUriTemplateFor.class.getName());
         }
         return template;
+    }
+
+    private Map<Method,Template> createTempates() {
+        Map<Method,Template> templates = new HashMap<Method, Template>();
+
+        for (Method method : resourceMethodRegistry.getResourceMethods()) {
+            templates.put(method, templateGenerator.generate(method));
+        }
+        return templates;
+
     }
 
 }

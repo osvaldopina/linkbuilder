@@ -23,7 +23,7 @@ public class AnnotatedMethodUriGeneratorsImpl implements AnnotatedMethodUriGener
                 return annotatedMethodUriGenerator;
             }
         }
-        throw new LinkBuilderException("Could not find a AnnotatedMethodUriGenerator for method " + method.getName());
+        throw new LinkBuilderException("Could not find a AnnotatedMethodUriGenerator for controller " + method.getName());
     }
 
 

@@ -30,18 +30,33 @@ public class HalLinkAnnotationReader implements AnnotationReader {
 
     @Override
     public boolean canRead(Method method) {
-        return halLinkAnnotationRetriever.getLinksAnnotation(method) != null;
+        return halLinkAnnotationRetriever.getLinksAnnotation(method.getDeclaredAnnotations()) != null;
+    }
+
+    @Override
+    public boolean canRead(Class<?> payload) {
+        return halLinkAnnotationRetriever.getLinksAnnotation(payload.getDeclaredAnnotations()) != null;
     }
 
     @Override
     public List<LinkAnnotationProperties> read(Method method) {
-        Annotation  linksAnnotation = halLinkAnnotationRetriever.getLinksAnnotation(method);
+        return readHalLinkProperties(method.getDeclaredAnnotations());
+    }
+
+    @Override
+    public List<LinkAnnotationProperties> read(Class<?> payloadType) {
+        return readHalLinkProperties(payloadType.getDeclaredAnnotations());
+    }
+
+    private List<LinkAnnotationProperties> readHalLinkProperties(Annotation[] annotations) {
+        Annotation  linksAnnotation = halLinkAnnotationRetriever.getLinksAnnotation(annotations);
 
         List<LinkAnnotationProperties> linkAnnotationProperties = new ArrayList<LinkAnnotationProperties>();
         for(Annotation link :reflectionUtils.callMethod(Annotation[].class, linksAnnotation, "value")) {
             linkAnnotationProperties.add(readHalLinkAnnotion(link));
         }
         return linkAnnotationProperties;
+
     }
 
     private HalLinkAnnotationProperties readHalLinkAnnotion(Annotation linkAnnotation) {

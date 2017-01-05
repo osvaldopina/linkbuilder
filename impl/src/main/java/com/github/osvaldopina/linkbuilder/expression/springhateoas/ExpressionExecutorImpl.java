@@ -14,9 +14,11 @@ import org.springframework.util.Assert;
 
 public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationContextAware {
 
+    // TODO singletons
     private EvaluationContextCreator evaluationContextCreator =
             new EvaluationContextCreator();
 
+    // TODO singletons
     private SecurityExpressionParser securityExpressionParser =
             new SecurityExpressionParser();
 
@@ -42,8 +44,6 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
 
     @Override
     public Object getValue(String expression, Object payload, Object[] params) {
-        Assert.notNull(SecurityContextHolder.getContext().getAuthentication(), "Authentication is null. " +
-                "Is expression enabled?");
 
         EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
 

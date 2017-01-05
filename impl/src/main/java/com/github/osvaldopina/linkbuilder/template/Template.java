@@ -9,7 +9,7 @@ public class Template {
 
     private Variables variables;
 
-    private UriTemplateVariableSetter uriTemplateVariableSetter = new UriTemplateVariableSetter();
+    private UriTemplateVariableSetter uriTemplateVariableSetter = UriTemplateVariableSetter.INSTANCE;
 
     public Template(UriTemplate uriTemplate, Variables variables) {
         this.uriTemplate = uriTemplate;
@@ -35,6 +35,10 @@ public class Template {
 
     public Variables getVariables() {
         return variables;
+    }
+
+    public UriTemplate getUriTemplate() {
+        return uriTemplate;
     }
 
 

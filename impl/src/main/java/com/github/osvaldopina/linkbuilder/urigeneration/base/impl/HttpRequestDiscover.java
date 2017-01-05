@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class HttpRequestDiscover {
 
+    public static final HttpRequestDiscover INSTANCE = new HttpRequestDiscover();
+
+    HttpRequestDiscover() {
+
+    }
+
     public HttpServletRequest getCurrentRequest() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         Assert.state(requestAttributes != null, "Could not find current request via RequestContextHolder");

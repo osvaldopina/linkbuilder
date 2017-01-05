@@ -25,7 +25,7 @@ public class VariableValues {
                 getVariableNames());
     }
 
-    public List<String> getVariableNames() {
+    private List<String> getVariableNames() {
         List<String> variableNames = new ArrayList<String>();
         for(VariableValue variableValue:variableValues) {
             variableNames.add(variableValue.getVariable().getName());

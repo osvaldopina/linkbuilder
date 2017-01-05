@@ -27,7 +27,7 @@ public class HalLinkAnnotationRetrieverTest {
 
 	@Test
 	public void getLinksAnnotation_linksMethod() throws Exception {
-		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(linksMethod);
+		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(linksMethod.getDeclaredAnnotations());
 
 		assertThat(annotation, is(instanceOf(HalLinks.class)));
 
@@ -35,7 +35,7 @@ public class HalLinkAnnotationRetrieverTest {
 
 	@Test
 	public void getLinksAnnotation_myLinksMethod() throws Exception {
-		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(myLinksMethod);
+		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(myLinksMethod.getDeclaredAnnotations());
 
 		assertThat(annotation, is(instanceOf(MyLinks.class)));
 
@@ -43,7 +43,7 @@ public class HalLinkAnnotationRetrieverTest {
 
 	@Test
 	public void getLinksAnnotation_noLinksMethod() throws Exception {
-		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(noLinksMethod);
+		Annotation annotation = halLinkAnnotationRetriever.getLinksAnnotation(noLinksMethod.getDeclaredAnnotations());
 
 		assertThat(annotation, is(nullValue()));
 

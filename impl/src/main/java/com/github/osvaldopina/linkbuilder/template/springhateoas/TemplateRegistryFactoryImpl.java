@@ -12,21 +12,22 @@ import java.util.Map;
 
 public class TemplateRegistryFactoryImpl implements TemplateRegistryFactory {
 
-    private TemplateGenerator templateGenerator;
-
-    public TemplateRegistryFactoryImpl(TemplateGenerator templateGenerator) {
-        this.templateGenerator = templateGenerator;
-    }
-
-
-    @Override
-    public TemplateRegistry createTemplateRegistry(ResourceMethodRegistry resourceMethodRegistry) {
-
-        Map<Method,Template> templates = new HashMap<Method, Template>();
-
-        for (Method method : resourceMethodRegistry.getResourceMethods()) {
-            templates.put(method, templateGenerator.generate(method));
-        }
-        return new TemplateRegistryImpl(templates);
-    }
+    // TODO remover
+//    private TemplateGenerator templateGenerator;
+//
+//    public TemplateRegistryFactoryImpl(TemplateGenerator templateGenerator) {
+//        this.templateGenerator = templateGenerator;
+//    }
+//
+//
+//    @Override
+//    public TemplateRegistry createTemplateRegistry(ResourceMethodRegistry resourceMethodRegistry) {
+//
+//        Map<Method,Template> templates = new HashMap<Method, Template>();
+//
+//        for (Method method : resourceMethodRegistry.getResourceMethods()) {
+//            templates.put(method, templateGenerator.generate(method));
+//        }
+//        return new TemplateRegistryImpl(templates);
+//    }
 }

@@ -1,8 +1,12 @@
 package com.github.osvaldopina.linkbuilder.utils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Set;
+
+import org.springframework.hateoas.Link;
+import sun.reflect.annotation.AnnotationType;
 
 public interface IntrospectionUtils {
 
@@ -28,4 +32,8 @@ public interface IntrospectionUtils {
 
     String getMethodDestination(Method method);
 
-  }
+    boolean hasComposedAnnotation(AnnotatedElement annotatedElement, Class<? extends Annotation> annotationType);
+
+
+    <T extends Annotation> T getComposedAnnotation(AnnotatedElement annotatedElement, Class<T> annotationType);
+}

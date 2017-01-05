@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.pageable;
 
 import com.damnhandy.uri.template.UriTemplate;
-import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
+import com.github.osvaldopina.linkbuilder.template.generation.springhateoas.UriTemplateAugmenter;
 import org.easymock.*;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Method;
-
-import static org.junit.Assert.*;
 
 public class PageableArgumentResolverTest extends EasyMockSupport {
 

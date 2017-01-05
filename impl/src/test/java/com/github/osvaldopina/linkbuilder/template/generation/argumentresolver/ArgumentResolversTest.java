@@ -36,11 +36,11 @@ public class ArgumentResolversTest  extends EasyMockSupport {
 
 //        argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 
- //       EasyMock.expect(argumentResolver.resolveFor(method, 0)).andReturn(true);
+ //       EasyMock.expect(argumentResolver.resolveFor(controller, 0)).andReturn(true);
 
         replayAll();
 
-//        assertSame(argumentResolver, argumentResolvers.getArgumentResolverFor(method, 0));
+//        assertSame(argumentResolver, argumentResolvers.getArgumentResolverFor(controller, 0));
 
         verifyAll();
 
@@ -51,11 +51,11 @@ public class ArgumentResolversTest  extends EasyMockSupport {
 
 //        argumentResolvers = new ArgumentResolvers(Arrays.asList(argumentResolver));
 //
-//        EasyMock.expect(argumentResolver.resolveFor(method, 0)).andReturn(false);
+//        EasyMock.expect(argumentResolver.resolveFor(controller, 0)).andReturn(false);
 
         replayAll();
 
-//        ArgumentResolver argumentResolver = argumentResolvers.getArgumentResolverFor(method, 0);
+//        ArgumentResolver argumentResolver = argumentResolvers.getArgumentResolverFor(controller, 0);
 //        assertNotNull(argumentResolver);
 //        assertEquals(argumentResolver.getClass(), EmptyArgumentResolver.class);
 

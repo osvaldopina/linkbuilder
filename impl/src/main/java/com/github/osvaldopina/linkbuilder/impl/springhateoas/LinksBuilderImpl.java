@@ -12,16 +12,16 @@ import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Builder for Links. This builder should be used to create a list of <code>Link</code>. The method <code>link</code>
+ * Builder for Links. This builder should be used to create a list of <code>Link</code>. The controller <code>link</code>
  * should be used to create a builder for a link.
  */
 class LinksBuilderImpl implements LinksBuilder {
 
     private Object payload;
-
     private List<SpringHateoasLinkBuilderImpl> linkBuilders = new ArrayList<SpringHateoasLinkBuilderImpl>();
     private CurrentCallLocator currentCallLocator;
     private  LinkPropertiesLinkCreators linkPropertiesLinkCreators;
@@ -65,5 +65,28 @@ class LinksBuilderImpl implements LinksBuilder {
             linkBuilder.builAndSet();
         }
     }
+
+    public Object getPayload() {
+       return payload;
+    }
+
+    public List<SpringHateoasLinkBuilderImpl> getLinkBuilders() {
+        return Collections.unmodifiableList(linkBuilders);
+    }
+
+    public CurrentCallLocator getCurrentCallLocator() {
+        return currentCallLocator;
+    }
+
+    public LinkPropertiesLinkCreators getLinkPropertiesLinkCreators() {
+        return linkPropertiesLinkCreators;
+    }
+
+    public LinkBuilderExtensionFactoryRegistry getLinkBuilderExtensionFactoryRegistry() {
+        return linkBuilderExtensionFactoryRegistry;
+    }
+
+
+
 
 }

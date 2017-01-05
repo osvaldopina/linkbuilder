@@ -5,7 +5,7 @@ import org.springframework.hateoas.Link;
 import java.util.List;
 
 /**
- * Builder for Links. This builder should be used to create a list of <code>Link</code>. The method <code>link</code>
+ * Builder for Links. This builder should be used to create a list of <code>Link</code>. The controller <code>link</code>
  * should be used to create a builder for a link.
  */
 public interface LinksBuilder {

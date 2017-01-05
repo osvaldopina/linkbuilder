@@ -59,7 +59,7 @@ public class ReflectionUtils {
         try {
             return target.getClass().getMethod(methodName).getReturnType();
         } catch (NoSuchMethodException e) {
-            throw new IllegalStateException("Could not find method " + methodName + " on " + target + " because " + e, e);
+            throw new IllegalStateException("Could not find controller " + methodName + " on " + target + " because " + e, e);
         }
     }
 

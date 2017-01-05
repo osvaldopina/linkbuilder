@@ -20,7 +20,7 @@ public class ArgumentResolverRegistry {
                 return argumentResolver;
             }
         }
-        throw new LinkBuilderException("Could not find ArgumentResolver for method " + method +
+        throw new LinkBuilderException("Could not find ArgumentResolver for controller " + method +
                 " and parameter index " + parameterIndex);
     }
 

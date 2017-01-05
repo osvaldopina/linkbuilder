@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.core;
 
+import com.github.osvaldopina.linkbuilder.template.VariablesFactory;
 import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.template.Variable;
 import com.github.osvaldopina.linkbuilder.template.Variables;
@@ -12,6 +13,8 @@ public class RequestBodyArgumentResolver implements ArgumentResolver{
 
     private IntrospectionUtils introspectionUtils;
 
+    private VariablesFactory variablesFactory = VariablesFactory.INSTANCE;
+
     public RequestBodyArgumentResolver(IntrospectionUtils introspectionUtils) {
         this.introspectionUtils = introspectionUtils;
     }
@@ -23,8 +26,7 @@ public class RequestBodyArgumentResolver implements ArgumentResolver{
 
     @Override
     public Variables create(Method method, int parameterIndex) {
-        //TODO change to empty Variables!!!!!!
-        return null;
+        return variablesFactory.create();
     }
 
 }

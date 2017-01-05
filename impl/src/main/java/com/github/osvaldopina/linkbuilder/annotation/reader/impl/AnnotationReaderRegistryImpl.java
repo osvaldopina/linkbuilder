@@ -29,4 +29,14 @@ public class AnnotationReaderRegistryImpl implements AnnotationReaderRegistry {
         }
         return null;
     }
+
+    @Override
+    public AnnotationReader get(Class<?> payload) {
+        for(AnnotationReader annotationReader:annotationReaders) {
+            if (annotationReader.canRead(payload)) {
+                return annotationReader;
+            }
+        }
+        return null;
+    }
 }

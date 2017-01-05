@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.
 import com.github.osvaldopina.linkbuilder.template.Variable;
 import com.github.osvaldopina.linkbuilder.template.VariableType;
 import com.github.osvaldopina.linkbuilder.template.Variables;
+import com.github.osvaldopina.linkbuilder.template.VariablesFactory;
 import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 
@@ -12,6 +13,8 @@ import java.util.Arrays;
 public class PathParameterArgumentResolver implements ArgumentResolver {
 
     private IntrospectionUtils introspectionUtils;
+
+    private VariablesFactory variablesFactory = VariablesFactory.INSTANCE;
 
     public PathParameterArgumentResolver(IntrospectionUtils introspectionUtils) {
         this.introspectionUtils = introspectionUtils;
@@ -24,14 +27,12 @@ public class PathParameterArgumentResolver implements ArgumentResolver {
 
     @Override
     public Variables create(Method method, int parameterIndex) {
-        return new Variables(
+        return variablesFactory.create(
                 Arrays.asList(
                         new Variable(
                                 introspectionUtils.getPathVariableName(method, parameterIndex),
                                 VariableType.PATH,
                                 method,
-                                parameterIndex)
-                )
-        );
+                                parameterIndex)));
     }
 }

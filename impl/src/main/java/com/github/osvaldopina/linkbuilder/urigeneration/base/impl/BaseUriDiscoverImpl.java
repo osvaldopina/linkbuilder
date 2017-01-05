@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+// TODO verify performance
 public class BaseUriDiscoverImpl implements BaseUriDiscover {
 
-    private HttpRequestDiscover httpRequestDiscover = new HttpRequestDiscover();
+    private HttpRequestDiscover httpRequestDiscover = HttpRequestDiscover.INSTANCE;
 
     @Autowired
     private RequestPartsFactoryList requestPartsFactoryList;
+
+ //   private  ChainedRequestParts rootChainedRequestParts;
+
 
 
     @Override

@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder;
 
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategy;
 
 import java.util.List;
@@ -54,8 +54,8 @@ public class BaseLinkProperties implements LinkProperties {
     }
 
     @Override
-    public ConditionalVariableSubstituionStrategies getConditionalVariableSubstituionStrategies() {
-         return new ConditionalVariableSubstituionStrategies(conditionalVariableSubstituionStrategyList);
+    public ConditionalVariableSubstitutionStrategies getConditionalVariableSubstituionStrategies() {
+         return new ConditionalVariableSubstitutionStrategies(conditionalVariableSubstituionStrategyList);
     }
 
     @Override

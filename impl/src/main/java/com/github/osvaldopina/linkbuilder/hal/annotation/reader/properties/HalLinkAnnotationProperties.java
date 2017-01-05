@@ -17,7 +17,9 @@ public class HalLinkAnnotationProperties extends LinkAnnotationProperties {
             List<LinkAnnotationParameter> parameters) {
 
         super(destination, rel, templated, parameters);
-        this.hreflang = hreflang;
+        if (!"".equals(hreflang.trim())) {
+            this.hreflang = hreflang;
+        }
     }
 
     public String getHreflang() {

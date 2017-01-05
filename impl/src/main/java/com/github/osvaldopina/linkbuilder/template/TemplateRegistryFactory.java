@@ -4,5 +4,6 @@ import com.github.osvaldopina.linkbuilder.resoucemethod.ResourceMethodRegistry;
 
 public interface TemplateRegistryFactory {
 
-    TemplateRegistry createTemplateRegistry(ResourceMethodRegistry resourceMethodRegistry);
+    // TODO remover
+//    TemplateRegistry createTemplateRegistry(ResourceMethodRegistry resourceMethodRegistry);
 }

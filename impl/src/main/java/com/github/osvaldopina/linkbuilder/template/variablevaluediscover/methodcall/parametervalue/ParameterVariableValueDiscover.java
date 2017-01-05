@@ -3,16 +3,17 @@ package com.github.osvaldopina.linkbuilder.template.variablevaluediscover.method
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.template.VariableValue;
 import com.github.osvaldopina.linkbuilder.template.Variables;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ParameterVariableValueDiscover {
 
 
-    Collection<VariableValue> getVariableValues(
+    List<VariableValue> getVariableValues(
             Variables variables, MethodCall methodCall, Object payload, int parameterIndex,
-            ConditionalVariableSubstituionStrategies conditionalVariableSubstituionStrategies);
+            ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies);
 
     boolean canDiscover(MethodCall methodCall, int parameterIndex);
 

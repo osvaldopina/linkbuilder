@@ -4,13 +4,14 @@ import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.template.Variable;
 import com.github.osvaldopina.linkbuilder.template.VariableValue;
 import com.github.osvaldopina.linkbuilder.template.Variables;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.ParameterVariableValueDiscover;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class QueryParameterVariableValueDiscover implements ParameterVariableValueDiscover {
 
@@ -22,9 +23,9 @@ public class QueryParameterVariableValueDiscover implements ParameterVariableVal
 
 
     @Override
-    public Collection<VariableValue> getVariableValues(
+    public List<VariableValue> getVariableValues(
             Variables variables, MethodCall methodCall,Object payload, int parameterIndex,
-            ConditionalVariableSubstituionStrategies conditionalVariableSubstituionStrategies) {
+            ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
 
 
@@ -32,8 +33,9 @@ public class QueryParameterVariableValueDiscover implements ParameterVariableVal
 
         Variable variable = variables.get(variableName);
 
-        if (conditionalVariableSubstituionStrategies.shouldSubstitute(variable, methodCall.getParam(parameterIndex))) {
-            return Arrays.asList(new VariableValue(variable, methodCall.getParam(parameterIndex)));
+        Object param = methodCall.getParam(parameterIndex);
+        if (conditionalVariableSubstitutionStrategies.shouldSubstitute(variable, param)) {
+            return Arrays.asList(new VariableValue(variable,param));
         }
         else {
             return Collections.EMPTY_LIST;

@@ -5,7 +5,7 @@ import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.template.Template;
 import com.github.osvaldopina.linkbuilder.template.TemplateRegistry;
 import com.github.osvaldopina.linkbuilder.template.VariableValues;
-import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstituionStrategies;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.MethodCallVariableValuesDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.UrlPathContatenator;
@@ -35,18 +35,18 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator {
 
         Template template = templateRegistry.getTemplate(methodCall.getMethod());
 
-        return generateUri(methodCall, payload, new ConditionalVariableSubstituionStrategies());
+        return generateUri(methodCall, payload, new ConditionalVariableSubstitutionStrategies());
 
     }
 
     @Override
     public String generateUri(MethodCall methodCall, Object payload,
-                              ConditionalVariableSubstituionStrategies conditionalVariableSubstituionStrategies) {
+                              ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
 
         Template template = templateRegistry.getTemplate(methodCall.getMethod());
 
         VariableValues variableValues = methodCallVariableValuesDiscover.getVariableValues(
-                template.getVariables(), methodCall, payload, conditionalVariableSubstituionStrategies);
+                template.getVariables(), methodCall, payload, conditionalVariableSubstitutionStrategies);
 
         return urlPathContatenator.concat(baseUriDiscover.getBaseUri(), template.toUri(variableValues));
 

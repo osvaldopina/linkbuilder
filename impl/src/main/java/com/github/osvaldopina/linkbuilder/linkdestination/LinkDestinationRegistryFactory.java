@@ -4,6 +4,7 @@ import com.github.osvaldopina.linkbuilder.resoucemethod.ResourceMethodRegistry;
 
 public interface LinkDestinationRegistryFactory {
 
-    LinkDestinationRegistry createDestinationRegistry(ResourceMethodRegistry resourceMethodRegistry);
+    // TODO remover
+  //  LinkDestinationRegistry createDestinationRegistry(ResourceMethodRegistry resourceMethodRegistry);
 
 }

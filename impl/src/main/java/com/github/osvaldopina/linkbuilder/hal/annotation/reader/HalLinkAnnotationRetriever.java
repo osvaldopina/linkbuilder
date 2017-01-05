@@ -13,8 +13,8 @@ public class HalLinkAnnotationRetriever {
 
 	}
 
-	public Annotation getLinksAnnotation(Method method) {
-		for(Annotation annotation: method.getDeclaredAnnotations()) {
+	public Annotation getLinksAnnotation(Annotation[] declaredAnnotations) {
+		for(Annotation annotation: declaredAnnotations) {
 			if (HalLinks.class == annotation.annotationType() ||
 					annotation.annotationType().getAnnotation(HalLinks.class) != null)  {
 				return annotation;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
@@ -110,6 +111,23 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean hasComposedAnnotation(AnnotatedElement annotatedElement, Class<? extends Annotation> annotationType) {
+        return AnnotationUtils.getAnnotation(annotatedElement, annotationType) != null;
+    }
+
+
+    @Override
+    public <T extends Annotation> T getComposedAnnotation(AnnotatedElement annotatedElement, Class<T> annotationType) {
+        for(Annotation elementAnnotation:annotatedElement.getDeclaredAnnotations()) {
+            if (elementAnnotation.annotationType().equals(annotationType) ||
+                    elementAnnotation.annotationType().getAnnotation(annotationType) != null) {
+                return (T) elementAnnotation;
+            }
+        }
+        throw new LinkBuilderException("Could not find composed annotation " + annotationType + " in " + annotatedElement);
     }
 
 
