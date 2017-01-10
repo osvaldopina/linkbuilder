@@ -11,6 +11,7 @@ import com.github.osvaldopina.linkbuilder.annotation.linkcreator.LinkAnnotationC
 import com.github.osvaldopina.linkbuilder.annotation.linkcreator.springhateoas.LinkAnnotationCreatorRegistryImpl;
 import com.github.osvaldopina.linkbuilder.annotation.linkcreator.springhateoas.SpringHateoasLinkAnnotationCreator;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReader;
+import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderCache;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderRegistry;
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.AnnotationReaderRegistryImpl;
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
@@ -172,19 +173,12 @@ public class LinkBuilderAutoConfiguration {
 	}
 
 
-	// TODO remover ResourceMethodRegistry
 	@Bean
 	@Autowired
 	public LinkDestinationRegistry destinationRegistry(ResourceMethodRegistry resourceMethodRegistry,
 													   IntrospectionUtils introspectionUtils) {
 		return new LinkDestinationRegistryImpl(resourceMethodRegistry, introspectionUtils);
 	}
-
-//	@Bean
-//	@Autowired
-//	public LinkDestinationRegistryFactory destinationRegistryFactory(IntrospectionUtils introspectionUtils) {
-//		return new LinkDestinationRegistryFactoryImpl(introspectionUtils);
-//	}
 
 	@Bean
 	@Autowired
@@ -209,34 +203,11 @@ public class LinkBuilderAutoConfiguration {
 		return new ParameterValueDiscoverRegistryImpl(parameterVariableValueDiscovers);
 	}
 
-	// TODO remover
-//	@Bean
-//	@Autowired
-//	public ResourceMethodRegistryFactory methodRegistryFactory(RequestMappingHandlerMapping handlerMapping,
-//															   IntrospectionUtils introspectionUtils) {
-//		return new ResourceMethodRegistryFactoryImpl(handlerMapping, introspectionUtils);
-//	}
-
-
-//	@Bean
-//	@Autowired
-//	@DependsOn("requestMappingHandlerMapping")
-//	public ResourceMethodRegistryFactory methodRegistryFactory(IntrospectionUtils introspectionUtils) {
-//		return new ResourceMethodRegistryFactoryImpl(introspectionUtils);
-//	}
-
-
 	@Bean
 	@Autowired
 	public TemplateRegistry templateRegistry(ResourceMethodRegistry resourceMethodRegistry, TemplateGenerator templateGenerator) {
 		return new TemplateRegistryImpl(resourceMethodRegistry, templateGenerator);
 	}
-
-//	@Bean
-//	@Autowired
-//	public TemplateRegistryFactory createTemplateRegistryFactory(TemplateGenerator templateGenerator) {
-//		return new TemplateRegistryFactoryImpl(templateGenerator);
-//	}
 
 	@Bean
 	@Autowired
@@ -386,8 +357,12 @@ public class LinkBuilderAutoConfiguration {
 
 	@Bean
 	@Autowired
-	public AnnotationUriGenerator annotationUriGenerator(LinkDestinationRegistry linkDestinationRegistry, TemplateRegistry templateRegistry, AnnotationVariableValuesDiscover annotationVariableValuesDiscover) {
-		return new AnnotationUriGeneratorImpl(linkDestinationRegistry, templateRegistry, annotationVariableValuesDiscover);
+	public AnnotationUriGenerator annotationUriGenerator(LinkDestinationRegistry linkDestinationRegistry,
+														 TemplateRegistry templateRegistry,
+														 AnnotationVariableValuesDiscover annotationVariableValuesDiscover,
+														 BaseUriDiscover baseUriDiscover) {
+		return new AnnotationUriGeneratorImpl(linkDestinationRegistry, templateRegistry,
+				annotationVariableValuesDiscover,baseUriDiscover);
 	}
 
 
@@ -400,23 +375,9 @@ public class LinkBuilderAutoConfiguration {
 			MethodCallUriGenerator methodCallUriGenerator,
 			HalLinkAnnotationReader halLinkAnnotationReader,
 			ObjectMapper objectMapper) {
-		return new SpringHateoasHalLinkAnnotationCreator(baseUriDiscover, annotationUriGenerator,
-				introspectionUtils, methodCallUriGenerator, halLinkAnnotationReader, objectMapper);
+		return new SpringHateoasHalLinkAnnotationCreator(annotationUriGenerator,
+				introspectionUtils, methodCallUriGenerator,new AnnotationReaderCache(halLinkAnnotationReader), objectMapper);
 	}
-
-	// TODO voltar
-//	@Bean
-//	@Autowired
-//	public SpringHateoasHalLinkAnnotationCreator springHateoasHalLinkAnnotationPropertiesLinkCreator(
-//			BaseUriDiscover baseUriDiscover,
-//			AnnotationUriGenerator annotationUriGenerator,
-//			IntrospectionUtils introspectionUtils,
-//			MethodCallUriGenerator methodCallUriGenerator,
-//			HalLinkAnnotationReader halLinkAnnotationReader,
-//			ObjectMapper objectMapper) {
-//		return new SpringHateoasHalLinkAnnotationCreator(baseUriDiscover, annotationUriGenerator,
-//				introspectionUtils, methodCallUriGenerator, halLinkAnnotationReader, objectMapper);
-//	}
 
 	@Bean
 	public AnnotationReader halLinkAnnotationReader() {

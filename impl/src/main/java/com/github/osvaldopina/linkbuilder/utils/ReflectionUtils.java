@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.utils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 
@@ -17,7 +18,11 @@ public class ReflectionUtils {
 
     public <E> E callMethod(Class<E> type, Object target, String methodName, Object... args) {
         try {
-            return (E) target.getClass().getMethod(methodName).invoke(target);
+            Method method =  target.getClass().getMethod(methodName);
+            if (method == null) {
+                throw new IllegalStateException("Could not find Method " + methodName + " on " + target);
+            }
+            return (E) method.invoke(target);
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("Could not call Method " + methodName + " on " + target + " because " + e, e);
         } catch (InvocationTargetException e) {

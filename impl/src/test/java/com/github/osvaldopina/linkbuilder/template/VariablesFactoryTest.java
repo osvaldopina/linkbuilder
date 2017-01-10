@@ -22,7 +22,7 @@ public class VariablesFactoryTest {
 
 	Variable one = new Variable("one", VariableType.QUERY, method, 0);
 
-	Variable other = new Variable("other", VariableType.QUERY, method, 0);;
+	Variable other = new Variable("other", VariableType.QUERY, method, 0);
 
 	Variables oneVariables;
 

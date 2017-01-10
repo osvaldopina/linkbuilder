@@ -82,9 +82,8 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 
 	private void createAndSetForMethodAnnotations(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
 		if (resource instanceof ResourceSupport) {
-			String baseUri = baseUriDiscover.getBaseUri();
 			String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
-			((ResourceSupport) resource).add(new Link(urlPathContatenator.concat(baseUri, linkUri), linkAnnotationProperties.getRel()));
+			((ResourceSupport) resource).add(new Link(linkUri, linkAnnotationProperties.getRel()));
 		} else {
 			throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
 		}

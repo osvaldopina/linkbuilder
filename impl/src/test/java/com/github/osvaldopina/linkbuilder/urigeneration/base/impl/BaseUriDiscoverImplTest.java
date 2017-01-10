@@ -1,6 +1,5 @@
 package com.github.osvaldopina.linkbuilder.urigeneration.base.impl;
 
-;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactory;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ChainedRequestParts;

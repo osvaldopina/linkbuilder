@@ -14,8 +14,7 @@ public class XForwardedProtoHeaderPartsFactory implements RequestPartsFactory {
         String scheme = null;
 
         String protocolHeader = request.getHeader("X-Forwarded-Proto")==null?
-                "":
-                request.getHeaders("X-Forwarded-Proto").nextElement().toString();
+                "":request.getHeaders("X-Forwarded-Proto").nextElement().toString();
 
         if (StringUtils.hasText(protocolHeader)) {
             String[] protocols = StringUtils.commaDelimitedListToStringArray(protocolHeader);

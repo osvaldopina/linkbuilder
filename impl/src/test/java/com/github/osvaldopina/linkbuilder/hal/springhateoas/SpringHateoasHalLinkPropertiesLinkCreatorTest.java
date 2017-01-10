@@ -20,7 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.hateoas.ResourceSupport;
 
-// TODO verify the implementation because test is to long and complex!!!!
+
 public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSupport {
 
 	@Rule

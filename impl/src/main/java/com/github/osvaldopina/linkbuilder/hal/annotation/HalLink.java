@@ -25,7 +25,7 @@ public @interface HalLink {
 
     Param[] params() default {};
 
-    static class NullDestination {
+    class NullDestination {
 
     }
 }

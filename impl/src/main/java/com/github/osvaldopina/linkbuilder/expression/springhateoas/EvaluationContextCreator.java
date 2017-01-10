@@ -8,6 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class EvaluationContextCreator {
 
+	public static final EvaluationContextCreator INSTANCE = new EvaluationContextCreator();
+
+	protected EvaluationContextCreator() {
+
+	}
+
 	private SecurityExpressionHandler securityExpressionHandler = new SecurityExpressionHandler();
 
 	private DummyFilterInvocationCreator dummyFilterInvocationCreator = new DummyFilterInvocationCreator();

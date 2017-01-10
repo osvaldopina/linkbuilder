@@ -1,18 +1,16 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderCache;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
+import com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.EmbeddedValuesDiscover;
 import com.github.osvaldopina.linkbuilder.hal.annotation.reader.HalLinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.hal.annotation.reader.properties.HalLinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.hal.springhateoas.HalLink;
@@ -27,8 +25,6 @@ import org.springframework.hateoas.ResourceSupport;
 public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCreator {
 
 
-    private BaseUriDiscover baseUriDiscover;
-
     private AnnotationUriGenerator annotationUriGenerator;
 
     private IntrospectionUtils introspectionUtils;
@@ -37,25 +33,21 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
 
     private AnnotationReader annotationReader;
 
-    private UrlPathContatenator urlPathContatenator = UrlPathContatenator.INSTANCE;
-
-    private EmbeddePropertyCache embeddePropertyCache = new EmbeddePropertyCache(EmbeddedPropertyDiscover.INSTANCE);
+    private EmbeddedValuesDiscover embeddedValuesDiscover = EmbeddedValuesDiscover.INSTANCE;
 
     private ObjectMapper objectMapper;
 
 
-    public SpringHateoasHalLinkAnnotationCreator(BaseUriDiscover baseUriDiscover,
-                                                 AnnotationUriGenerator annotationUriGenerator,
+    public SpringHateoasHalLinkAnnotationCreator(AnnotationUriGenerator annotationUriGenerator,
                                                  IntrospectionUtils introspectionUtils,
                                                  MethodCallUriGenerator methodCallUriGenerator,
-                                                 HalLinkAnnotationReader halLinkAnnotationReader,
+                                                 AnnotationReader annotationReader,
                                                  ObjectMapper objectMapper) {
 
-        this.baseUriDiscover = baseUriDiscover;
         this.annotationUriGenerator = annotationUriGenerator;
         this.introspectionUtils = introspectionUtils;
         this.methodCallUriGenerator = methodCallUriGenerator;
-        this.annotationReader = new AnnotationReaderCache(halLinkAnnotationReader);
+        this.annotationReader = annotationReader;
         this.objectMapper = objectMapper;
 
     }
@@ -92,43 +84,12 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
             createAndSet(linkProperties, methodCall, resource);
         }
 
-        Method embeddedReadMethod = embeddePropertyCache.getReaderMethodForHalEmbedded(objectMapper, resource.getClass());
+        Set<Object> embeddedResources = embeddedValuesDiscover.getEmbeddedValues(objectMapper, resource);
 
-        if (embeddedReadMethod != null &&  Map.class.isAssignableFrom(embeddedReadMethod.getReturnType())) {
-            try {
-                Map<?,?> embeddedMap = (Map<?,?>) embeddedReadMethod.invoke(resource);
-                for(Object embeddedValue : embeddedMap.values()) {
-                    if (Collection.class.isAssignableFrom(embeddedValue.getClass())) {
-                       Collection<?> embeddedCollectionItems = (Collection<?>) embeddedValue;
-                        for(Object embeddedCollectionItem : embeddedCollectionItems) {
-                            if (canCreate(embeddedCollectionItem)) {
-                                linksProperties = annotationReader.read(embeddedCollectionItem.getClass());
-                                for (LinkAnnotationProperties linkProperties : linksProperties) {
-                                    createAndSet(linkProperties, methodCall, embeddedCollectionItem);
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        if (canCreate(embeddedValue)) {
-                            linksProperties = annotationReader.read(embeddedValue.getClass());
-
-                            for (LinkAnnotationProperties linkProperties : linksProperties) {
-                                createAndSet(linkProperties, methodCall, embeddedValue);
-                            }
-                        }
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                throw new LinkBuilderException("internal error!");
-            } catch (InvocationTargetException e) {
-                throw new LinkBuilderException("internal error!");
+        for(Object embeddedResource : embeddedResources) {
+            if (embeddedResource instanceof ResourceSupport) {
+                createAndSetForResourceAnnotations(methodCall, embeddedResource);
             }
-
-
-        }
-        else {
-
         }
 
     }
@@ -136,13 +97,9 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
     private void createAndSet(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
         HalLinkAnnotationProperties halLinkAnnotationProperties = (HalLinkAnnotationProperties) linkAnnotationProperties;
         if (resource instanceof ResourceSupport) {
-            String baseUri = baseUriDiscover.getBaseUri();
-            String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
+            String uri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
             ((ResourceSupport) resource).add(
-                    new HalLink(urlPathContatenator.concat(baseUri, linkUri),
-                            linkAnnotationProperties.getRel(),
-                            halLinkAnnotationProperties.getHreflang())
-            );
+                    new HalLink(uri, linkAnnotationProperties.getRel(), halLinkAnnotationProperties.getHreflang()));
         }
     }
 

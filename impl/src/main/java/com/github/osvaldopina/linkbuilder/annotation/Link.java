@@ -23,7 +23,7 @@ public @interface Link {
 
     Param[] params() default {};
 
-    static class NullDestination {
+    class NullDestination {
 
     }
 }

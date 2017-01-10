@@ -14,13 +14,9 @@ import org.springframework.util.Assert;
 
 public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationContextAware {
 
-    // TODO singletons
-    private EvaluationContextCreator evaluationContextCreator =
-            new EvaluationContextCreator();
+    private EvaluationContextCreator evaluationContextCreator = EvaluationContextCreator.INSTANCE;
 
-    // TODO singletons
-    private SecurityExpressionParser securityExpressionParser =
-            new SecurityExpressionParser();
+    private SecurityExpressionParser securityExpressionParser = SecurityExpressionParser.INSTANCE;
 
     private ApplicationContext applicationContext;
 

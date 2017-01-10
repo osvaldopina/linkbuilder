@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core;
 
 import static org.easymock.EasyMock.expect;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 import com.github.osvaldopina.linkbuilder.template.Variable;

@@ -8,6 +8,12 @@ import java.util.Map;
 
 public class SecurityExpressionParser {
 
+    public static final SecurityExpressionParser INSTANCE = new SecurityExpressionParser();
+
+    SecurityExpressionParser() {
+
+    }
+
     private Map<String,Expression> expressionCache = new HashMap<String, Expression>();
 
     private SecurityExpressionHandler securityExpressionHandler =

@@ -1,6 +1,8 @@
 package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.object.IsCompatibleType.typeCompatibleWith;
 import static org.junit.Assert.*;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilder;

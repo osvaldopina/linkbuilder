@@ -68,7 +68,7 @@ public class SecurityExpressionHandlerTest extends EasyMockSupport {
         assertThat(evaluationContext.getRootObject(), is(notNullValue()));
         assertEquals(TypedValue.class, evaluationContext.getRootObject().getClass());
         assertThat(evaluationContext.getRootObject().getClass(), is(typeCompatibleWith(TypedValue.class)));
-        assertThat(((TypedValue) evaluationContext.getRootObject()).getValue().getClass(), is(typeCompatibleWith(WebSecurityExpressionRoot.class)));
+        assertThat(evaluationContext.getRootObject().getValue().getClass(), is(typeCompatibleWith(WebSecurityExpressionRoot.class)));
 
         verifyAll();
 

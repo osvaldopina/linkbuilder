@@ -17,6 +17,8 @@ public class ResourceMethodRegistryImpl implements ResourceMethodRegistry {
 	private RequestMappingHandlerMapping handlerMapping;
 	private IntrospectionUtils introspectionUtils;
 
+	private ResourceMethodRegistryFactory resourceMethodRegistryFactory = ResourceMethodRegistryFactory.INSTANCE;
+
 	public ResourceMethodRegistryImpl(RequestMappingHandlerMapping handlerMapping, IntrospectionUtils introspectionUtils) {
 		this.handlerMapping = handlerMapping;
 		this.introspectionUtils = introspectionUtils;
@@ -25,15 +27,7 @@ public class ResourceMethodRegistryImpl implements ResourceMethodRegistry {
 	@Override
 	public Collection<Method> getResourceMethods() {
 		if (resourceMethods == null) {
-			resourceMethods = new ArrayList<Method>();
-			Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
-
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
-				Method method = entry.getValue().getMethod();
-				if (introspectionUtils.haveToGenerateTemplateFor(method)) {
-					resourceMethods.add(method);
-				}
-			}
+			resourceMethods = resourceMethodRegistryFactory.create(introspectionUtils, handlerMapping);
 		}
 		return Collections.unmodifiableList(resourceMethods);
 	}

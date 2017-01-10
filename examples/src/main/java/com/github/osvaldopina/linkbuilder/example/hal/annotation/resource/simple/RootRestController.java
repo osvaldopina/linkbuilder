@@ -24,28 +24,48 @@ public class RootRestController {
         resource.setQueryValue("anyQueryValue");
         resource.setPathValue("anyPathValue");
 
-        FirstTypeEmbeddedPayload firstType = new FirstTypeEmbeddedPayload(1);
-        SecondTypeEmbeddedPayload secondType1 = new SecondTypeEmbeddedPayload("name");
-        SecondTypeEmbeddedPayload secondType2 = new SecondTypeEmbeddedPayload("other-name");
+        FirstEmbedded firstEmbedded = new FirstEmbedded(1);
+        SecondEmbedded secondEmbedded1 = new SecondEmbedded("name");
+        SecondEmbedded secondEmbedded2 = new SecondEmbedded("other-name");
 
-        resource.addEmbedded("first", firstType);
-        resource.addEmbedded("second", Arrays.asList(secondType1, secondType2));
+        resource.addEmbedded("first", firstEmbedded);
+        resource.addEmbedded("second", Arrays.asList(secondEmbedded1, secondEmbedded2));
+
+        ForthEmbedded forthEmbedded = new ForthEmbedded(2);
+
+        ThirdEmbedded thirdEmbedded = new ThirdEmbedded("name-forth");
+        thirdEmbedded.getForthEmbeddeds().add(forthEmbedded);
+        thirdEmbedded.setFirstEmbedded(new FirstEmbedded(5));
+
+
+        firstEmbedded.setThirdEmbedded(thirdEmbedded);
 
         return resource;
     }
 
     @RequestMapping("/first-embedded/{id}")
     @GenerateUriTemplateFor(rel = "first")
-    public FirstTypeEmbeddedPayload getFirstEmbedded(@PathVariable("id") int id) {
+    public FirstEmbedded getFirstEmbedded(@PathVariable("id") int id) {
         return null;
     }
 
     @RequestMapping("/second-embedded/{name}")
     @GenerateUriTemplateFor(rel = "second")
-    public SecondTypeEmbeddedPayload getSecondEmbedded(@PathVariable("name") int id) {
+    public SecondEmbedded getSecondEmbedded(@PathVariable("name") int name) {
         return null;
     }
 
+    @RequestMapping("/third-embedded/{name}")
+    @GenerateUriTemplateFor(rel = "third")
+    public SecondEmbedded getThirdEmbedded(@PathVariable("name") int name) {
+        return null;
+    }
+
+    @RequestMapping("/forth-embedded/{key}")
+    @GenerateUriTemplateFor(rel = "forth")
+    public SecondEmbedded getForthEmbedded(@PathVariable("key") int key) {
+        return null;
+    }
 
     @RequestMapping("/direct-link/{path}")
     @GenerateUriTemplateFor(rel = "direct-link")

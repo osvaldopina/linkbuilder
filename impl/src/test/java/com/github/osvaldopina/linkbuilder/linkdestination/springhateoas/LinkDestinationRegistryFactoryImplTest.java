@@ -1,7 +1,6 @@
 package com.github.osvaldopina.linkbuilder.linkdestination.springhateoas;
 
 import static org.easymock.EasyMock.expect;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;

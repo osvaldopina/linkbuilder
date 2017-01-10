@@ -5,7 +5,9 @@ import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.linkdestination.LinkDestinationRegistry;
 import com.github.osvaldopina.linkbuilder.template.*;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.annotation.AnnotationVariableValuesDiscover;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.annotation.AnnotationUriGenerator;
+import com.github.osvaldopina.linkbuilder.utils.UrlPathContatenator;
 
 import java.lang.reflect.Method;
 
@@ -17,10 +19,18 @@ public class AnnotationUriGeneratorImpl implements AnnotationUriGenerator {
 
     private AnnotationVariableValuesDiscover annotationVariableValuesDiscover;
 
-    public AnnotationUriGeneratorImpl(LinkDestinationRegistry linkDestinationRegistry, TemplateRegistry templateRegistry, AnnotationVariableValuesDiscover annotationVariableValuesDiscover) {
+    private BaseUriDiscover baseUriDiscover;
+
+    private UrlPathContatenator urlPathContatenator = UrlPathContatenator.INSTANCE;
+
+
+    public AnnotationUriGeneratorImpl(LinkDestinationRegistry linkDestinationRegistry, TemplateRegistry templateRegistry,
+                                      AnnotationVariableValuesDiscover annotationVariableValuesDiscover,
+                                      BaseUriDiscover baseUriDiscover) {
         this.linkDestinationRegistry = linkDestinationRegistry;
         this.templateRegistry = templateRegistry;
         this.annotationVariableValuesDiscover = annotationVariableValuesDiscover;
+        this.baseUriDiscover = baseUriDiscover;
     }
 
 
@@ -35,10 +45,10 @@ public class AnnotationUriGeneratorImpl implements AnnotationUriGenerator {
        VariableValues variableValues = annotationVariableValuesDiscover.getVariableValues(template.getVariables(), currentMethodCall, resource, linkAnnotationProperties);
 
         if (linkAnnotationProperties.isTemplated()) {
-            return template.toTemplatedUri(variableValues);
+            return urlPathContatenator.concat(baseUriDiscover.getBaseUri(), template.toTemplatedUri(variableValues));
         }
         else {
-            return template.toUri(variableValues);
+            return urlPathContatenator.concat(baseUriDiscover.getBaseUri(), template.toUri(variableValues));
         }
     }
 }
