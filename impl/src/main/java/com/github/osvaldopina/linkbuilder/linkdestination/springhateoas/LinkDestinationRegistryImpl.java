@@ -16,7 +16,7 @@ public class LinkDestinationRegistryImpl implements LinkDestinationRegistry {
 
 	private Map<String, Method> destinations;
 
-	private DestinationIdentityFactorty destinationIdentityFactorty = new DestinationIdentityFactorty();
+	private LinkDestinationRegistryFactory linkDestinationRegistryFactory = LinkDestinationRegistryFactory.INSTANCE;
 
 	private IntrospectionUtils introspectionUtils;
 
@@ -29,7 +29,7 @@ public class LinkDestinationRegistryImpl implements LinkDestinationRegistry {
 	public Method getTemplatedMethod(String destination) {
 
 		if (destinations == null) {
-			destinations = createDestinationRegistry();
+			destinations = linkDestinationRegistryFactory.createDestinationRegistry(introspectionUtils, resourceMethodRegistry);
 		}
 
 		Method method = destinations.get(destination);
@@ -39,27 +39,5 @@ public class LinkDestinationRegistryImpl implements LinkDestinationRegistry {
 		return method;
 	}
 
-	public Map<String, Method> getDestinations() {
-		return Collections.unmodifiableMap(destinations);
-	}
 
-	private Map<String, Method> createDestinationRegistry() {
-		Map<String, Method> destinations = new HashMap<String, Method>();
-
-		for (Method method : resourceMethodRegistry.getResourceMethods()) {
-			String rel = introspectionUtils.getMethodRel(method);
-			String destination;
-			if (rel != null) {
-				destination = destinationIdentityFactorty.destination(method.getDeclaringClass(), rel);
-				destinations.put(destination, method);
-			} else {
-				destination = introspectionUtils.getMethodDestination(method);
-				if (destination != null) {
-					destinations.put(destination, method);
-				}
-			}
-		}
-
-		return destinations;
-	}
 }

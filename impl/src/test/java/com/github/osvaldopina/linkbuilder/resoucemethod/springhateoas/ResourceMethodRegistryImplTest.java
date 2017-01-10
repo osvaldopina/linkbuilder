@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.resoucemethod.springhateoas;
 
+import static org.easymock.EasyMock.expect;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
@@ -9,25 +10,48 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-@Ignore
-public class ResourceMethodRegistryImplTest {
+
+public class ResourceMethodRegistryImplTest extends EasyMockSupport {
+
+	@Rule
+	public EasyMockRule mocks = new EasyMockRule(this);
+
+	@Mock
+	ResourceMethodRegistryFactory resourceMethodRegistryFactory;
+
+	@Mock
+	IntrospectionUtils introspectionUtils;
+
+	@Mock
+	RequestMappingHandlerMapping handlerMapping;
 
 	Method method = Object.class.getMethods()[0];
 
-	// TODO voltar
-//	ResourceMethodRegistryImpl resourceMethodRegistryImpl = new ResourceMethodRegistryImpl(Arrays.asList(method));
-	ResourceMethodRegistryImpl resourceMethodRegistryImpl = null;
+	@TestSubject
+	ResourceMethodRegistryImpl resourceMethodRegistryImpl = new ResourceMethodRegistryImpl(null, null);
 
 	@Test
 	public void getResourceMethods() throws Exception {
+		expect(resourceMethodRegistryFactory.create(introspectionUtils, handlerMapping)).andReturn(Arrays.asList(method));
+
+		replayAll();
 
 		Collection<Method> resourceMethods = resourceMethodRegistryImpl.getResourceMethods();
 
+		verifyAll();
+
 		assertThat(resourceMethods, hasSize(1));
-		assertThat(resourceMethods.iterator().next(), is(sameInstance(method)));
+		assertThat(resourceMethods, contains(method));
 
 
 
