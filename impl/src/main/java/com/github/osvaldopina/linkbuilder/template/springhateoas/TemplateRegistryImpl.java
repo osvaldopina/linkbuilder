@@ -18,6 +18,8 @@ public class TemplateRegistryImpl implements TemplateRegistry {
     private ResourceMethodRegistry resourceMethodRegistry;
     private TemplateGenerator templateGenerator;
 
+    private TemplateRegistryFactory templateRegistryFactory = TemplateRegistryFactory.INSTANCE;
+
     public TemplateRegistryImpl(ResourceMethodRegistry resourceMethodRegistry, TemplateGenerator templateGenerator) {
         this.resourceMethodRegistry = resourceMethodRegistry;
         this.templateGenerator = templateGenerator;
@@ -29,7 +31,7 @@ public class TemplateRegistryImpl implements TemplateRegistry {
 
 
         if (templates == null) {
-               templates = createTempates();
+               templates = templateRegistryFactory.createTemplateRegistry(templateGenerator, resourceMethodRegistry);
         }
 
         Template template = templates.get(method);
@@ -40,16 +42,6 @@ public class TemplateRegistryImpl implements TemplateRegistry {
                             method + " check if its annotated with @" + GenerateUriTemplateFor.class.getName());
         }
         return template;
-    }
-
-    private Map<Method,Template> createTempates() {
-        Map<Method,Template> templates = new HashMap<Method, Template>();
-
-        for (Method method : resourceMethodRegistry.getResourceMethods()) {
-            templates.put(method, templateGenerator.generate(method));
-        }
-        return templates;
-
     }
 
 }

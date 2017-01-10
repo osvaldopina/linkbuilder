@@ -1,16 +1,16 @@
 package com.github.osvaldopina.linkbuilder.template.springhateoas;
 
 import static org.easymock.EasyMock.expect;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.junit.Assert.assertThat;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.github.osvaldopina.linkbuilder.resoucemethod.ResourceMethodRegistry;
 import com.github.osvaldopina.linkbuilder.template.Template;
-import com.github.osvaldopina.linkbuilder.template.TemplateRegistry;
 import com.github.osvaldopina.linkbuilder.template.generation.TemplateGenerator;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -20,8 +20,8 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Ignore
-public class TemplateRegistryFactoryImplTest extends EasyMockSupport {
+
+public class TemplateRegistryFactoryTest extends EasyMockSupport {
 
 	@Rule
 	public EasyMockRule mocks = new EasyMockRule(this);
@@ -39,11 +39,9 @@ public class TemplateRegistryFactoryImplTest extends EasyMockSupport {
 
 	List<Method> resourceMethods = Arrays.asList(method);
 
-	@TestSubject
-	TemplateRegistryFactoryImpl templateRegistryFactoryImpl = null;
 
-//	@TestSubject
-//	TemplateRegistryFactoryImpl templateRegistryFactoryImpl = new TemplateRegistryFactoryImpl(templateGenerator);
+	@TestSubject
+	TemplateRegistryFactory templateRegistryFactory = new TemplateRegistryFactory();
 
 	@Test
 	public void createTemplateRegistry() throws Exception {
@@ -53,12 +51,12 @@ public class TemplateRegistryFactoryImplTest extends EasyMockSupport {
 
 		replayAll();
 
-		//TemplateRegistry templateRegistry = templateRegistryFactoryImpl.createTemplateRegistry(resourceMethodRegistry);
+		Map<Method,Template> templates = templateRegistryFactory.createTemplateRegistry(templateGenerator, resourceMethodRegistry);
 
 		verifyAll();
 
 
-//		assertThat(templateRegistry.getTemplate(method), is(sameInstance(template)));
+		assertThat(templates, hasEntry(method, template));
 
 	}
 }
