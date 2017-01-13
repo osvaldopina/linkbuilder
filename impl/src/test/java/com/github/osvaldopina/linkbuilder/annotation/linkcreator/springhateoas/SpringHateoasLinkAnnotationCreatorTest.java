@@ -1,15 +1,21 @@
 package com.github.osvaldopina.linkbuilder.annotation.linkcreator.springhateoas;
 
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
+import com.github.osvaldopina.linkbuilder.annotation.Links;
+import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
+import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.annotation.AnnotationUriGenerator;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
@@ -17,6 +23,7 @@ import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -24,14 +31,11 @@ import org.junit.Test;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 
-@Ignore
 public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 
 	@Rule
 	public EasyMockRule mocks = new EasyMockRule(this);
 
-	@Mock
-	private BaseUriDiscover baseUriDiscover;
 
 	@Mock
 	private AnnotationUriGenerator annotationUriGenerator;
@@ -42,171 +46,149 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	@Mock
 	private MethodCallUriGenerator methodCallUriGenerator;
 
-	private LinkAnnotationProperties linkAnnotationProperties =
-			new LinkAnnotationProperties(null,null, false, Collections.EMPTY_LIST);
+	@Mock
+	private LinkAnnotationReader linkAnnotationReader;
 
 	@Mock
-	private LinkAnnotationProperties linkAnnotationPropertiesMock;
-
-	ResourceSupport resourceAsResourceSupport;
+	private LinkCreatorForAnnotations linkCreatorForAnnotations;
 
 	@Mock
-	Object resourceAsObject;
+	private LinkAnnotationProperties linkAnnotationProperties;
+
+	private List<LinkAnnotationProperties> linkAnnotationPropertiesList;
+
+	ResourceSupport resource = new ResourceSupport();
 
 	@Mock
 	MethodCall methodCall;
 
 	Method method = Object.class.getMethods()[0];
 
-	private SpringHateoasLinkAnnotationCreator springHateoasLinkAnnotationCreator;
+	@TestSubject
+	private SpringHateoasLinkAnnotationCreator springHateoasLinkAnnotationCreator =
+			new SpringHateoasLinkAnnotationCreator(null, null, null, null, null);
 
 
 	@Before
 	public void setUp() {
-//		springHateoasLinkAnnotationCreator =
-//				new SpringHateoasLinkAnnotationCreator(baseUriDiscover,
-//						annotationUriGenerator, introspectionUtils, methodCallUriGenerator);
-
-		resourceAsResourceSupport = new ResourceSupport();
+		linkAnnotationPropertiesList = new ArrayList<LinkAnnotationProperties>();
+		linkAnnotationPropertiesList.add(linkAnnotationProperties);
 	}
 
+
+
 	@Test
-	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsLinkAnnotationPropertiesClassAndResourceIsResourceSupport() {
+	public void canCreate_methodIsAnnotatedWithLinks() {
+        expect(introspectionUtils.hasComposedAnnotation(method, Links.class)).andReturn(true);
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceAsResourceSupport), is(true));
+		assertThat(springHateoasLinkAnnotationCreator.canCreate(method), is(true));
 
 		verifyAll();
 	}
 
 	@Test
-	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsNotLinkAnnotationPropertiesClassAndResourceIsResourceSupport() {
+	public void canCreate_methodIsNotAnnotatedWithHalLinls() {
+		expect(introspectionUtils.hasComposedAnnotation(method, Links.class)).andReturn(false);
 
 		replayAll();
 
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationPropertiesMock, resourceAsResourceSupport), is(false));
+		assertThat(springHateoasLinkAnnotationCreator.canCreate(method), is(false));
+
+		verifyAll();
+	}
+
+	@Test
+	public void createAndSetForMethodAnnotations() {
+		expect(methodCall.getMethod()).andReturn(method);
+		expect(linkAnnotationReader.read(method)).andReturn(linkAnnotationPropertiesList);
+		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+				methodCall, resource);
+		expectLastCall();
+		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils,
+				methodCall, resource);
+		expectLastCall();
+
+		replayAll();
+
+		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(methodCall, resource);
 
 		verifyAll();
 	}
 
 	@Test
 	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsLinkAnnotationPropertiesClassAndResourceIsNotResourceSupport() {
-
-		replayAll();
-
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(linkAnnotationProperties, resourceAsObject), is(false));
-
-		verifyAll();
-	}
-
-	@Test
-	public void canCreateMethodCallResource() {
-
-		replayAll();
-
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, resourceAsResourceSupport), is(true));
-
-		verifyAll();
-	}
-
-	@Test
-	public void canCreateMethodCallResource_resourceIsNull() {
-
-		replayAll();
-
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, null), is(false));
-
-		verifyAll();
-	}
-
-	@Test
-	public void canCreateMethodCallResource_isNotResourceSupport() {
-
-		replayAll();
-
-//		assertThat(springHateoasLinkAnnotationCreator.canCreate(methodCall, resourceAsObject), is(false));
-
-		verifyAll();
-	}
-
-	@Test(expected = LinkBuilderException.class)
-	public void createAndSet_resourceIsNotRessourceSupport() {
-
-		replayAll();
-
-//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, resourceAsObject);
-
-		verifyAll();
-
-	}
-
-	@Test
-	public void createAndSet() {
-		expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-		expect(annotationUriGenerator.generateUri(linkAnnotationPropertiesMock, methodCall, resourceAsResourceSupport)).andReturn("controller-uri");
-		expect(linkAnnotationPropertiesMock.getRel()).andReturn("rel");
-
-		replayAll();
-
-//		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(linkAnnotationPropertiesMock, methodCall, resourceAsResourceSupport);
-
-		verifyAll();
-
-		assertThat(resourceAsResourceSupport.getLinks(), hasSize(1));
-		Link link = resourceAsResourceSupport.getLinks().get(0);
-		assertThat(link.getHref(), is("base-uri/controller-uri"));
-		assertThat(link.getRel(), is("rel"));
-
-
-	}
-
-	@Test
-	public void createAndSetSelfLinkIfNeeded() {
-
 		expect(methodCall.getMethod()).andReturn(method);
-		expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
-		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsResourceSupport)).andReturn("controller-uri");
+		expect(linkAnnotationReader.read(method)).andReturn(linkAnnotationPropertiesList);
+		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+				methodCall, resource);
+		expectLastCall();
+		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils,
+				methodCall, resource);
+		expectLastCall();
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsResourceSupport);
+		springHateoasLinkAnnotationCreator.createAndSetForMethodAnnotations(methodCall, resource);
 
 		verifyAll();
-
-		assertThat(resourceAsResourceSupport.getLinks(), hasSize(1));
-		Link link = resourceAsResourceSupport.getLinks().get(0);
-		assertThat(link.getHref(), is("controller-uri"));
-		assertThat(link.getRel(), is("self"));
-
 	}
 
 	@Test
-	public void createAndSetSelfLinkIfNeeded_IsNotAnnotatedWithEnableSelfFromCurrentCall() {
-
-		expect(methodCall.getMethod()).andReturn(method);
-		expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(false);
+	public void canCreate_resourceIsNull() {
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsResourceSupport);
+		assertThat(springHateoasLinkAnnotationCreator.canCreate((Object) null), is(false));
 
 		verifyAll();
-
-		assertThat(resourceAsResourceSupport.getLinks(), hasSize(0));
-
 	}
 
-	@Test(expected = LinkBuilderException.class)
-	public void createAndSetSelfLinkIfNeeded_IsAnnotatedWithEnableSelfFromCurrentCallButResourceIsNotResourceSupport() {
-
-		expect(methodCall.getMethod()).andReturn(method);
-		expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
+	@Test
+	public void canCreate_resourceIsNotResourceSupport() {
 
 		replayAll();
 
-//		springHateoasLinkAnnotationCreator.createAndSetSelfLinkIfNeeded(methodCall, resourceAsObject);
+		assertThat(springHateoasLinkAnnotationCreator.canCreate(new Object()), is(false));
 
+		verifyAll();
+	}
+
+	@Test
+	public void canCreate_resourceIsResourceSupportButHasNoLinksAnnotation() {
+		expect(introspectionUtils.hasComposedAnnotation(resource.getClass(), Links.class)).andReturn(false);
+
+		replayAll();
+
+		assertThat(springHateoasLinkAnnotationCreator.canCreate(resource), is(false));
+
+		verifyAll();
+	}
+
+	@Test
+	public void canCreate_resourceIsResourceSupportHasNoLinksAnnotation() {
+		expect(introspectionUtils.hasComposedAnnotation(resource.getClass(), Links.class)).andReturn(true);
+
+		replayAll();
+
+		assertThat(springHateoasLinkAnnotationCreator.canCreate(resource), is(true));
+
+		verifyAll();
+	}
+
+	@Test
+	public void createAndSetForResourceAnnotations() {
+		expect(linkAnnotationReader.read(resource.getClass())).andReturn(linkAnnotationPropertiesList);
+		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+				methodCall, resource);
+		expectLastCall();
+
+		replayAll();
+
+		springHateoasLinkAnnotationCreator.createAndSetForResourceAnnotations(methodCall, resource);
+
+		verifyAll();
 	}
 
 }

@@ -27,6 +27,8 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 
 	private LinkAnnotationReader linkAnnotationReader;
 
+	private LinkCreatorForAnnotations linkCreatorForAnnotations = LinkCreatorForAnnotations.INSTANCE;
+
 	public SpringHateoasLinkAnnotationCreator(BaseUriDiscover baseUriDiscover,
 											  AnnotationUriGenerator annotationUriGenerator,
 											  IntrospectionUtils introspectionUtils,
@@ -51,10 +53,12 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(methodCall.getMethod());
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			createAndSetForMethodAnnotations(linkProperties, methodCall, resource);
+			linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkProperties, methodCall,
+					resource);
 		}
 
-		createAndSetSelfLinkIfNeeded(methodCall, resource);
+		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils, methodCall,
+				resource);
 	}
 
 	@Override
@@ -63,33 +67,15 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(resource.getClass());
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			createAndSetForMethodAnnotations(linkProperties, methodCall, resource);
+			linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkProperties, methodCall,
+					resource);
 		}
 	}
 
 	@Override
 	public boolean canCreate(Object resource) {
-		return resource != null && introspectionUtils.
+		return resource != null && resource instanceof ResourceSupport && introspectionUtils.
 				hasComposedAnnotation(resource.getClass(), com.github.osvaldopina.linkbuilder.annotation.Links.class);
 	}
 
-	private void createAndSetForMethodAnnotations(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
-		if (resource instanceof ResourceSupport) {
-			String linkUri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
-			((ResourceSupport) resource).add(new Link(linkUri, linkAnnotationProperties.getRel()));
-		} else {
-			throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
-		}
-	}
-
-	private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object resource) {
-		if (introspectionUtils.isEnableSelfFromCurrentCallMethod(currentMethodCall.getMethod())) {
-			if (resource instanceof ResourceSupport) {
-				((ResourceSupport) resource).add(
-						new Link(methodCallUriGenerator.generateUri(currentMethodCall, resource), "self"));
-			} else {
-				throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
-			}
-		}
-	}
 }
