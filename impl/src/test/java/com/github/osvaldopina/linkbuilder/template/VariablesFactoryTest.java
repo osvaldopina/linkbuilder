@@ -57,9 +57,8 @@ public class VariablesFactoryTest {
 	public void merge() {
 		Variables variables = variablesFactory.merge(oneVariables, otherVariables);
 
-		// TODO acertar
 		assertThat(variables.getVariableList(), hasSize(2));
-	//	assertThat(variables.getVariableList(), hasItems(one, other));
+		assertThat(variables.getVariableList(), hasItems(one, other));
 	}
 
 

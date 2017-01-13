@@ -43,7 +43,7 @@ public class TemplateRegistryImplTest extends EasyMockSupport {
 
 	Method methodNotRegistred = Object.class.getMethods()[1];
 
-	HashMap<Method, Template> templates = new HashMap<Method, Template>();;
+	HashMap<Method, Template> templates = new HashMap<Method, Template>();
 
 
 	@TestSubject

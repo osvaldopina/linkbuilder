@@ -14,8 +14,7 @@ class AnnotatedLinksMethodInterceptor implements AfterReturningAdvice {
 
 	private MethodCallFactory methodCallFactory = MethodCallFactory.INSTANCE;
 
-	AnnotatedLinksMethodInterceptor(AnnotationReaderRegistry annotationReaderRegistry,
-									LinkAnnotationCreatorRegistry linkCreatorRegistry) {
+	AnnotatedLinksMethodInterceptor(LinkAnnotationCreatorRegistry linkCreatorRegistry) {
 
 		this.linkCreatorRegistry = linkCreatorRegistry;
 	}

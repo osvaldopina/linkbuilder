@@ -9,25 +9,24 @@ import org.aopalliance.aop.Advice;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
-
-public class AnnotatedLinksResourceInterceptorCreatorTest extends EasyMockSupport {
+// TODO creator x factory
+public class AnnotatedLinksMethodInterceptorCreatorTest extends EasyMockSupport {
 
 	@Rule
 	public EasyMockRule mocks = new EasyMockRule(this);
 
 	@Mock
-	private AnnotationReaderRegistry annotationReaderRegistry;
-
-	@Mock
 	private LinkAnnotationCreatorRegistry linkAnnotationCreatorRegistry;
 
-	private AnnotatedLinksMethodInterceptorCreator annotatedLinksMethodInterceptorCreator;
+	@TestSubject
+	private AnnotatedLinksMethodInterceptorCreator annotatedLinksMethodInterceptorCreator = new AnnotatedLinksMethodInterceptorCreator();
 
 	@Before
 	public void setUp() {
@@ -40,7 +39,7 @@ public class AnnotatedLinksResourceInterceptorCreatorTest extends EasyMockSuppor
 		Object anyObject = new Object();
 
 		Object interceptedObject = annotatedLinksMethodInterceptorCreator.
-				addInterceptorToMethods(anyObject, annotationReaderRegistry, linkAnnotationCreatorRegistry);
+				addInterceptorToMethods(anyObject, linkAnnotationCreatorRegistry);
 
 		assertThat(AopUtils.isAopProxy(interceptedObject), is(true));
 
@@ -51,11 +50,6 @@ public class AnnotatedLinksResourceInterceptorCreatorTest extends EasyMockSuppor
 		Advice advice = advisor[0].getAdvice();
 
   	   assertThat(advice, is(instanceOf(AnnotatedLinksMethodInterceptor.class)));
-
-		AnnotatedLinksMethodInterceptor annotatedLinksMethodInterceptor = (AnnotatedLinksMethodInterceptor) advice;
-
-//		assertThat(annotatedLinksMethodInterceptor.getAnnotationReaderRegistry(), sameInstance(annotationReaderRegistry));
-//		assertThat(annotatedLinksMethodInterceptor.getLinkCreatorRegistry(), sameInstance(linkAnnotationCreatorRegistry));
 
 	}
 }

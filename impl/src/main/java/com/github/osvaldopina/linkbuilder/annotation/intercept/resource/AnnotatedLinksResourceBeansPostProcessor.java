@@ -35,6 +35,7 @@ public class AnnotatedLinksResourceBeansPostProcessor implements BeanPostProcess
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (introspectionUtils.isRestController(bean)) {
 			for (Method method : bean.getClass().getMethods()) {
+				// TODO NULL OR VOID?
 				if (annotationReaderRegistry.get(method.getReturnType()) != null) {
 					return interceptorCreator.addInterceptorToMethods(bean, annotationReaderRegistry, linkAnnotationCreatorRegistry);
 				}

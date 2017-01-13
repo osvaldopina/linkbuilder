@@ -31,7 +31,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.hateoas.ResourceSupport;
 
-@Ignore
 public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
 	@Rule

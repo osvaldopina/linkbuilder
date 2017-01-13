@@ -8,8 +8,8 @@ import java.util.Arrays;
 
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class VariableValuesTest {
@@ -49,9 +49,8 @@ public class VariableValuesTest {
     @Test
     public void getVariableValues() throws Exception {
 
-        // TODO acertar import
         assertThat(variableValues.getVariableValueList(),hasSize(1));
-     //   assertThat(variableValues.getVariableValueList(), hasItem(variableValue));
+        assertThat(variableValues.getVariableValueList(), hasItem(variableValue));
 
     }
 

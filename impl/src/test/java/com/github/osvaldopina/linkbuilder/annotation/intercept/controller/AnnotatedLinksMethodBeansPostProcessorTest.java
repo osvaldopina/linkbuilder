@@ -47,7 +47,7 @@ public class AnnotatedLinksMethodBeansPostProcessorTest extends EasyMockSupport 
 
 	@TestSubject
 	private AnnotatedLinksMethodBeansPostProcessor annotatedLinksMethodBeansPostProcessor =
-			new AnnotatedLinksMethodBeansPostProcessor(annotationReaderRegistry, linkAnnotationCreatorRegistry, introspectionUtils);
+			new AnnotatedLinksMethodBeansPostProcessor(linkAnnotationCreatorRegistry, introspectionUtils, annotationReaderRegistry);
 
 	public AnnotatedLinksMethodBeansPostProcessorTest() throws Exception {
 	}
@@ -70,7 +70,7 @@ public class AnnotatedLinksMethodBeansPostProcessorTest extends EasyMockSupport 
 		expect(introspectionUtils.isRestController(bean)).andReturn(true);
 		expect(annotationReaderRegistry.get(objectFirstMethod)).andReturn(annotationReader);
 		expect(interceptorCreator.
-				addInterceptorToMethods(bean, annotationReaderRegistry, linkAnnotationCreatorRegistry)).
+				addInterceptorToMethods(bean, linkAnnotationCreatorRegistry)).
 				andReturn(interceptedBean);
 
 		replayAll();

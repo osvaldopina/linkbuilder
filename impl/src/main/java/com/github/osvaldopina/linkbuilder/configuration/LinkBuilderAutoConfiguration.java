@@ -93,9 +93,9 @@ public class LinkBuilderAutoConfiguration {
 			MethodCallUriGenerator methodCallUriGenerator,
 			IntrospectionUtils introspectionUtils) {
 		return new AnnotatedLinksMethodBeansPostProcessor(
-				annotationReaderRegistry,
 				linkAnnotationCreatorRegistry,
-				introspectionUtils
+				introspectionUtils,
+				annotationReaderRegistry
 		);
 	}
 

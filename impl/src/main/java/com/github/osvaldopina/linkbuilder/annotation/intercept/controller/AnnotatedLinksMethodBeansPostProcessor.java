@@ -17,9 +17,9 @@ public class AnnotatedLinksMethodBeansPostProcessor implements BeanPostProcessor
 	private AnnotatedLinksMethodInterceptorCreator interceptorCreator = AnnotatedLinksMethodInterceptorCreator.INSTANCE;
 
 	public AnnotatedLinksMethodBeansPostProcessor(
-			AnnotationReaderRegistry annotationReaderRegistry,
 			LinkAnnotationCreatorRegistry linkAnnotationCreatorRegistry,
-			IntrospectionUtils introspectionUtils) {
+			IntrospectionUtils introspectionUtils,
+			AnnotationReaderRegistry annotationReaderRegistry) {
 
 		this.annotationReaderRegistry = annotationReaderRegistry;
 		this.linkAnnotationCreatorRegistry = linkAnnotationCreatorRegistry;
@@ -36,7 +36,7 @@ public class AnnotatedLinksMethodBeansPostProcessor implements BeanPostProcessor
 		if (introspectionUtils.isRestController(bean)) {
 			for (Method method : bean.getClass().getMethods()) {
 				if (annotationReaderRegistry.get(method) != null) {
-					return interceptorCreator.addInterceptorToMethods(bean, annotationReaderRegistry, linkAnnotationCreatorRegistry);
+					return interceptorCreator.addInterceptorToMethods(bean, linkAnnotationCreatorRegistry);
 				}
 			}
 		}

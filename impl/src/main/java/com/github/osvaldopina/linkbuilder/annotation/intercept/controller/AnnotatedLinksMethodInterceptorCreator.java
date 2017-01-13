@@ -11,10 +11,9 @@ class AnnotatedLinksMethodInterceptorCreator {
 	AnnotatedLinksMethodInterceptorCreator() {
 	}
 
-	Object addInterceptorToMethods(Object object, AnnotationReaderRegistry annotationReaderRegistry,
-								   LinkAnnotationCreatorRegistry linkAnnotationCreatorRegistry) {
+	Object addInterceptorToMethods(Object object, LinkAnnotationCreatorRegistry linkAnnotationCreatorRegistry) {
 		ProxyFactory factory = new ProxyFactory();
-		factory.addAdvice(new AnnotatedLinksMethodInterceptor(annotationReaderRegistry, linkAnnotationCreatorRegistry));
+		factory.addAdvice(new AnnotatedLinksMethodInterceptor(linkAnnotationCreatorRegistry));
 		factory.setTarget(object);
 		return factory.getProxy();
 	}

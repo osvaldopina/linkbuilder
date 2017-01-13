@@ -19,15 +19,11 @@ import org.springframework.hateoas.ResourceSupport;
 public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator {
 
 
-	private BaseUriDiscover baseUriDiscover;
-
 	private AnnotationUriGenerator annotationUriGenerator;
 
 	private IntrospectionUtils introspectionUtils;
 
 	private MethodCallUriGenerator methodCallUriGenerator;
-
-	private UrlPathContatenator urlPathContatenator = UrlPathContatenator.INSTANCE;
 
 	private LinkAnnotationReader linkAnnotationReader;
 
@@ -37,7 +33,6 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 											  MethodCallUriGenerator methodCallUriGenerator,
 											  LinkAnnotationReader linkAnnotationReader) {
 
-		this.baseUriDiscover = baseUriDiscover;
 		this.annotationUriGenerator = annotationUriGenerator;
 		this.introspectionUtils = introspectionUtils;
 		this.methodCallUriGenerator = methodCallUriGenerator;
@@ -66,8 +61,6 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 	public void createAndSetForResourceAnnotations(MethodCall methodCall, Object resource) {
 
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(resource.getClass());
-
-		LinkAnnotationCreator linkAnnotationCreator = null;
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
 			createAndSetForMethodAnnotations(linkProperties, methodCall, resource);
