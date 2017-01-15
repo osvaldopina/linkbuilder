@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
@@ -30,13 +31,9 @@ public class LinkAnnotationCreatorRegistryImplTest extends EasyMockSupport {
 	private LinkAnnotationCreator linkAnnotationCreator;
 
 	@Mock
-	private LinkAnnotationProperties linkAnnotationProperties;
-
-	@Mock
 	private Object resource;
 
-	@Mock
-	private MethodCall methodCall;
+	private Method method = Object.class.getMethod("toString");
 
 	@Before
 	public void setUp() {
@@ -44,47 +41,49 @@ public class LinkAnnotationCreatorRegistryImplTest extends EasyMockSupport {
 	}
 
 
+	public LinkAnnotationCreatorRegistryImplTest() throws Exception {
+
+	}
+
 	@Test
-	public void get_linkAnnotationPropertiesResourceCanCreateTrue() {
-//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, resource)).andReturn(true);
+	public void get_methodLinkAnnotationCreatorCanCreate() {
+		expect(linkAnnotationCreator.canCreate(method)).andReturn(true);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, resource), is(sameInstance(linkAnnotationCreator)));
+		assertThat(linkAnnotationCreatorRegistryImpl.get(method), is(sameInstance(linkAnnotationCreator)));
 
 		verifyAll();
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void get_linkAnnotationPropertiesResourceCanCreateFalse() {
-//		expect(linkAnnotationCreator.canCreate(linkAnnotationProperties, resource)).andReturn(false);
+	public void get_methodLinkAnnotationCreatorCannotCreate() {
+		expect(linkAnnotationCreator.canCreate(method)).andReturn(false);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(linkAnnotationProperties, resource), is(nullValue()));
+		linkAnnotationCreatorRegistryImpl.get(method);
 
-		verifyAll();
 	}
 
 	@Test
-	public void get_MethodCallResourceCanCreateTrue() {
-//		expect(linkAnnotationCreator.canCreate(methodCall, resource)).andReturn(true);
+	public void get_resourceLinkAnnotationCreatorCanCreate() {
+		expect(linkAnnotationCreator.canCreate(resource)).andReturn(true);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, resource), is(sameInstance(linkAnnotationCreator)));
+		assertThat(linkAnnotationCreatorRegistryImpl.get(resource), is(sameInstance(linkAnnotationCreator)));
 
 		verifyAll();
 	}
 
 	@Test(expected = LinkBuilderException.class)
-	public void get_MethodCallResourceCanCreateFalse() {
-//		expect(linkAnnotationCreator.canCreate(methodCall, resource)).andReturn(false);
+	public void get_resourceLinkAnnotationCreatorCannotCreate() {
+		expect(linkAnnotationCreator.canCreate(resource)).andReturn(false);
 
 		replayAll();
 
-//		assertThat(linkAnnotationCreatorRegistryImpl.get(methodCall, resource), is(nullValue()));
+		linkAnnotationCreatorRegistryImpl.get(resource);
 
-		verifyAll();
 	}
 }

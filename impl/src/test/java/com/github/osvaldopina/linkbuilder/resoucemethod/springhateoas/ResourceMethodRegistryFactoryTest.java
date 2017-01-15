@@ -24,7 +24,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-@Ignore
+
 public class ResourceMethodRegistryFactoryTest extends EasyMockSupport {
 
 	@Rule
