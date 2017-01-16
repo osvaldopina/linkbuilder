@@ -3,16 +3,23 @@ package com.github.osvaldopina.linkbuilder.annotation.reader;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 
 public class AnnotationReaderCache implements AnnotationReader{
 
-	HashMap<Method,List<LinkAnnotationProperties>> methodAnnotations =
-			new HashMap<Method, List<LinkAnnotationProperties>>();
+	ConcurrentHashMap<Method,List<LinkAnnotationProperties>> methodAnnotations =
+			new ConcurrentHashMap<Method, List<LinkAnnotationProperties>>();
 
-	HashMap<Class<?>,List<LinkAnnotationProperties>> resourceTypeAnnotations =
-			new HashMap<Class<?>, List<LinkAnnotationProperties>>();
+	ConcurrentHashMap<Method,Boolean> canReadMethod =
+			new ConcurrentHashMap<Method, Boolean>();
+
+	ConcurrentHashMap<Class<?>,List<LinkAnnotationProperties>> resourceTypeAnnotations =
+			new ConcurrentHashMap<Class<?>, List<LinkAnnotationProperties>>();
+
+	ConcurrentHashMap<Class<?>,Boolean> canReadResourceType =
+			new ConcurrentHashMap<Class<?>, Boolean>();
 
 	private AnnotationReader annotationReader;
 
@@ -22,12 +29,24 @@ public class AnnotationReaderCache implements AnnotationReader{
 
 	@Override
 	public boolean canRead(Method method) {
-		return methodAnnotations.get(method) != null || annotationReader.canRead(method);
+		Boolean canRead = canReadMethod.get(method);
+
+		if (canRead == null) {
+			canRead = annotationReader.canRead(method);
+			canReadMethod.put(method, canRead);
+		}
+		return canRead;
 	}
 
 	@Override
 	public boolean canRead(Class<?> resourceType) {
-		return resourceTypeAnnotations.get(resourceType) != null || annotationReader.canRead(resourceType);
+		Boolean canRead = canReadResourceType.get(resourceType);
+
+		if (canRead == null) {
+			canRead = annotationReader.canRead(resourceType);
+			canReadResourceType.put(resourceType, canRead);
+		}
+		return canRead;
 	}
 
 	@Override
