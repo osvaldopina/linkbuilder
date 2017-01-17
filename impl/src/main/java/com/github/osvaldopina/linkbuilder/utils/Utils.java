@@ -4,7 +4,7 @@ public class Utils {
 
     public static final Utils INSTANCE = new Utils();
 
-    private Utils() {
+    Utils() {
 
     }
 

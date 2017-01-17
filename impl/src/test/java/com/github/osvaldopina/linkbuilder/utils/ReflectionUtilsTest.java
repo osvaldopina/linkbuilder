@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.utils;
 
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,6 +45,16 @@ public class ReflectionUtilsTest {
         assertThat(result.getClass(), is(typeCompatibleWith(String.class)));
         String toStringResult = (String) result;
         assertThat(toStringResult, is("to-string-value"));
+
+    }
+
+
+    @Test(expected = LinkBuilderException.class)
+    public void callMethod_methodDoesNotExists() throws Exception {
+
+        Equals equals = new Equals();
+
+        reflectionUtils.callMethod(Boolean.class, equals, "methodThatDoesNotExists");
 
     }
 
@@ -93,6 +104,24 @@ public class ReflectionUtilsTest {
     }
 
     @Test
+    public void hasValue_methodNotFound() throws Exception {
+
+        Equals equals = new Equals();
+
+        assertThat(reflectionUtils.hasValue(equals, "methodThatDoesNotExists"), is(false));
+
+    }
+
+    @Test
+    public void hasValue_exception() throws Exception {
+
+        Equals equals = new Equals();
+
+        assertThat(reflectionUtils.hasValue(equals, "exceptionValue"), is(false));
+
+    }
+
+    @Test
     public void hasEmptyValue_nullValue() throws Exception {
 
         Equals equals = new Equals();
@@ -126,6 +155,10 @@ public class ReflectionUtilsTest {
             return "to-string-value";
         }
 
+        private void notAcessible() {
+
+        }
+
         public Object nullValue() {
             return null;
         }
@@ -133,5 +166,10 @@ public class ReflectionUtilsTest {
         public Object nonNullValue() {
             return new Object();
         }
+
+        public Object exceptionValue() {
+            throw new RuntimeException("any exception");
+        }
+
     }
 }
