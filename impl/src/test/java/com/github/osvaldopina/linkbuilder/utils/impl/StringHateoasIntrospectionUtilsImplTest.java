@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 
@@ -17,18 +18,17 @@ public class StringHateoasIntrospectionUtilsImplTest {
 
     private StringHateoasIntrospectionUtilsImpl annotationUtilsImpl;
 
-    private Method nonAnnotatedMethodNonAnnotatedClass;
-    private Method nonAnnotatedMethodAnnotatedClass;
-    private Method annotatedMethodNonAnnotatedClass;
-    private Method annotatedMethodAnnotatedClass;
+    private Method nonAnnotatedMethodGenerateUriTemplateFor;
+    private Method annotatedMethodGenerateUriTemplateFor;
 
 
     @Before
     public void setUp() throws Exception {
         method = StringHateoasIntrospectionUtilsImplTest.class.getMethod("method", String.class, String.class, String.class);
 
-        nonAnnotatedMethodNonAnnotatedClass = NonAnnotatedClass.class.getMethod("nonAnnotatedMethod");
-        annotatedMethodNonAnnotatedClass = NonAnnotatedClass.class.getDeclaredMethod("annotatedMethod");
+        annotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getMethod("annotatedMethod");
+        nonAnnotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getDeclaredMethod("nonAnnotatedMethod");
+
 
 
         annotationUtilsImpl = new StringHateoasIntrospectionUtilsImpl();
@@ -93,23 +93,13 @@ public class StringHateoasIntrospectionUtilsImplTest {
     }
 
     @Test
-    public void haveToGenerateTemplateForNonAnnotatedClassNonAnnotatedMethod() throws Exception {
-        assertFalse(annotationUtilsImpl.haveToGenerateTemplateFor(nonAnnotatedMethodNonAnnotatedClass));
+    public void haveToGenerateTemplateForNonAnnotatedMethod() throws Exception {
+        assertFalse(annotationUtilsImpl.haveToGenerateTemplateFor(nonAnnotatedMethodGenerateUriTemplateFor));
     }
 
     @Test
-    public void haveToGenerateTemplateForAnnotatedClassNonAnnotatedMethod() throws Exception {
-        assertTrue(annotationUtilsImpl.haveToGenerateTemplateFor(annotatedMethodNonAnnotatedClass));
-    }
-
-    @Test
-    public void haveToGenerateTemplateForNonAnnotatedClassAnnotatedMethod() throws Exception {
-   //     assertTrue(annotationUtilsImpl.haveToGenerateTemplateFor(nonAnnotatedMethodAnnotatedClass));
-    }
-
-    @Test
-    public void haveToGenerateTemplateForAnnotatedClassAnnotatedMethod() throws Exception {
-//        assertTrue(annotationUtilsImpl.haveToGenerateTemplateFor(annotatedMethodAnnotatedClass));
+    public void haveToGenerateTemplateForAnnotatedMethod() throws Exception {
+        assertTrue(annotationUtilsImpl.haveToGenerateTemplateFor(annotatedMethodGenerateUriTemplateFor));
     }
 
 
@@ -119,13 +109,21 @@ public class StringHateoasIntrospectionUtilsImplTest {
             @RequestBody String requestBody) {
     }
 
-    public static class NonAnnotatedClass {
+    public static class GenerateUriTemplateForClass {
 
         public void nonAnnotatedMethod() {
         }
 
         @GenerateUriTemplateFor
         public void annotatedMethod() {
+        }
+    }
+
+    @RestController
+    public static class Controller {
+
+        public void controllerMethod() {
+
         }
     }
 

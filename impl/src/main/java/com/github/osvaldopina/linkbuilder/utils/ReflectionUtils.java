@@ -3,6 +3,7 @@ package com.github.osvaldopina.linkbuilder.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 
 public class ReflectionUtils {
@@ -12,29 +13,26 @@ public class ReflectionUtils {
     private Utils utils = Utils.INSTANCE;
 
 
-    private ReflectionUtils() {
+    ReflectionUtils() {
 
     }
 
     public <E> E callMethod(Class<E> type, Object target, String methodName, Object... args) {
         try {
-            Method method =  target.getClass().getMethod(methodName);
-            if (method == null) {
-                throw new IllegalStateException("Could not find Method " + methodName + " on " + target);
-            }
-            return (E) method.invoke(target);
+            Method method =  target.getClass().getMethod(methodName, getArgsTypes(args));
+            return (E) method.invoke(target, args);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Could not call Method " + methodName + " on " + target + " because " + e, e);
+            throw new LinkBuilderException("Could not call Method " + methodName + " on " + target + " because " + e, e);
         } catch (InvocationTargetException e) {
-            throw new IllegalStateException("Could not call Method " + methodName + " on " + target + " because " + e, e);
+            throw new LinkBuilderException("Could not call Method " + methodName + " on " + target + " because " + e, e);
         } catch (NoSuchMethodException e) {
-            throw new IllegalStateException("Could not call Method " + methodName + " on " + target + " because " + e, e);
+            throw new LinkBuilderException("Could not call Method " + methodName + " on " + target + " because " + e, e);
         }
     }
 
-    public boolean hasMethod(Object target, String methodName, Object... args) {
+    public boolean hasMethod(Object target, String methodName, Class<?> ... argsTypes) {
         try {
-            target.getClass().getMethod(methodName);
+            target.getClass().getMethod(methodName, argsTypes);
             return true;
         } catch (NoSuchMethodException e) {
             return false;
@@ -60,18 +58,14 @@ public class ReflectionUtils {
     }
 
 
-    public Class<?> getMethodReturnType(Object target, String methodName, Object... args) {
-        try {
-            return target.getClass().getMethod(methodName).getReturnType();
-        } catch (NoSuchMethodException e) {
-            throw new IllegalStateException("Could not find controller " + methodName + " on " + target + " because " + e, e);
+    private Class<?>[] getArgsTypes(Object[] args) {
+        Class<?>[] argTypes = new Class<?>[args.length];
+        for(int i=0; i< args.length; i++) {
+            argTypes[i] = args[i].getClass();
         }
+        return argTypes;
     }
 
-    public boolean methodReturnTypeIs(Class<?> targetType, Object target, String methodName, Object ...args) {
-        Class<?> returnType = getMethodReturnType(target, methodName, args);
-        return targetType.isAssignableFrom(returnType);
-    }
 
 
 }
