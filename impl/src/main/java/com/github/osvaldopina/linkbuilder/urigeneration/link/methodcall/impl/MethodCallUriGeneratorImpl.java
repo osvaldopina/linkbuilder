@@ -20,6 +20,9 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator {
 
     private UrlPathContatenator urlPathContatenator = UrlPathContatenator.INSTANCE;
 
+    private DefaultConditionalVariableSubstitutionStategiesFactory defaultConditionalVariableSubstitutionStategiesFactory =
+            DefaultConditionalVariableSubstitutionStategiesFactory.INSTANCE;
+
     public MethodCallUriGeneratorImpl(TemplateRegistry templateRegistry,
                                       BaseUriDiscover baseUriDiscover,
                                       MethodCallVariableValuesDiscover methodCallVariableValuesDiscover) {
@@ -32,10 +35,7 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator {
     @Override
     public String generateUri(MethodCall methodCall, Object resource) {
 
-
-        Template template = templateRegistry.getTemplate(methodCall.getMethod());
-
-        return generateUri(methodCall, resource, new ConditionalVariableSubstitutionStrategies());
+        return generateUri(methodCall, resource, defaultConditionalVariableSubstitutionStategiesFactory.create());
 
     }
 
