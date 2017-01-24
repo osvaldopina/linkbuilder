@@ -69,8 +69,14 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
 
     @Override
-    public Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean) {
-        return getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class);
+    public Set<Method> getAnnotatedMethods(Object bean, Class<? extends Annotation> annotationType) {
+        Set<Method> annotatedMethods = new HashSet<Method>();
+        for (Method method : bean.getClass().getMethods()) {
+            if (AnnotationUtils.findAnnotation(method, annotationType) != null) {
+                annotatedMethods.add(method);
+            }
+        }
+        return Collections.unmodifiableSet(annotatedMethods);
     }
 
     @Override
@@ -85,7 +91,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
         if (generateUriTemplateFor != null &&
                 generateUriTemplateFor.rel() != null &&
-                (!"" .equals(generateUriTemplateFor.rel().trim()))) {
+                (!"".equals(generateUriTemplateFor.rel().trim()))) {
             return generateUriTemplateFor.rel();
         } else {
             return null;
@@ -100,10 +106,10 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
             return generateUriTemplateFor.destination();
         }
 
-        for(Annotation annotation:method.getAnnotations()) {
+        for (Annotation annotation : method.getAnnotations()) {
             if (annotation.annotationType().getAnnotation(GenerateUriTemplateFor.class) != null) {
-                if (reflectionUtils.hasMethod(annotation,"destination")) {
-                    Object destination = reflectionUtils.callMethod(Object.class,annotation,"destination");
+                if (reflectionUtils.hasMethod(annotation, "destination")) {
+                    Object destination = reflectionUtils.callMethod(Object.class, annotation, "destination");
                     if (destination != null) {
                         return destination.toString();
                     }
@@ -121,7 +127,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
     public <T extends Annotation> T getComposedAnnotation(AnnotatedElement annotatedElement, Class<T> annotationType) {
-        for(Annotation elementAnnotation:annotatedElement.getDeclaredAnnotations()) {
+        for (Annotation elementAnnotation : annotatedElement.getDeclaredAnnotations()) {
             if (elementAnnotation.annotationType().equals(annotationType) ||
                     elementAnnotation.annotationType().getAnnotation(annotationType) != null) {
                 return (T) elementAnnotation;
@@ -131,22 +137,11 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     }
 
 
-    private Set<Method> getAnnotatedMethods(Object bean, Class<? extends Annotation> annotationType) {
-        Set<Method> annotatedMethods = new HashSet<Method>();
-        for (Method method : bean.getClass().getMethods()) {
-            if (AnnotationUtils.findAnnotation(method, annotationType) != null) {
-                annotatedMethods.add(method);
-            }
-        }
-        return Collections.unmodifiableSet(annotatedMethods);
-    }
-
     private boolean isGenerateUriTemplateForMethod(Method method) {
         if (AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null) {
             return true;
-        }
-        else {
-            for(Annotation annotation : method.getAnnotations()) {
+        } else {
+            for (Annotation annotation : method.getAnnotations()) {
                 if (annotation.annotationType().getAnnotation(GenerateUriTemplateFor.class) != null) {
                     return true;
                 }

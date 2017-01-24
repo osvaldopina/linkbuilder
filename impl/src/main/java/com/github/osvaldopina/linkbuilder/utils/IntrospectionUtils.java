@@ -21,7 +21,7 @@ public interface IntrospectionUtils {
 
     boolean isRestController(Object bean);
 
-    Set<Method> getEnableSelfFromCurrentCallAnnotatedMethods(Object bean);
+    Set<Method> getAnnotatedMethods(Object bean, Class<? extends Annotation> annotationType);
 
     boolean isEnableSelfFromCurrentCallMethod(Method method);
 

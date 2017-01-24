@@ -2,6 +2,7 @@ package com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl;
 
 import java.lang.reflect.Method;
 
+import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class CurrentCallBeanPostProcessor implements BeanPostProcessor, Applicat
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (introspectionUtils.isRestController(bean)) {
-			for (Method method : introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)) {
+			for (Method method : introspectionUtils.getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class)) {
 				return currentCallRecorderMethodInterceptorCreator.
 						addInterceptorToMethods(bean, applicationContext);
 			}

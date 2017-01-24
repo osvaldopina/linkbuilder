@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
+import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderRegistry;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.easymock.EasyMockRule;
@@ -72,7 +73,7 @@ public class CurrentCallBeanPostProcessorTest extends EasyMockSupport {
 	@Test
 	public void postProcessAfterInitialization_beanIsRestControllerButHasNoSelfFromCurrentCallMethod() throws Exception {
 		expect(introspectionUtils.isRestController(bean)).andReturn(true);
-		expect(introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)).andReturn(Collections.EMPTY_SET);
+		expect(introspectionUtils.getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class)).andReturn(Collections.EMPTY_SET);
 
 		replayAll();
 
@@ -85,7 +86,7 @@ public class CurrentCallBeanPostProcessorTest extends EasyMockSupport {
 	@Test
 	public void postProcessAfterInitialization_beanIsRestControllerButHasSelfFromCurrentCallMethod() throws Exception {
 		expect(introspectionUtils.isRestController(bean)).andReturn(true);
-		expect(introspectionUtils.getEnableSelfFromCurrentCallAnnotatedMethods(bean)).andReturn(
+		expect(introspectionUtils.getAnnotatedMethods(bean, EnableSelfFromCurrentCall.class)).andReturn(
 				new HashSet<Method>(Arrays.asList(method)));
 		expect(currentCallRecorderMethodInterceptorCreator.addInterceptorToMethods(bean, applicationContext)).
 				andReturn(interceptedBean);
