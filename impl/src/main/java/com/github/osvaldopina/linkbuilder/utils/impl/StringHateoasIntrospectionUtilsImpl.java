@@ -59,7 +59,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     public boolean haveToGenerateTemplateFor(Method method) {
         return !method.getDeclaringClass().getPackage().getName().startsWith("org.springframework") &&
                 (AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null ||
-                        isGenerateUriTemplateForMethod(method));
+                        AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     }
 
     @Override
-    public String getMethodDestination(Method method) {
+        public String getMethodDestination(Method method) {
         GenerateUriTemplateFor generateUriTemplateFor = method.getAnnotation(GenerateUriTemplateFor.class);
 
         if (generateUriTemplateFor != null) {
@@ -121,7 +121,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
     public boolean hasComposedAnnotation(AnnotatedElement annotatedElement, Class<? extends Annotation> annotationType) {
-        return AnnotationUtils.getAnnotation(annotatedElement, annotationType) != null;
+        return AnnotationUtils.findAnnotation(annotatedElement, annotationType) != null;
     }
 
 
@@ -135,20 +135,5 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
         }
         throw new LinkBuilderException("Could not find composed annotation " + annotationType + " in " + annotatedElement);
     }
-
-
-    private boolean isGenerateUriTemplateForMethod(Method method) {
-        if (AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null) {
-            return true;
-        } else {
-            for (Annotation annotation : method.getAnnotations()) {
-                if (annotation.annotationType().getAnnotation(GenerateUriTemplateFor.class) != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 
 }
