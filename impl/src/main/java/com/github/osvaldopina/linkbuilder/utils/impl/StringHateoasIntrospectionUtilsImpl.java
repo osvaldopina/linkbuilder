@@ -1,9 +1,8 @@
 package com.github.osvaldopina.linkbuilder.utils.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
 import org.springframework.core.MethodParameter;
@@ -58,7 +57,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     @Override
     public boolean haveToGenerateTemplateFor(Method method) {
         return !method.getDeclaringClass().getPackage().getName().startsWith("org.springframework") &&
-                (AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null ||
+                (AnnotationUtils.findAnnotation(method, SelfFromCurrentCall.class) != null ||
                         AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null);
     }
 
@@ -81,7 +80,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
     public boolean isEnableSelfFromCurrentCallMethod(Method method) {
-        return AnnotationUtils.findAnnotation(method, EnableSelfFromCurrentCall.class) != null;
+        return AnnotationUtils.findAnnotation(method, SelfFromCurrentCall.class) != null;
     }
 
     @Override

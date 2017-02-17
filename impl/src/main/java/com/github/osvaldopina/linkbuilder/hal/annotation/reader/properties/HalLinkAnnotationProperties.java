@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.reader.properties;
 
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class HalLinkAnnotationProperties extends LinkAnnotationProperties {
             String rel,
             boolean templated,
             String hreflang,
-            List<LinkAnnotationParameter> parameters) {
+            List<LinkAnnotationVariable> parameters) {
 
         super(destination, rel, templated, parameters);
         if (!"".equals(hreflang.trim())) {

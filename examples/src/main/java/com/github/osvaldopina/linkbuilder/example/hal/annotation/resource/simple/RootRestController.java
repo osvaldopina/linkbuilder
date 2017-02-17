@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootRestController {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
-
     @RequestMapping("/")
     @GenerateUriTemplateFor(rel = "root")
     public Resource root() {

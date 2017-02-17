@@ -30,7 +30,7 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
         }
 
         if (params != null) {
-            ctx.setVariable("params", params);
+            ctx.setVariable("variables", params);
         }
 
         Expression parsedExpression = securityExpressionParser.parse(applicationContext, expression);
@@ -48,7 +48,7 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
         }
 
         if (params != null) {
-            ctx.setVariable("params", params);
+            ctx.setVariable("variables", params);
         }
 
         Expression parsedExpression = securityExpressionParser.parse(applicationContext, expression);

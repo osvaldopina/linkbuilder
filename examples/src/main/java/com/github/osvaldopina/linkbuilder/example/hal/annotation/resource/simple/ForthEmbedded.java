@@ -2,12 +2,12 @@ package com.github.osvaldopina.linkbuilder.example.hal.annotation.resource.simpl
 
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import org.springframework.hateoas.ResourceSupport;
 
 @HalLinks({
         @HalLink(controller = RootRestController.class, overridedRel = "self" , rel = "third",
-                params = {@Param(name = "name", value = "#resource.key")})
+                variables = {@Variable(name = "name", value = "#resource.key")})
 })
 public class ForthEmbedded extends ResourceSupport {
 

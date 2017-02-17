@@ -34,7 +34,7 @@ public class HalLinkBuilderTest {
 
     @Test
     @WithMockUser(username = "user")
-    public void halLink() throws Exception {
+    public void verifyResponse() throws Exception {
 
         mockMvc.perform(get("/"))
                 .andDo(print())

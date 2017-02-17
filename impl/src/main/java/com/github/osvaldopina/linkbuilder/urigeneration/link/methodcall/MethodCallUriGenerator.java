@@ -5,9 +5,10 @@ import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.Cond
 
 public interface MethodCallUriGenerator {
 
-    String generateUri(MethodCall methodCall, Object resource);
+    String generateUri(MethodCall methodCall, Object resource, boolean templated);
 
     String generateUri(MethodCall methodCall, Object resource,
-                       ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies);
+                       ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies,
+                       boolean templated);
 
 }

@@ -33,7 +33,7 @@ public class TemplateTest extends EasyMockSupport {
 
     @Test
     public void toUri() throws Exception {
-        String generatedTemplate = "template";
+        String generatedTemplate = "templated";
 
         EasyMock.expect(
                 uriTemplateVariableSetter.createNewTemplateAndSetVariables(uriTemplate,variables, variableValues)
@@ -51,7 +51,7 @@ public class TemplateTest extends EasyMockSupport {
 
     @Test
     public void toTemplatedUri() throws Exception {
-        String generatedTemplate = "template";
+        String generatedTemplate = "templated";
 
         EasyMock.expect(
                 uriTemplateVariableSetter.createNewTemplateAndSetVariables(uriTemplate,variables, variableValues)

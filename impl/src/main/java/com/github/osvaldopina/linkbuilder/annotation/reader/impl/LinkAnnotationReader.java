@@ -1,11 +1,11 @@
 package com.github.osvaldopina.linkbuilder.annotation.reader.impl;
 
 import com.github.osvaldopina.linkbuilder.annotation.Links;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.DestinationExtractor;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.LinkRelExtractor;
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
@@ -70,11 +70,11 @@ public class LinkAnnotationReader implements AnnotationReader {
         String destination = destinationExtractor.extract(linkAnnotation);
         String rel = linkRelExtractor.extract(linkAnnotation);
         boolean templated = reflectionUtils.callMethod(boolean.class,linkAnnotation, "templated");
-        List<LinkAnnotationParameter> linkParameters = new ArrayList<LinkAnnotationParameter>();
-        for(Param linkParam: reflectionUtils.callMethod(Param[].class,linkAnnotation, "params")) {
-            linkParameters.add(new LinkAnnotationParameter(linkParam.name(), linkParam.value(),linkParam.when()));
+        List<LinkAnnotationVariable> linkVariables = new ArrayList<LinkAnnotationVariable>();
+        for(Variable linkVariable : reflectionUtils.callMethod(Variable[].class,linkAnnotation, "variables")) {
+            linkVariables.add(new LinkAnnotationVariable(linkVariable.name(), linkVariable.value(), linkVariable.when()));
         }
-        return new LinkAnnotationProperties(destination, rel, templated, linkParameters);
+        return new LinkAnnotationProperties(destination, rel, templated, linkVariables);
 
     }
 

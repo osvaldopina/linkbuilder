@@ -38,7 +38,7 @@ public class TemplateRegistryImpl implements TemplateRegistry {
 
         if (template == null) {
             throw new LinkBuilderException(
-                    "Could not generate template for controller " +
+                    "Could not generate templated for controller " +
                             method + " check if its annotated with @" + GenerateUriTemplateFor.class.getName());
         }
         return template;

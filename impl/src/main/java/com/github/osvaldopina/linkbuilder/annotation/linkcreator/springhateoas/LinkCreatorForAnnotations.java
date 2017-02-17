@@ -36,7 +36,7 @@ public class LinkCreatorForAnnotations {
         if (introspectionUtils.isEnableSelfFromCurrentCallMethod(currentMethodCall.getMethod())) {
             if (resource instanceof ResourceSupport) {
                 ((ResourceSupport) resource).add(
-                        new Link(methodCallUriGenerator.generateUri(currentMethodCall, resource), "self"));
+                        new Link(methodCallUriGenerator.generateUri(currentMethodCall, resource, false), "self"));
             } else {
                 throw new LinkBuilderException("Can only set link to instances of ResourceSupport but resource is " + resource.getClass());
             }

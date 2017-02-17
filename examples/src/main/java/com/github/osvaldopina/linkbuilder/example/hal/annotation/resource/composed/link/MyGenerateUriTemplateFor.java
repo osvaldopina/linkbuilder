@@ -9,5 +9,5 @@ import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyGenerateUriTemplateFor {
 
-    LINK_DESTINATION destination();
+    Destination destination();
 }

@@ -1,9 +1,8 @@
 package com.github.osvaldopina.linkbuilder.utils.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -343,7 +342,7 @@ public class StringHateoasIntrospectionUtilsImplTest {
         public void nonAnnotatedMethod() {
         }
 
-        @EnableSelfFromCurrentCall
+        @SelfFromCurrentCall
         public void annotatedMethod() {
         }
 

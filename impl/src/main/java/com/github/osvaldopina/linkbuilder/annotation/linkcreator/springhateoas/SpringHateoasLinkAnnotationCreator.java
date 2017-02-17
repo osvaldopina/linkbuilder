@@ -23,7 +23,6 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 
 	private IntrospectionUtils introspectionUtils;
 
-	private MethodCallUriGenerator methodCallUriGenerator;
 
 	private LinkAnnotationReader linkAnnotationReader;
 
@@ -37,7 +36,6 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 
 		this.annotationUriGenerator = annotationUriGenerator;
 		this.introspectionUtils = introspectionUtils;
-		this.methodCallUriGenerator = methodCallUriGenerator;
 		this.linkAnnotationReader = linkAnnotationReader;
 	}
 
@@ -57,8 +55,6 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 					resource);
 		}
 
-		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils, methodCall,
-				resource);
 	}
 
 	@Override

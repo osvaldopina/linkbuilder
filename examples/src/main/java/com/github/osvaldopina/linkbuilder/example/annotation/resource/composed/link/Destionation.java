@@ -1,6 +1,8 @@
-package com.github.osvaldopina.linkbuilder.example.hal.annotation.resource.composed.link;
+package com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link;
 
-public enum LINK_DESTINATION {
+public enum Destionation {
+
+    ROOT("root"),
 
     DIRECT_LINK("direct-link"),
 
@@ -8,7 +10,7 @@ public enum LINK_DESTINATION {
 
     private String rel;
 
-    LINK_DESTINATION(String rel) {
+    Destionation(String rel) {
         this.rel = rel;
     }
 
@@ -16,4 +18,3 @@ public enum LINK_DESTINATION {
         return rel;
     }
 }
-

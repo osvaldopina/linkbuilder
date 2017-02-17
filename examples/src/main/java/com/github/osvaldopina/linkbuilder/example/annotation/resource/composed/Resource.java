@@ -1,26 +1,26 @@
 package com.github.osvaldopina.linkbuilder.example.annotation.resource.composed;
 
-import com.github.osvaldopina.linkbuilder.annotation.Param;
-import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.LINK_DESTINATION;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
+import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.Destionation;
 import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.MyLink;
 import com.github.osvaldopina.linkbuilder.example.annotation.resource.composed.link.MyLinks;
 import org.springframework.hateoas.ResourceSupport;
 
 @MyLinks(value = {
-        @MyLink(destination = LINK_DESTINATION.ROOT, overridedRel = "self"),
-        @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, params = {
-                @Param(name = "query", value = "#resource.queryValue"),
-                @Param(name = "path", value = "#resource.pathValue")
+        @MyLink(destination = Destionation.ROOT, overridedRel = "self"),
+        @MyLink(destination = Destionation.DIRECT_LINK, variables = {
+                @Variable(name = "query", value = "#resource.queryValue"),
+                @Variable(name = "path", value = "#resource.pathValue")
         }),
-        @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, overridedRel = "direct-link-overrided",
-                params = {
-                        @Param(name = "query", value = "#resource.queryValue"),
-                        @Param(name = "path", value = "#resource.pathValue")
+        @MyLink(destination = Destionation.DIRECT_LINK, overridedRel = "direct-link-overrided",
+                variables = {
+                        @Variable(name = "query", value = "#resource.queryValue"),
+                        @Variable(name = "path", value = "#resource.pathValue")
                 }),
-        @MyLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
+        @MyLink(destination = Destionation.DIRECT_LINK_TEMPLATED,
                 templated = true,
-                params = {
-                        @Param(name = "templated", value = "'templated-value'")
+                variables = {
+                        @Variable(name = "templated", value = "'templated-value'")
                 })
 })
 public class Resource extends ResourceSupport {

@@ -4,14 +4,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 
 
 @Retention(RetentionPolicy.RUNTIME)
 @HalLink
 public @interface MyHalLink {
 
-    LINK_DESTINATION destination();
+    Destination destination();
 
     String overridedRel() default "";
 
@@ -21,6 +21,6 @@ public @interface MyHalLink {
 
     boolean templated() default false;
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
 }

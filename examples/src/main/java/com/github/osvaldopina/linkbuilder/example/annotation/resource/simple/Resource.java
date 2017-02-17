@@ -2,26 +2,26 @@ package com.github.osvaldopina.linkbuilder.example.annotation.resource.simple;
 
 import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.Links;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
 import org.springframework.hateoas.ResourceSupport;
 
 @Links({
 		@Link(controller = RootRestController.class, rel = "root", overridedRel = "self"),
 		@Link(controller = RootRestController.class, rel = "direct-link",
-				params = {
-						@Param(name = "query", value = "#resource.queryValue"),
-						@Param(name = "path", value = "#resource.pathValue")
+				variables = {
+						@Variable(name = "query", value = "#resource.queryValue"),
+						@Variable(name = "path", value = "#resource.pathValue")
 				}),
 		@Link(controller = RootRestController.class, rel = "direct-link", overridedRel = "direct-link-overrided",
-				params = {
-						@Param(name = "query", value = "#resource.queryValue"),
-						@Param(name = "path", value = "#resource.pathValue")
+				variables = {
+						@Variable(name = "query", value = "#resource.queryValue"),
+						@Variable(name = "path", value = "#resource.pathValue")
 				}),
 		@Link(controller = RootRestController.class,
 				rel = "direct-link-templated",
 				templated = true,
-				params = {
-						@Param(name = "templated", value = "'templated-value'")
+				variables = {
+						@Variable(name = "templated", value = "'templated-value'")
 				})
 })
 public class Resource extends ResourceSupport {

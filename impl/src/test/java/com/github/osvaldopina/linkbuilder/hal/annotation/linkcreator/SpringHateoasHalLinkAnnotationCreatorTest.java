@@ -112,14 +112,12 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
 
 	@Test
-	public void createAndSetForMethodAnnotations_noEnableSelfFromCurrentCall() throws Exception {
+	public void createAndSetForMethodAnnotations() throws Exception {
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(halLinkAnnotationReader.read(method)).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
 		expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, resourceSupport)).andReturn("link-uri");
 		expect(halLinkAnnotationProperties.getRel()).andReturn("rel");
 		expect(halLinkAnnotationProperties.getHreflang()).andReturn("href-lang");
-        expect(methodCall.getMethod()).andReturn(method);
-        expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(false);
 		replayAll();
 
 		springHateoasHalLinkAnnotationCreator.createAndSetForMethodAnnotations(methodCall, resourceSupport);
@@ -134,36 +132,6 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
 	}
 
-    @Test
-    public void createAndSetForMethodAnnotations_enableSelfFromCurrentCall() throws Exception {
-        expect(methodCall.getMethod()).andReturn(method);
-        expect(halLinkAnnotationReader.read(method)).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
-        expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, resourceSupport)).andReturn("link-uri");
-        expect(halLinkAnnotationProperties.getRel()).andReturn("rel");
-        expect(halLinkAnnotationProperties.getHreflang()).andReturn("href-lang");
-        expect(methodCall.getMethod()).andReturn(method);
-        expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
-        expect(methodCallUriGenerator.generateUri(methodCall, resourceSupport)).andReturn("self-uri");
-        replayAll();
-
-        springHateoasHalLinkAnnotationCreator.createAndSetForMethodAnnotations(methodCall, resourceSupport);
-
-        verifyAll();
-
-        assertThat(resourceSupport.getLinks(),  hasSize(2));
-        assertThat(resourceSupport.getLink("rel"), is(notNullValue()));
-        assertThat(resourceSupport.getLink("self"), is(notNullValue()));
-
-        HalLink halLink = (HalLink) resourceSupport.getLink("rel");
-        assertThat(halLink.getHreflang(),is("href-lang"));
-        assertThat(halLink.getRel(),is("rel"));
-        assertThat(halLink.getHref(),is("link-uri"));
-
-        halLink = (HalLink) resourceSupport.getLink("self");
-        assertThat(halLink.getHreflang(),is(nullValue()));
-        assertThat(halLink.getRel(),is("self"));
-        assertThat(halLink.getHref(),is("self-uri"));
-    }
 
     @Test
     public void createAndSetForResourceAnnotations_noEmbeddedResource() throws Exception {

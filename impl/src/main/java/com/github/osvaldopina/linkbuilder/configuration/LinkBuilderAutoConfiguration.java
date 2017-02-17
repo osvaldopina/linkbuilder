@@ -19,10 +19,7 @@ import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactory;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.extension.impl.LinkBuilderExtensionFactoryRegistryImpl;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCall;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallBeanPostProcessor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallLocatorImpl;
+import com.github.osvaldopina.linkbuilder.fromcall.selfromcurrentcall.SelfFromCurrentCallBeanPostProcessor;
 import com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.SpringHateoasHalLinkAnnotationCreator;
 import com.github.osvaldopina.linkbuilder.hal.annotation.reader.HalLinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.hal.springhateoas.SpringHateoasHalLinkBuilderExtensionFactoryImpl;
@@ -115,17 +112,19 @@ public class LinkBuilderAutoConfiguration {
 	}
 
 	@Bean
-	public static BeanPostProcessor currentCallBeanPostProcessor(IntrospectionUtils introspectionUtils) {
-		return new CurrentCallBeanPostProcessor(introspectionUtils);
+	@Autowired
+	public static BeanPostProcessor currentCallBeanPostProcessor(MethodCallUriGenerator methodCallUriGenerator,
+																 IntrospectionUtils introspectionUtils) {
+		return new SelfFromCurrentCallBeanPostProcessor(methodCallUriGenerator, introspectionUtils);
 	}
+
 
 	@Bean
 	@Autowired
-	public LinksBuilderFactory linksBuilderFactory(
-			CurrentCallLocator currentCallLocator,
+	 LinksBuilderFactory linksBuilderFactory(
 			LinkPropertiesLinkCreators linkPropertiesLinkCreators,
 			LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry) {
-		return new LinksBuilderFactoryImpl(currentCallLocator, linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
+		return new LinksBuilderFactoryImpl(linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
 	}
 
 	@Bean
@@ -276,18 +275,8 @@ public class LinkBuilderAutoConfiguration {
 	}
 
 	@Bean
-	public CurrentCall currentCall() {
-		return new CurrentCall();
-	}
-
-	@Bean
 	public IntrospectionUtils introspectionUtils() {
 		return new StringHateoasIntrospectionUtilsImpl();
-	}
-
-	@Bean
-	public CurrentCallLocator currentCallLocator() {
-		return new CurrentCallLocatorImpl();
 	}
 
 	@Bean

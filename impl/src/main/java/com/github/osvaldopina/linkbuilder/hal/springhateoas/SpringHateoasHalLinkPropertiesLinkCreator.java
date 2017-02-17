@@ -42,7 +42,9 @@ public class SpringHateoasHalLinkPropertiesLinkCreator implements LinkProperties
 						linkProperties.getResource(),
 						linkProperties.getMethodCall().getParams())) {
 
-			String uri = methodCallUriGenerator.generateUri(linkProperties.getMethodCall(), linkProperties.getResource());
+			String uri = methodCallUriGenerator.generateUri(linkProperties.getMethodCall(), linkProperties.getResource(),
+					linkProperties.isTemplated());
+
 			String rel = linkProperties.getRel();
 			if (rel == null) {
 				rel = introspectionUtils.getMethodRel(linkProperties.getMethodCall().getMethod());

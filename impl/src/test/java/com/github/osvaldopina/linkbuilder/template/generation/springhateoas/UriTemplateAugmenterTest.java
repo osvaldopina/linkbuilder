@@ -57,7 +57,7 @@ public class UriTemplateAugmenterTest {
 
         uriTemplateAugmenter = new UriTemplateAugmenter(uriTemplateBuilder);
 
-        uriTemplateAugmenter.template("template/{var}");
+        uriTemplateAugmenter.template("templated/{var}");
 
 
         assertEquals(2, uriTemplateBuilder.getComponents().length);
@@ -65,7 +65,7 @@ public class UriTemplateAugmenterTest {
         assertTrue(uriTemplateBuilder.getComponents()[1] instanceof Expression);
 
         Literal literal = (Literal) uriTemplateBuilder.getComponents()[0];
-        assertEquals("template/", literal.toString());
+        assertEquals("templated/", literal.toString());
 
         Expression expression = (Expression) uriTemplateBuilder.getComponents()[1];
         assertEquals(Operator.NUL, expression.getOperator());

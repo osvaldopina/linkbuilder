@@ -11,9 +11,9 @@ public class LinkAnnotationProperties {
 
     private boolean templated;
 
-    private List<LinkAnnotationParameter> parameters = new ArrayList<LinkAnnotationParameter>();
+    private List<LinkAnnotationVariable> parameters = new ArrayList<LinkAnnotationVariable>();
 
-    public LinkAnnotationProperties(String destination, String rel, boolean templated, List<LinkAnnotationParameter> parameters) {
+    public LinkAnnotationProperties(String destination, String rel, boolean templated, List<LinkAnnotationVariable> parameters) {
         this.destination = destination;
         this.rel = rel;
         this.templated = templated;
@@ -33,7 +33,7 @@ public class LinkAnnotationProperties {
         return templated;
     }
 
-    public List<LinkAnnotationParameter> getParameters() {
+    public List<LinkAnnotationVariable> getParameters() {
         return parameters;
     }
 

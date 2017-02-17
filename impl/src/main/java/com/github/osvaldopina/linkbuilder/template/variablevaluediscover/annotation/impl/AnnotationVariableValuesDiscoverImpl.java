@@ -3,7 +3,7 @@ package com.github.osvaldopina.linkbuilder.template.variablevaluediscover.annota
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
@@ -29,16 +29,16 @@ public class AnnotationVariableValuesDiscoverImpl implements AnnotationVariableV
 
 		Variable variable;
 		List<VariableValue> variableValueList = new ArrayList<VariableValue>();
-		for (LinkAnnotationParameter linkAnnotationParameter : linkAnnotationProperties.getParameters()) {
-			String when = linkAnnotationParameter.getWhen();
+		for (LinkAnnotationVariable linkAnnotationVariable : linkAnnotationProperties.getParameters()) {
+			String when = linkAnnotationVariable.getWhen();
 			Object[] params = currentMethodCall.getParams();
 			if (when == null || "".equals(when) ||
 					expressionExecutor.isTrue(when, resource, params)) {
 
-				variable = variables.get(linkAnnotationParameter.getName());
+				variable = variables.get(linkAnnotationVariable.getName());
 
 				variableValueList.add(new VariableValue(variable,
-						expressionExecutor.getValue(linkAnnotationParameter.getValue(), resource, params)));
+						expressionExecutor.getValue(linkAnnotationVariable.getValue(), resource, params)));
 			}
 		}
 

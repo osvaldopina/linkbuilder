@@ -1,6 +1,6 @@
-package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link;
+package com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link;
 
-public enum LINK_DESTINATION {
+public enum Destination {
 
     DIRECT_LINK("direct-link"),
 
@@ -8,7 +8,7 @@ public enum LINK_DESTINATION {
 
     private String rel;
 
-    LINK_DESTINATION(String rel) {
+    Destination(String rel) {
         this.rel = rel;
     }
 
@@ -16,4 +16,3 @@ public enum LINK_DESTINATION {
         return rel;
     }
 }
-

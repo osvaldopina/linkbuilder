@@ -106,9 +106,6 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
 				methodCall, resource);
 		expectLastCall();
-		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils,
-				methodCall, resource);
-		expectLastCall();
 
 		replayAll();
 
@@ -122,9 +119,6 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(linkAnnotationReader.read(method)).andReturn(linkAnnotationPropertiesList);
 		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
-				methodCall, resource);
-		expectLastCall();
-		linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils,
 				methodCall, resource);
 		expectLastCall();
 

@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.annotation.reader.properties;
 
-public class LinkAnnotationParameter {
+public class LinkAnnotationVariable {
 
     private String name;
 
@@ -8,7 +8,7 @@ public class LinkAnnotationParameter {
 
     private String when;
 
-    public LinkAnnotationParameter(String name, String value, String when) {
+    public LinkAnnotationVariable(String name, String value, String when) {
         this.name = name;
         this.value = value;
         this.when = when;

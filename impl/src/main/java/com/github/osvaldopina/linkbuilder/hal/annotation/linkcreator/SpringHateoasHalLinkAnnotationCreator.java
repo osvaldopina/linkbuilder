@@ -66,8 +66,6 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
             createAndSet(linkProperties, methodCall, resource);
         }
 
-        createAndSetSelfLinkIfNeeded(methodCall, resource);
-
     }
 
     @Override
@@ -102,17 +100,4 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
                     new HalLink(uri, linkAnnotationProperties.getRel(), halLinkAnnotationProperties.getHreflang()));
         }
     }
-
-    private void createAndSetSelfLinkIfNeeded(MethodCall currentMethodCall, Object resource) {
-
-        if (introspectionUtils.isEnableSelfFromCurrentCallMethod(currentMethodCall.getMethod())) {
-
-           ((ResourceSupport) resource).add(
-                    new HalLink(methodCallUriGenerator.generateUri(currentMethodCall, resource),
-                            "self",
-                            null)
-            );
-        }
-    }
-
 }

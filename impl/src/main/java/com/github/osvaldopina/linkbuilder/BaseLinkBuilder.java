@@ -5,7 +5,6 @@ import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryR
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.RecordCallInterceptorCreator;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreator;
 import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core.DontSubstituteAny;
@@ -16,22 +15,16 @@ import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.core
 public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     private LinksBuilder linksBuilder;
-    private CurrentCallLocator currentCallLocator;
     private LinkPropertiesLinkCreators linkPropertiesLinkCreators;
     private LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry;
     private LinkProperties linkProperties;
     private RecordCallInterceptorCreator recordCallInterceptorCreator = RecordCallInterceptorCreator.INSTANCE;
 
     public BaseLinkBuilder(
-            LinksBuilder linksBuilder,
-            CurrentCallLocator currentCallLocator,
-            LinkPropertiesLinkCreators linkPropertiesLinkCreators,
-            LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,
-            Object resource
-    ) {
+            LinksBuilder linksBuilder, LinkPropertiesLinkCreators linkPropertiesLinkCreators,
+            LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry,Object resource) {
 
         this.linksBuilder = linksBuilder;
-        this.currentCallLocator = currentCallLocator;
         this.linkPropertiesLinkCreators = linkPropertiesLinkCreators;
         this.linkBuilderExtensionFactoryRegistry = linkBuilderExtensionFactoryRegistry;
         this.linkProperties = new BaseLinkProperties();
@@ -40,7 +33,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     public BaseLinkBuilder(BaseLinkBuilder baseLinkBuilder) {
         this.linksBuilder = baseLinkBuilder.linksBuilder;
-        this.currentCallLocator = baseLinkBuilder.currentCallLocator();
         this.linkPropertiesLinkCreators = baseLinkBuilder.linkPropertiesLinkCreators;
         this.linkBuilderExtensionFactoryRegistry = baseLinkBuilder.linkBuilderExtensionFactoryRegistry;
         this.linkProperties = new LinkPropertiesDelegate(baseLinkBuilder.getLinkProperties());
@@ -55,16 +47,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         return linkProperties;
     }
 
-    protected CurrentCallLocator currentCallLocator() {
-        return currentCallLocator;
-    }
-
-    @Override
-    public LinkBuilder withSelfRel() {
-        linkProperties.setRel("self");
-        return this;
-    }
-
     @Override
     public LinkBuilder withRel(String rel) {
         linkProperties.setRel(rel);
@@ -72,20 +54,8 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     }
 
     @Override
-    public LinkBuilder setResource(Object resource) {
-        linkProperties.setResource(resource);
-        return this;
-    }
-
-    @Override
     public LinkBuilder when(String expression) {
         linkProperties.setWhenExpression(expression);
-        return this;
-    }
-
-    @Override
-    public LinkBuilder fromCurrentCall() {
-        linkProperties.setMethodCall(currentCallLocator.getCurrentCall());
         return this;
     }
 
@@ -113,6 +83,7 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         return this;
     }
 
+    @Override
     public LinkBuilder templated() {
         linkProperties.setTemplated(true);
         return this;
@@ -155,10 +126,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     public LinksBuilder getLinksBuilder() {
         return linksBuilder;
-    }
-
-    public CurrentCallLocator getCurrentCallLocator() {
-        return currentCallLocator;
     }
 
     public LinkPropertiesLinkCreators getLinkPropertiesLinkCreators() {

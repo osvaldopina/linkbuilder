@@ -6,18 +6,15 @@ import static org.junit.Assert.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 
 
-import com.github.osvaldopina.linkbuilder.LinkProperties;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.DestinationExtractor;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.LinkRelExtractor;
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import com.github.osvaldopina.linkbuilder.hal.annotation.reader.properties.HalLinkAnnotationProperties;
-import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -52,7 +49,7 @@ public class HalLinkAnnotationReaderTest extends EasyMockSupport {
 	private Annotation linkAnnotation;
 
 	@Mock
-	private Param linkParam;
+	private Variable linkVariable;
 
 	@TestSubject
 	HalLinkAnnotationReader halLinkAnnotationReader = new HalLinkAnnotationReader();
@@ -67,11 +64,11 @@ public class HalLinkAnnotationReaderTest extends EasyMockSupport {
 		expect(linkRelExtractor.extract(linkAnnotation)).andReturn("rel");
 		expect(reflectionUtils.callMethod(boolean.class, linkAnnotation, "templated")).andReturn(true);
 		expect(reflectionUtils.callMethod(String.class, linkAnnotation, "hreflang")).andReturn("hreflang");
-		// link params
-		expect(reflectionUtils.callMethod(Param[].class, linkAnnotation, "params")).andReturn(new Param[]{linkParam});
-		expect(linkParam.name()).andReturn("param-name");
-		expect(linkParam.value()).andReturn("param-value");
-		expect(linkParam.when()).andReturn("param-when");
+		// link variables
+		expect(reflectionUtils.callMethod(Variable[].class, linkAnnotation, "variables")).andReturn(new Variable[]{linkVariable});
+		expect(linkVariable.name()).andReturn("param-name");
+		expect(linkVariable.value()).andReturn("param-value");
+		expect(linkVariable.when()).andReturn("param-when");
 
 		replayAll();
 
@@ -88,10 +85,10 @@ public class HalLinkAnnotationReaderTest extends EasyMockSupport {
 		assertThat(halLinkAnnotationProperties.getHreflang(), is("hreflang"));
 		assertThat(halLinkAnnotationProperties.getParameters(), hasSize(1));
 
-		LinkAnnotationParameter linkAnnotationParameter = halLinkAnnotationProperties.getParameters().get(0);
-		assertThat(linkAnnotationParameter.getName(), is("param-name"));
-		assertThat(linkAnnotationParameter.getValue(), is("param-value"));
-		assertThat(linkAnnotationParameter.getWhen(), is("param-when"));
+		LinkAnnotationVariable linkAnnotationVariable = halLinkAnnotationProperties.getParameters().get(0);
+		assertThat(linkAnnotationVariable.getName(), is("param-name"));
+		assertThat(linkAnnotationVariable.getValue(), is("param-value"));
+		assertThat(linkAnnotationVariable.getWhen(), is("param-when"));
 
 		verifyAll();
 	}
@@ -105,8 +102,8 @@ public class HalLinkAnnotationReaderTest extends EasyMockSupport {
 		expect(linkRelExtractor.extract(linkAnnotation)).andReturn("rel");
 		expect(reflectionUtils.callMethod(boolean.class, linkAnnotation, "templated")).andReturn(true);
 		expect(reflectionUtils.callMethod(String.class, linkAnnotation, "hreflang")).andReturn("hreflang");
-		// link params
-		expect(reflectionUtils.callMethod(Param[].class, linkAnnotation, "params")).andReturn(new Param[]{});
+		// link variables
+		expect(reflectionUtils.callMethod(Variable[].class, linkAnnotation, "variables")).andReturn(new Variable[]{});
 
 		replayAll();
 

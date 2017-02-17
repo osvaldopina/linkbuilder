@@ -1,6 +1,6 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation;
 
-public @interface Param {
+public @interface Variable {
 
     String when() default "";
 

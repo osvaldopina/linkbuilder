@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import org.springframework.hateoas.ResourceSupport;
 
 @HalLinks({
 		@HalLink(controller = RootRestController.class, overridedRel = "self", rel = "first",
-				params = {@Param(name = "id", value = "#resource.identity")})
+				variables = {@Variable(name = "id", value = "#resource.identity")})
 })
 public class FirstEmbedded extends ResourceSupport {
 

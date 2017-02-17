@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link;
 
 import com.github.osvaldopina.linkbuilder.annotation.Link;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyLink {
 
-    LINK_DESTINATION destination();
+    Destination destination();
 
     String overridedRel() default "";
 
@@ -18,6 +18,6 @@ public @interface MyLink {
 
     boolean templated() default false;
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
 }

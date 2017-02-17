@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.hal.linkbuilder;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.hal.HalLinkBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
@@ -16,7 +16,7 @@ public class RootRestController {
     private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     public ResourceSupport root() {
 
         ResourceSupport resource = new ResourceSupport();

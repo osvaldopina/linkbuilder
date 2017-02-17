@@ -31,7 +31,7 @@ public class UserDefinedTypeTest {
     }
 
     @Test
-    public void userDefinedType() throws Exception {
+    public void verifyResponse() throws Exception {
 
         mockMvc.perform(get("/"))
             //    .andDo(print())

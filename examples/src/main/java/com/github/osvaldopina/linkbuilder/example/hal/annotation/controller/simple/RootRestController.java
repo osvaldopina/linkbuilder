@@ -1,11 +1,11 @@
 package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.simple;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,33 +15,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootRestController {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
-
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     @HalLinks({
             @HalLink(controller = RootRestController.class,
                     rel = "direct-link",
                     hreflang = "href-lang-1" ,
-                    params = {
-                    @Param(name = "query", value = "#resource.queryValue"),
-                    @Param(name = "path", value = "#resource.pathValue")
+                    variables = {
+                    @Variable(name = "query", value = "#resource.queryValue"),
+                    @Variable(name = "path", value = "#resource.pathValue")
             }),
             @HalLink(controller = RootRestController.class,
                     rel = "direct-link",
                     hreflang = "href-lang-2",
                     overridedRel = "direct-link-overrided",
-                    params = {
-                            @Param(name = "query", value = "#resource.queryValue"),
-                            @Param(name = "path", value = "#resource.pathValue")
+                    variables = {
+                            @Variable(name = "query", value = "#resource.queryValue"),
+                            @Variable(name = "path", value = "#resource.pathValue")
                     }),
             @HalLink(controller = RootRestController.class,
                     rel = "direct-link-templated",
                     hreflang = "href-lang-3",
                     templated = true,
-                    params = {
-                            @Param(name = "templated", value = "'templated-value'")
+                    variables = {
+                            @Variable(name = "templated", value = "'templated-value'")
                     })
     })
     public Resource root() {

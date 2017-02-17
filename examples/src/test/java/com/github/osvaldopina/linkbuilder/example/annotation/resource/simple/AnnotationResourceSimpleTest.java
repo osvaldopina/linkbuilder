@@ -31,7 +31,7 @@ public class AnnotationResourceSimpleTest {
 	}
 
 	@Test
-	public void directLink() throws Exception {
+	public void verifyResponse() throws Exception {
 		mockMvc.perform(get("/"))
 				.andDo(print())
 				.andExpect(status().isOk())

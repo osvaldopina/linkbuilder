@@ -13,13 +13,6 @@ import java.util.List;
 public interface LinkBuilder {
 
     /**
-     * Sets the link rel to "self".
-     *
-     * @return LinkBuilder Link builder.
-     */
-    LinkBuilder withSelfRel();
-
-    /**
      * Sets the link rel attribute.
      *
      * @param rel link rel attribute
@@ -27,13 +20,8 @@ public interface LinkBuilder {
      */
     LinkBuilder withRel(String rel);
 
-    /**
-     * Sets the resource variable in expression expression context so it can be used in expressions
-     *
-     * @param resource Object to be setted as 'resource' variable in expression context
-     * @return LinkBuilder link builder.
-     */
-    LinkBuilder setResource(Object resource);
+
+    LinkBuilder templated();
 
     /**
      * Defines expression condition expression for link rendering. If expression evaluates to true the link will
@@ -44,8 +32,6 @@ public interface LinkBuilder {
      */
     LinkBuilder when(String expression);
 
-
-    LinkBuilder fromCurrentCall();
 
     LinkBuilder dontSubstituteParameterIndex(int paramIndex);
 
@@ -88,5 +74,7 @@ public interface LinkBuilder {
      *
      */
     void builAndSet();
+
+
 
 }

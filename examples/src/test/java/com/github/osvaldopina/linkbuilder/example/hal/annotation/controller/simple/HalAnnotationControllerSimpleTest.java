@@ -32,7 +32,7 @@ public class HalAnnotationControllerSimpleTest {
     }
 
     @Test
-    public void annotationHalLink() throws Exception {
+    public void verifyResponse() throws Exception {
 
         mockMvc.perform(get("/"))
                 .andDo(print())

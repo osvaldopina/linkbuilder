@@ -21,7 +21,7 @@ public @interface Link {
 
     boolean templated() default false;
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
     class NullDestination {
 

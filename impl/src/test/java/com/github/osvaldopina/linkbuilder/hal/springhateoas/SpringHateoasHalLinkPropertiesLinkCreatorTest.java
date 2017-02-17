@@ -76,7 +76,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(halLinkProperties.getResource()).andReturn(resource);
-		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
+		expect(halLinkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource, true)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
 
@@ -105,7 +106,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 		expect(expressionExecutor.isTrue("when-expression", resource, params)).andReturn(true);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(halLinkProperties.getResource()).andReturn(resource);
-		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
+		expect(halLinkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource, true)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
 
@@ -130,7 +132,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(halLinkProperties.getResource()).andReturn(resource);
-		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
+		expect(halLinkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource, true)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getMethod()).andReturn(method);
@@ -161,7 +164,8 @@ public class SpringHateoasHalLinkPropertiesLinkCreatorTest extends EasyMockSuppo
 		expect(halLinkProperties.getWhenExpression()).andReturn(null);
 		expect(halLinkProperties.getMethodCall()).andReturn(methodCall);
 		expect(halLinkProperties.getResource()).andReturn(resource);
-		expect(methodCallUriGenerator.generateUri(methodCall, resource)).andReturn("uri");
+		expect(halLinkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resource, true)).andReturn("uri");
 		expect(halLinkProperties.getRel()).andReturn("rel");
 		expect(halLinkProperties.getHreflang()).andReturn("hreflang");
 		expect(halLinkProperties.getResource()).andReturn(resource);

@@ -1,9 +1,6 @@
 package com.github.osvaldopina.linkbuilder.hal;
 
 import com.github.osvaldopina.linkbuilder.BaseLinkBuilder;
-import com.github.osvaldopina.linkbuilder.LinksBuilder;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
 
 public class HalLinkBuilderImpl extends BaseLinkBuilder implements HalLinkBuilder {
 

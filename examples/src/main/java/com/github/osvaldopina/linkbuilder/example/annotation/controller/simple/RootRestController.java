@@ -11,26 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootRestController {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
-
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     @Links({
-            @Link(controller = RootRestController.class, rel = "direct-link", params = {
-                    @Param(name = "query", value = "#resource.queryValue"),
-                    @Param(name = "path", value = "#resource.pathValue")
+            @Link(controller = RootRestController.class, rel = "direct-link", variables = {
+                    @Variable(name = "query", value = "#resource.queryValue"),
+                    @Variable(name = "path", value = "#resource.pathValue")
             }),
             @Link(controller = RootRestController.class, rel = "direct-link", overridedRel = "direct-link-overrided",
-                    params = {
-                            @Param(name = "query", value = "#resource.queryValue"),
-                            @Param(name = "path", value = "#resource.pathValue")
+                    variables = {
+                            @Variable(name = "query", value = "#resource.queryValue"),
+                            @Variable(name = "path", value = "#resource.pathValue")
                     }),
             @Link(controller = RootRestController.class,
                     rel = "direct-link-templated",
                     templated = true,
-                    params = {
-                            @Param(name = "templated", value = "'templated-value'")
+                    variables = {
+                            @Variable(name = "templated", value = "'templated-value'")
                     })
     })
     public Resource root() {

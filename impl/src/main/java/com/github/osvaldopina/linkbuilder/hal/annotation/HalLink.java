@@ -23,7 +23,7 @@ public @interface HalLink {
 
     String hreflang() default "";
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
     class NullDestination {
 

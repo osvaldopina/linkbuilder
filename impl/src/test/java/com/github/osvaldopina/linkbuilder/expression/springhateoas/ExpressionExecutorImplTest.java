@@ -71,7 +71,7 @@ public class ExpressionExecutorImplTest extends EasyMockSupport {
         EasyMock.expect(evaluationContextCreator.create(applicationContext)).andReturn(evaluationContext);
         evaluationContext.setVariable("resource", resource);
         EasyMock.expectLastCall();
-        evaluationContext.setVariable("params", parameters);
+        evaluationContext.setVariable("variables", parameters);
         EasyMock.expectLastCall();
         EasyMock.expect(securityExpressionParser.parse(applicationContext, expression)).andReturn(parsedExpression);
         EasyMock.expect(parsedExpression.getValue(evaluationContext, Boolean.class)).andReturn(Boolean.TRUE);

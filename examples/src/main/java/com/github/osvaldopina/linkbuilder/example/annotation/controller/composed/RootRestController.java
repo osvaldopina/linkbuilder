@@ -1,10 +1,10 @@
 package com.github.osvaldopina.linkbuilder.example.annotation.controller.composed;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
 import com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link.MyGenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link.LINK_DESTINATION;
+import com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link.Destination;
 import com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link.MyLink;
 import com.github.osvaldopina.linkbuilder.example.annotation.controller.composed.link.MyLinks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,22 @@ public class RootRestController {
 	private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
-    @MyLinks(value = {
-            @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, params = {
-                    @Param(name = "query", value = "#resource.queryValue"),
-                    @Param(name = "path", value = "#resource.pathValue")
+    @SelfFromCurrentCall
+    @MyLinks({
+            @MyLink(destination = Destination.DIRECT_LINK, variables = {
+                    @Variable(name = "query", value = "#resource.queryValue"),
+                    @Variable(name = "path", value = "#resource.pathValue")
             }),
-            @MyLink(destination = LINK_DESTINATION.DIRECT_LINK, overridedRel = "direct-link-overrided",
-                    params = {
-                            @Param(name = "query", value = "#resource.queryValue"),
-                            @Param(name = "path", value = "#resource.pathValue")
+            @MyLink(destination = Destination.DIRECT_LINK, overridedRel = "direct-link-overrided",
+                    variables = {
+                            @Variable(name = "query", value = "#resource.queryValue"),
+                            @Variable(name = "path", value = "#resource.pathValue")
                     }),
-            @MyLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
+            @MyLink(destination = Destination.DIRECT_LINK_TEMPLATED,
                     templated = true,
-                    params = {
-                            @Param(name = "templated", value = "'templated-value'")
-                    })
+                    variables = {
+                            @Variable(name = "templated", value = "'templated-value'")
+             })
     })
     public Resource root() {
         Resource resource = new Resource();
@@ -47,14 +47,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @MyGenerateUriTemplateFor(destination = LINK_DESTINATION.DIRECT_LINK)
+    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK)
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @MyGenerateUriTemplateFor(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED)
+    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK_TEMPLATED)
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

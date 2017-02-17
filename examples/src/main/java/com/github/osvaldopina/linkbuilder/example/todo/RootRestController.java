@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.todo;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
@@ -18,14 +18,14 @@ public class RootRestController {
     private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     public ResourceSupport root() {
 
         Resource resource = new Resource();
 
         LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 
-        linksBuilder.link().withSelfRel().fromCurrentCall();
+  //      linksBuilder.link().withSelfRel().fromCurrentCall();
 
         linksBuilder.link()
                 .withRel("a-link-with-expression-resource-check")
@@ -67,14 +67,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/no-query-parameter/{id}")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     @GenerateUriTemplateFor(rel = "rel")
     public void methodWithoutQueryParameter(@PathVariable("id") String id, @RequestBody String payload) {
 
     }
 
     @RequestMapping("/user-defined-type")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     public void queryParameterForUserDefinedType() {
 
     }

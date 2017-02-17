@@ -81,12 +81,12 @@ public class AnnotationUriGeneratorImplTest extends EasyMockSupport {
                 linkAnnotationProperties)).andReturn(variableValues);
         expect(linkAnnotationProperties.isTemplated()).andReturn(false);
         expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-        expect(template.toUri(variableValues)).andReturn("template-uri");
-        expect(urlPathContatenator.concat("base-uri", "template-uri")).andReturn("base-uri/template-uri");
+        expect(template.toUri(variableValues)).andReturn("templated-uri");
+        expect(urlPathContatenator.concat("base-uri", "templated-uri")).andReturn("base-uri/templated-uri");
         replayAll();
 
         assertThat(annotationUriGeneratorImpl.generateUri(linkAnnotationProperties, methodCall, resource),
-                is("base-uri/template-uri"));
+                is("base-uri/templated-uri"));
 
         verifyAll();
 
@@ -103,12 +103,12 @@ public class AnnotationUriGeneratorImplTest extends EasyMockSupport {
                 linkAnnotationProperties)).andReturn(variableValues);
         expect(linkAnnotationProperties.isTemplated()).andReturn(true);
         expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-        expect(template.toTemplatedUri(variableValues)).andReturn("template-uri");
-        expect(urlPathContatenator.concat("base-uri", "template-uri")).andReturn("base-uri/template-uri");
+        expect(template.toTemplatedUri(variableValues)).andReturn("templated-uri");
+        expect(urlPathContatenator.concat("base-uri", "templated-uri")).andReturn("base-uri/templated-uri");
         replayAll();
 
         assertThat(annotationUriGeneratorImpl.generateUri(linkAnnotationProperties, methodCall, resource),
-                is("base-uri/template-uri"));
+                is("base-uri/templated-uri"));
 
         verifyAll();
 

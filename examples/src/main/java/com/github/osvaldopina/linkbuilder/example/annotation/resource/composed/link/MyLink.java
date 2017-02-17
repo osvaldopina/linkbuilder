@@ -4,13 +4,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import com.github.osvaldopina.linkbuilder.annotation.Link;
-import com.github.osvaldopina.linkbuilder.annotation.Param;
+import com.github.osvaldopina.linkbuilder.annotation.Variable;
 
 @Link
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyLink {
 
-    LINK_DESTINATION destination();
+    Destionation destination();
 
     String overridedRel() default "";
 
@@ -18,6 +18,6 @@ public @interface MyLink {
 
     boolean templated() default false;
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
 }

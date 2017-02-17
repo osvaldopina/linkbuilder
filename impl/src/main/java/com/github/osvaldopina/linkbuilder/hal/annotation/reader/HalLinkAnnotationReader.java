@@ -1,14 +1,11 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.reader;
 
-import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.DestinationExtractor;
 import com.github.osvaldopina.linkbuilder.annotation.reader.core.LinkRelExtractor;
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
-import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
-import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import com.github.osvaldopina.linkbuilder.hal.annotation.reader.properties.HalLinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
 
@@ -64,9 +61,9 @@ public class HalLinkAnnotationReader implements AnnotationReader {
         String rel = linkRelExtractor.extract(linkAnnotation);
         boolean templated = reflectionUtils.callMethod(boolean.class,linkAnnotation, "templated");
         String hreflang  = reflectionUtils.callMethod(String.class,linkAnnotation, "hreflang");
-        List<LinkAnnotationParameter> linkParameters = new ArrayList<LinkAnnotationParameter>();
-        for(Param linkParam: reflectionUtils.callMethod(Param[].class,linkAnnotation, "params")) {
-            linkParameters.add(new LinkAnnotationParameter(linkParam.name(), linkParam.value(),linkParam.when()));
+        List<LinkAnnotationVariable> linkParameters = new ArrayList<LinkAnnotationVariable>();
+        for(Variable linkVariable : reflectionUtils.callMethod(Variable[].class,linkAnnotation, "variables")) {
+            linkParameters.add(new LinkAnnotationVariable(linkVariable.name(), linkVariable.value(), linkVariable.when()));
         }
         return new HalLinkAnnotationProperties(destination , rel, templated, hreflang, linkParameters);
 

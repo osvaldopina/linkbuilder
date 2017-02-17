@@ -6,7 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import org.springframework.hateoas.ResourceSupport;
 
 @HalLinks({
@@ -16,24 +16,24 @@ import org.springframework.hateoas.ResourceSupport;
         @HalLink(controller = RootRestController.class,
                 rel = "direct-link",
                 hreflang = "href-lang-1" ,
-                params = {
-                        @Param(name = "query", value = "#resource.queryValue"),
-                        @Param(name = "path", value = "#resource.pathValue")
+                variables = {
+                        @Variable(name = "query", value = "#resource.queryValue"),
+                        @Variable(name = "path", value = "#resource.pathValue")
                 }),
         @HalLink(controller = RootRestController.class,
                 rel = "direct-link",
                 hreflang = "href-lang-2",
                 overridedRel = "direct-link-overrided",
-                params = {
-                        @Param(name = "query", value = "#resource.queryValue"),
-                        @Param(name = "path", value = "#resource.pathValue")
+                variables = {
+                        @Variable(name = "query", value = "#resource.queryValue"),
+                        @Variable(name = "path", value = "#resource.pathValue")
                 }),
         @HalLink(controller = RootRestController.class,
                 rel = "direct-link-templated",
                 hreflang = "href-lang-3",
                 templated = true,
-                params = {
-                        @Param(name = "templated", value = "'templated-value'")
+                variables = {
+                        @Variable(name = "templated", value = "'templated-value'")
                 })
 })
 public class Resource extends ResourceSupport {

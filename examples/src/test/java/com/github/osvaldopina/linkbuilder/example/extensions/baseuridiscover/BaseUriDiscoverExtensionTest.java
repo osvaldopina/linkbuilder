@@ -34,7 +34,7 @@ public class BaseUriDiscoverExtensionTest {
     }
 
     @Test
-    public void verifyLinkHrefIsFixedUrl() throws Exception {
+    public void verifyResponse() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())

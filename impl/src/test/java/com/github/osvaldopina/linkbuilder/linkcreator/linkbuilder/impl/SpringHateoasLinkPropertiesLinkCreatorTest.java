@@ -10,6 +10,7 @@ import com.github.osvaldopina.linkbuilder.BaseLinkProperties;
 import com.github.osvaldopina.linkbuilder.LinkProperties;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
+import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.easymock.EasyMockRule;
@@ -34,6 +35,9 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 
 	@Mock
 	private IntrospectionUtils introspectionUtils;
+
+	@Mock
+	private ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies;
 
 	private BaseLinkProperties baseLinkProperties = new BaseLinkProperties();
 
@@ -87,7 +91,10 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getConditionalVariableSubstituionStrategies()).andReturn(conditionalVariableSubstitutionStrategies);
+		expect(linkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport,
+				conditionalVariableSubstitutionStrategies, true)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
 
 		replayAll();
@@ -108,7 +115,10 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.getConditionalVariableSubstituionStrategies()).andReturn(conditionalVariableSubstitutionStrategies);
+		expect(linkProperties.isTemplated()).andReturn(true);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport,conditionalVariableSubstitutionStrategies,
+				true)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(methodCall.getMethod()).andReturn(method);
@@ -136,7 +146,10 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 		expect(expressionExecutor.isTrue("expression", resourceAsRessourceSupport, params)).andReturn(true);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.isTemplated()).andReturn(true);
+		expect(linkProperties.getConditionalVariableSubstituionStrategies()).andReturn(conditionalVariableSubstitutionStrategies);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport,conditionalVariableSubstitutionStrategies,
+				true)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
 
 		replayAll();
@@ -173,7 +186,10 @@ public class SpringHateoasLinkPropertiesLinkCreatorTest extends EasyMockSupport 
 		expect(linkProperties.getWhenExpression()).andReturn(null);
 		expect(linkProperties.getMethodCall()).andReturn(methodCall);
 		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
-		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport)).andReturn("controller-uri");
+		expect(linkProperties.isTemplated()).andReturn(true);
+		expect(linkProperties.getConditionalVariableSubstituionStrategies()).andReturn(conditionalVariableSubstitutionStrategies);
+		expect(methodCallUriGenerator.generateUri(methodCall, resourceAsRessourceSupport,conditionalVariableSubstitutionStrategies,
+				true)).andReturn("controller-uri");
 		expect(linkProperties.getRel()).andReturn("rel");
 		expect(linkProperties.getResource()).andReturn(resourceAsRessourceSupport);
 

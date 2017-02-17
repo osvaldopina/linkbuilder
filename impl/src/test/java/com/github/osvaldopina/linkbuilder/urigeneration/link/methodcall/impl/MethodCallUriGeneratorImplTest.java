@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-
+// TODO include templated = true
 public class MethodCallUriGeneratorImplTest extends EasyMockSupport {
 
     @Rule
@@ -80,12 +80,12 @@ public class MethodCallUriGeneratorImplTest extends EasyMockSupport {
         expect(methodCallVariableValuesDiscover.getVariableValues(variables, methodCall, resource,
                 conditionalVariableSubstitutionStrategies)).andReturn(variableValues);
         expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-        expect(template.toUri(variableValues)).andReturn("template-uri");
-        expect(urlPathContatenator.concat("base-uri", "template-uri")).andReturn("base-uri/template-uri");
+        expect(template.toUri(variableValues)).andReturn("templated-uri");
+        expect(urlPathContatenator.concat("base-uri", "templated-uri")).andReturn("base-uri/templated-uri");
 
         replayAll();
 
-        assertThat(methodCallUriGeneratorImpl.generateUri(methodCall, resource), is("base-uri/template-uri"));
+        assertThat(methodCallUriGeneratorImpl.generateUri(methodCall, resource, false), is("base-uri/templated-uri"));
 
         verifyAll();
 
@@ -99,13 +99,13 @@ public class MethodCallUriGeneratorImplTest extends EasyMockSupport {
         expect(methodCallVariableValuesDiscover.getVariableValues(variables, methodCall, resource,
                 conditionalVariableSubstitutionStrategies)).andReturn(variableValues);
         expect(baseUriDiscover.getBaseUri()).andReturn("base-uri");
-        expect(template.toUri(variableValues)).andReturn("template-uri");
-        expect(urlPathContatenator.concat("base-uri", "template-uri")).andReturn("base-uri/template-uri");
+        expect(template.toUri(variableValues)).andReturn("templated-uri");
+        expect(urlPathContatenator.concat("base-uri", "templated-uri")).andReturn("base-uri/templated-uri");
 
         replayAll();
 
-        assertThat(methodCallUriGeneratorImpl.generateUri(methodCall, resource,conditionalVariableSubstitutionStrategies),
-                is("base-uri/template-uri"));
+        assertThat(methodCallUriGeneratorImpl.generateUri(methodCall, resource,conditionalVariableSubstitutionStrategies, false),
+                is("base-uri/templated-uri"));
 
         verifyAll();
 

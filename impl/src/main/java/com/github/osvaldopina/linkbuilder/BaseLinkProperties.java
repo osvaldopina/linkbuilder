@@ -4,6 +4,7 @@ import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategies;
 import com.github.osvaldopina.linkbuilder.template.conditionalsubustitution.ConditionalVariableSubstitutionStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaseLinkProperties implements LinkProperties {
@@ -16,7 +17,8 @@ public class BaseLinkProperties implements LinkProperties {
 
     private MethodCall methodCall;
 
-    private List<ConditionalVariableSubstitutionStrategy> conditionalVariableSubstituionStrategyList;
+    private List<ConditionalVariableSubstitutionStrategy> conditionalVariableSubstituionStrategyList =
+            new ArrayList<ConditionalVariableSubstitutionStrategy>();
 
     private boolean templated;
 

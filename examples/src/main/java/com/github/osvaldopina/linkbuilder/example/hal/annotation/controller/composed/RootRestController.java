@@ -1,12 +1,12 @@
 package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.LINK_DESTINATION;
+import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
+import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.Destination;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyGenerateUriTemplateFor;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyHalLink;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyHalLinks;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,26 +20,23 @@ public class RootRestController {
     private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
+    @SelfFromCurrentCall
     @MyHalLinks({
-            @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK,
-                    hreflang = "href-lang-1" ,
-                    params = {
-                    @Param(name = "query", value = "#resource.queryValue"),
-                    @Param(name = "path", value = "#resource.pathValue")
+            @MyHalLink(destination = Destination.DIRECT_LINK, hreflang = "href-lang-1" , variables = {
+                    @Variable(name = "query", value = "#resource.queryValue"),
+                    @Variable(name = "path", value = "#resource.pathValue")
             }),
-            @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK,
-                    hreflang = "href-lang-2",
+            @MyHalLink(destination = Destination.DIRECT_LINK, hreflang = "href-lang-2",
                     overridedRel = "direct-link-overrided",
-                    params = {
-                            @Param(name = "query", value = "#resource.queryValue"),
-                            @Param(name = "path", value = "#resource.pathValue")
+                    variables = {
+                            @Variable(name = "query", value = "#resource.queryValue"),
+                            @Variable(name = "path", value = "#resource.pathValue")
                     }),
-            @MyHalLink(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED,
+            @MyHalLink(destination = Destination.DIRECT_LINK_TEMPLATED,
                     hreflang = "href-lang-3",
                     templated = true,
-                    params = {
-                            @Param(name = "templated", value = "'templated-value'")
+                    variables = {
+                            @Variable(name = "templated", value = "'templated-value'")
                     })
     })
     public Resource root() {
@@ -52,14 +49,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @MyGenerateUriTemplateFor(destination = LINK_DESTINATION.DIRECT_LINK)
+    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK)
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @MyGenerateUriTemplateFor(destination = LINK_DESTINATION.DIRECT_LINK_TEMPLATED)
+    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK_TEMPLATED)
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

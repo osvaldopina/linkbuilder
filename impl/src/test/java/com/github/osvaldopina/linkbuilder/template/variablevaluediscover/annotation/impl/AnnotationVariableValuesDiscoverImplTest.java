@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationParameter;
+import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationVariable;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
@@ -35,7 +35,7 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 	LinkAnnotationProperties linkAnnotationProperties;
 
 	@Mock
-	LinkAnnotationParameter linkAnnotationParameter;
+	LinkAnnotationVariable linkAnnotationVariable;
 
 	Method method = Object.class.getMethods()[0];
 
@@ -63,12 +63,12 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 
 	@Test
 	public void getVariableValues() throws Exception {
-		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationParameter));
-		expect(linkAnnotationParameter.getWhen()).andReturn(whenExpression);
+		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationVariable));
+		expect(linkAnnotationVariable.getWhen()).andReturn(whenExpression);
 		expect(currentMethodCall.getParams()).andReturn(params);
 		expect(expressionExecutor.isTrue(whenExpression, resource, params)).andReturn(true);
-		expect(linkAnnotationParameter.getName()).andReturn(variableName);
-		expect(linkAnnotationParameter.getValue()).andReturn(variableValueExpression);
+		expect(linkAnnotationVariable.getName()).andReturn(variableName);
+		expect(linkAnnotationVariable.getValue()).andReturn(variableValueExpression);
 		expect(expressionExecutor.getValue(variableValueExpression, resource, params)).andReturn(evaluatedExpressionValue);
 
 		replayAll();
@@ -88,8 +88,8 @@ public class AnnotationVariableValuesDiscoverImplTest extends EasyMockSupport {
 
 	@Test
 	public void getVariableValues_whenExpressionIsNull() throws Exception {
-		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationParameter));
-		expect(linkAnnotationParameter.getWhen()).andReturn(whenExpression);
+		expect(linkAnnotationProperties.getParameters()).andReturn(Arrays.asList(linkAnnotationVariable));
+		expect(linkAnnotationVariable.getWhen()).andReturn(whenExpression);
 		expect(currentMethodCall.getParams()).andReturn(params);
 		expect(expressionExecutor.isTrue(whenExpression, resource, params)).andReturn(false);
 

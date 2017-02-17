@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.linkbuilder.LinkPropertiesLinkCreators;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -19,8 +18,8 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 	@Rule
 	public EasyMockRule mocks = new EasyMockRule(this);
 
-	@Mock
-	CurrentCallLocator currentCallLocator;
+//	@Mock
+//	CurrentCallLocator currentCallLocator;
 
 	@Mock
 	LinkPropertiesLinkCreators linkPropertiesLinkCreators;
@@ -35,7 +34,8 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 
 	@Before
 	public void setUp() {
-		linksBuilderFactoryImpl = new LinksBuilderFactoryImpl(currentCallLocator,
+		linksBuilderFactoryImpl = new LinksBuilderFactoryImpl(
+				//currentCallLocator,
 				linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
 	}
 
@@ -51,7 +51,7 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 		assertThat(linksBuilder.getClass(), is(typeCompatibleWith(LinksBuilderImpl.class)));
 		LinksBuilderImpl linksBuilderImpl = (LinksBuilderImpl) linksBuilder;
 
-		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
+//		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
 		assertThat(linksBuilderImpl.getLinkPropertiesLinkCreators(), is(sameInstance(linkPropertiesLinkCreators)));
 		assertThat(linksBuilderImpl.getLinkBuilderExtensionFactoryRegistry(), is(sameInstance(linkBuilderExtensionFactoryRegistry)));
 		assertThat(linksBuilderImpl.getResource(), is(nullValue()));
@@ -71,7 +71,7 @@ public class LinksBuilderFactoryImplTest extends EasyMockSupport {
 		assertThat(linksBuilder.getClass(), is(typeCompatibleWith(LinksBuilderImpl.class)));
 		LinksBuilderImpl linksBuilderImpl = (LinksBuilderImpl) linksBuilder;
 
-		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
+//		assertThat(linksBuilderImpl.getCurrentCallLocator(), is(sameInstance(currentCallLocator)));
 		assertThat(linksBuilderImpl.getLinkPropertiesLinkCreators(), is(sameInstance(linkPropertiesLinkCreators)));
 		assertThat(linksBuilderImpl.getLinkBuilderExtensionFactoryRegistry(), is(sameInstance(linkBuilderExtensionFactoryRegistry)));
 		assertThat(linksBuilderImpl.getResource(), is(sameInstance(resource)));

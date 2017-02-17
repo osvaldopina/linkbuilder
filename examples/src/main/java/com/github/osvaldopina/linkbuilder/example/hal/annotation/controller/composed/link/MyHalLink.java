@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link;
 
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLink;
-import com.github.osvaldopina.linkbuilder.hal.annotation.Param;
+import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 @HalLink
 public @interface MyHalLink {
 
-    LINK_DESTINATION destination();
+    Destination destination();
 
     String overridedRel() default "";
 
@@ -21,6 +21,6 @@ public @interface MyHalLink {
 
     boolean templated() default false;
 
-    Param[] params() default {};
+    Variable[] variables() default {};
 
 }

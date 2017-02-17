@@ -1,19 +1,18 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.propertyreader;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.lang.reflect.Method;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
 
 
 public class EmbeddedBeanPropertyReaderDiscoverTest {
@@ -47,8 +46,10 @@ public class EmbeddedBeanPropertyReaderDiscoverTest {
 
         assertThat(readerMethodChains, is(notNullValue()));
         assertThat(readerMethodChains, hasSize(2));
-        assertThat(readerMethodChains.get(0).getMethods(), containsInAnyOrder(embeddedMethod, embeddedFirstEmbeddedMethod));
-        assertThat(readerMethodChains.get(1).getMethods(), containsInAnyOrder(embeddedMethod, embeddedSecondEmbeddedMethod));
+
+		assertThat(readerMethodChains, containsInAnyOrder(
+				new MethodChain(Arrays.asList(embeddedMethod, embeddedFirstEmbeddedMethod)),
+				new MethodChain(Arrays.asList(embeddedMethod, embeddedSecondEmbeddedMethod))));
 
 	}
 

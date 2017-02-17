@@ -98,7 +98,7 @@ public class LinkCreatorForAnnotationsTest extends EasyMockSupport {
     public void createAndSetSelfLinkIfNeeded_doesNotHaveisEnableSelfFromCurrentCallMethodAnnotation() {
         expect(currentMethodCall.getMethod()).andReturn(method);
         expect(introspectionUtils.isEnableSelfFromCurrentCallMethod(method)).andReturn(true);
-        expect(methodCallUriGenerator.generateUri(currentMethodCall, resource)).andReturn("self-uri");
+        expect(methodCallUriGenerator.generateUri(currentMethodCall, resource, false)).andReturn("self-uri");
 
         replayAll();
 
