@@ -8,11 +8,10 @@ Initially we chose to create a builder. A little different from what comes with 
 
 The main idea is to use the controller calls to generate links that correspond to the call made
 
-Because we use calls to controller methods there is no way to chain multiple link creations into a single builder. Each link creation ends on a dead end.
 
 ### **Methods With Template**
 To indicate that a method will have an associated template you should use the `@GenerateUriTemplateFor` annotation.
-Each annotated method wil   l have an associated template and will be available for link and link template generation.
+Each annotated method will have an associated template and will be available for link and link template generation.
 Initially, for link generation via classic linkbuilder, you can use the empty annotation or inform a rel link that will be the default.
 Later on we will see other ways of using this annotation when link generation is done via annotations
 
@@ -344,7 +343,7 @@ Note that only the resources returned by controller methods annotated with `@Gen
 are inspected.
 
 Considering the previous example, where the links are annotated in the controller, 
-if you want the same previous result but want to note the resource you should:
+if you want the same previous result but want to annotate the resource you should:
 
 Leave the controller methods you want to point in the same way:
 
