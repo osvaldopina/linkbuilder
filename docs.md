@@ -1,7 +1,7 @@
 
 
 # **Documentation**
-## [**1. Motivation**](#-1.Motivation)
+[1. Motivation](#1.-Motivation)
 ## [**2. Classic Link Builder**](#2---Classic-Link-Builder)
 ### [**2.1. Methods With Template**](#2.1---Methods-With-Template)
 ### [**2.2. Simple Links**](#2.2---Simple-Links)
@@ -17,12 +17,12 @@
 ### [**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
 ### [**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)
 
-## 1.Motivation
+## 1. Motivation
 The framework was created initially because we were desperate to use Uri tempates. Since
 then several other features have been added, notably the ability to create links via 
 annotations and extensions to HAL documents.
 
-##**2 - Classic Link Builder**
+## 2. Classic Link Builder
 
 Initially we chose to create a builder. A little different from what comes with Spring 
 Hateoas in terms of use, but functionally similar
