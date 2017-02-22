@@ -3,10 +3,10 @@
 # **Documentation**
 
 [**1. Motivation**](#1-motivation)  
-[**2. Classic Link Builder**](#2-Classic-Link-Builder)  
-[**2.1. Methods With Template**](#2.1-Methods-With-Template)  
-[**2.2. Simple Links**](#2.2-Simple-Links)  
-[**2.3. Templated Links**](#2.3-Templated-Links)  
+[**2. Classic Link Builder**](#2-classic-link-builder)  
+[**2.1. Methods With Template**](#2.1-methods-with-template)  
+[**2.2. Simple Links**](#2.2-simple-links)  
+[**2.3. Templated Links**](#2.3-templated-links)  
 [**2.4. Controlling link rendering via Spring SpEL**](#2.4-Controlling-link-rendering-via-Spring-SpEL)  
 [**2.5. Generating Self Link from Current Controoler Call**](#2.5---Generating-Self-Link-from-Current-Controoler-Call)  
 [**3. Creating Links Using Annotations**](#3---Creating-Links-Using-Annotations)  
