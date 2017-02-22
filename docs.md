@@ -127,7 +127,7 @@ The following json will be generated:
     }
 }
 ```
-[package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple)
+[package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple) [controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple/ResourcesRestController.java)
 
 ### 2.3. Templated Links
 
