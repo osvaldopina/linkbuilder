@@ -1,7 +1,7 @@
 
 
 # **Documentation**
-## [**1. Motivation**](#1.Motivation)
+## [**1. Motivation**](#-1.Motivation)
 ## [**2. Classic Link Builder**](#2---Classic-Link-Builder)
 ### [**2.1. Methods With Template**](#2.1---Methods-With-Template)
 ### [**2.2. Simple Links**](#2.2---Simple-Links)
