@@ -4,7 +4,7 @@
 
 [**1. Motivation**](#1-motivation)  
 [**2. Classic Link Builder**](#2-classic-link-builder)  
-[**2.1. Methods With Template**](#21-associating-uri-templates-with-controller-methods)
+[**2.1. Methods With Template**](#21-methods-with-template)   
 [**2.2. Simple Links**](#22-simple-links)  
 [**2.3. Templated Links**](#23-templated-links)  
 [**2.4. Controlling link rendering via Spring SpEL**](#24-controlling-link-rendering-via-spring-spEL)  
@@ -22,7 +22,7 @@
 ### 1. Motivation
 The framework was created initially because we were desperate to use Uri tempates. Since
 then several other features have been added, notably the ability to create links via 
-annotations and extensions to deal with specific HAL link properties.
+annotations and extensions to HAL documents.
 
 ### 2. Classic Link Builder
 
@@ -31,12 +31,14 @@ Hateoas in terms of use, but functionally similar
 
 The main idea is to use the controller calls to generate links that correspond to the call made
 
-### 2.1. Associating Uri Templates with controller methods
-The framework maintains a list of uri templates associated with the controller methods.
+Because we use calls to controller methods there is no way to chain multiple link creations
+into a single builder. Each link creation ends on a dead end.
+
+### 2.1. Methods With Template
 To indicate that a method will have an associated template you should use the `@GenerateUriTemplateFor`
 annotation. Each annotated method will have an associated template and will be available for
 link and link template generation. Initially, for link generation via classic linkbuilder,
-you can use the empty annotation or inform a rel link that will be the default. Later on we
+you can use the empty annotation or inform a rel link that will be the default. Later on we 
 will see other ways of using this annotation when link generation is done via annotations
 
 ### 2.2. Simple Links
@@ -108,21 +110,21 @@ Notice that after `link()` call a builder for a single link will be created and 
 added to `Resouce` instance.
 
 ```java
-   linksBuilder.buildAndSetAll();
+       linksBuilder.buildAndSetAll();
 ```
 
 The following json will be generated:
 
 ```json
 {
-   "_links":{
-       "first-rel":{
-           "href":"http://localhost/resource1/path?query_param=query"
-        },
-       "second-rel":{
-           "href":"http://localhost/resource2/path?query_param=query"
-       }
-   }
+    "_links":{
+        "first-rel":{
+            "href":"http://localhost/resource1/path?query_param=query"
+         },
+        "second-rel":{
+            "href":"http://localhost/resource2/path?query_param=query"
+        }
+    }
 }
 ```
 ### 2.3. Templated Links
@@ -143,7 +145,7 @@ Indicates that all parameters with null values must be kept as variables in the 
 * `dontSubstituteAny()`
 Indicates that all parameters must be kept as variables in the template
 
-For a templated link a simple exmple would be:
+For a non templated link a simple templated exmple would be:
 
 Given this Controller:
 ```java
@@ -211,16 +213,7 @@ Each link can have its rendering controlled through a SpEL expression.
 The link builder has the `when()` method for defining the expression. 
 Only if the expression evaluates to true will the link be included in the resource.
 
-In addition to all available functionalities, 2 objects are added in the execution
-context of the SpEL expressions:
-*  Resource - Object that contains the resource returned by the controller method
-*  Params - Array with the parameters used in the controller method call
-
-** Note that everything available for the SpEL context in the link builder is also available
-in the expressions used in annotations.**
-
-
-### 2.5. Generating Self Link from Current Controller Call
+### 2.5. Generating Self Link from Current Controoler Call
 
 If the controller is annotated with @SelfFromCurrentCall a self link will be generated and 
 included in the resource returned by the controller.
@@ -265,7 +258,7 @@ and `rel()` properties of the @link annotation.
 Other `@Link` properties are:
 
 * `String overridedRel()`  
-Use to override link rel property
+Use to overload link rel property
 
 * `String when()`  
 Boolean SpEL expression that will be evaluated when generating the link. 
@@ -275,7 +268,7 @@ If its value is false, the link will not be generated.
 Indicates whether the link will be a Uri Template or simple link.
 
 * `Variable[] variables()`  
-Used to configure each link parameter variable substitution.
+Used to configure each link parameter variable subustitution.
 
 Each `@Variable`  contains the following properties:
 
@@ -287,7 +280,7 @@ indication is non-substitution this variable will be left in the uri template.
 Variable name
 
 * `String value()`  
-SpEL expression that will be evaluated and its value used in the substitution of the variable
+SpEL expression that will be evaluated to be used in the substitution of the variable
 
 It is important to note that when the template has a variable that is not set in a `@Variable`
 the effect is the same as when the variable's `when()` property is evaluated as false.
@@ -470,9 +463,9 @@ Annotations are a tremendous innovation in java but it has some limitations. The
 be that all link destinations could be in enums, but how to make reference in the 
 annotation to an enum that will be created by you and a posteriori?
 
-The framework response was to create what we call "composed annotations". The basic idea is
-that you create your own annotations, with the same parameters of the annotation of the
-framework, and they will have the same effect as the ones provided by the framework.
+The framework response was to create what we call "composite annotations". The basic idea is 
+that you create your own annotations, with the same parameters of the annotation of the 
+framework, and use these annotations.
 
 An example will make this approach clearer:
 
@@ -500,7 +493,7 @@ public enum Destination {
 It is mandatory that the enum elements have a `getRel` method with no parameters. A `toString()`
 will be called on the return of this method and used as link rel attribute.
 
-* Create a annotation to replace `@GenerateUriTemplateFor`
+* Create a "composed" annotation to replace `@GenerateUriTemplateFor`
 
 ```java
 @GenerateUriTemplateFor
@@ -510,10 +503,11 @@ public @interface MyGenerateUriTemplateFor {
     Destination destination();
 }
 ```
-This annotation should be annotated with `@GenerateUriTemplateFor` and have a `destionation`
+This annotation should be annotated with `@GenerateUriTemplateFor` and have a destionation 
 property with the created enum type
 
-* Create a annotation to replace `@Links` to be used as a container for `@Link` annotations.
+* Create a "composed" annotation to replace `@Links` to be used as a container for "composed"
+`@Link` annotation. 
 
 ```java
 @Links
@@ -524,10 +518,10 @@ public @interface MyLinks {
 
 }
 ```
-This annotation should be annotated with `@Links` and must have a array of composed `@Link`
-annotations.
+This annotation should be annotated with `@Links` and must have a array of "composed" 
+`@Link` annotation.
 
-* Create a annotation to replace `@Link`
+* Create a "composed" annotaion to replace `@Link`
 
 ```java
 @Link
@@ -550,7 +544,7 @@ This annotation should be annotated with `@Link` and must have a `destination` p
 enum `Destination` as its type. It is madatory also to have `overridedRel`, `when`, `templated`
 and `variables` as parameters 
 
-* Use the newly created annotations on destination controller methods:
+* Use the newly created "composed" annotations on destination controller methods:
 
 ```java
     @RequestMapping("/direct-link/{path}")
@@ -568,7 +562,7 @@ and `variables` as parameters
     }
 
 ```
-* And use the newly created annotations to control link rendering:
+* And use the newly created "composed" annotations to control link rendering:
 
 ```java
    @RequestMapping("/")
@@ -614,13 +608,13 @@ This feature is currently in development and the only implemented HAL link prope
 
 ###  4.2. knowledge of HAL document structure
 Hal documents have a defined structure with 2 properties: `_links` and `_embedded` whereas 
-`_embedded` contains other resources which, in turn, can have their `_links` and `_embedded`
+_embedded contains other resources which, in turn, can have their `_links` and `_embedded`
 sections and so on. 
 
-When creating HAL links, the framework will recursively search resources within `_embedded`
+When creating HAL links, the framework will recursively search resources within _embedded 
 sessions and, if they are annotated, generate the respective links
 
 ###  4.3. How to render HAL links
 To create HAL Links the `@HalLinks` and `@HalLink` annotations must be used. For HAL Links
-are available the features of composed annotations and the possibility of annotation in
+are available the features of "composed" annotations and the possibility of annotation in 
 both controllers and resources.
