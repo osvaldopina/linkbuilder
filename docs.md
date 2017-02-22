@@ -1,9 +1,9 @@
 
 
 # **Documentation**
-# [1. Motivation](#1-motivation)
-## [**2. Classic Link Builder**](#2---Classic-Link-Builder)
-### [**2.1. Methods With Template**](#2.1---Methods-With-Template)
+[**1. Motivation**](#1-motivation)
+[**2. Classic Link Builder**](#2---Classic-Link-Builder)
+[**2.1. Methods With Template**](#2.1---Methods-With-Template)   
 ### [**2.2. Simple Links**](#2.2---Simple-Links)
 ### [**2.3. Templated Links**](#2.3---Templated-Links)
 ### [**2.4. Controlling link rendering via Spring SpEL**](#2.4---Controlling-link-rendering-via-Spring-SpEL)
@@ -16,14 +16,6 @@
 ### [**4.1. HAL specific link properties**](#4.1---HAL-specific-link-properties)
 ### [**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
 ### [**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)
-
-
-# a
-## b
-### c
-#### d
-##### e
-###### f
 
 
 ## 1. Motivation
@@ -41,14 +33,14 @@ The main idea is to use the controller calls to generate links that correspond t
 Because we use calls to controller methods there is no way to chain multiple link creations
 into a single builder. Each link creation ends on a dead end.
 
-###**2.1 - Methods With Template**
+### 2.1 - Methods With Template
 To indicate that a method will have an associated template you should use the `@GenerateUriTemplateFor`
 annotation. Each annotated method will have an associated template and will be available for
 link and link template generation. Initially, for link generation via classic linkbuilder,
 you can use the empty annotation or inform a rel link that will be the default. Later on we 
 will see other ways of using this annotation when link generation is done via annotations
 
-###**2.2 - Simple Links**
+### 2.2 - Simple Links
 
 For a simple (non templated) link a simple exmple would be:
 
@@ -133,7 +125,7 @@ The following json will be generated:
     }
 }
 ```
-###**2.3 - Templated Links**
+### 2.3 - Templated Links
 
 For template links you should just call `templated()` on `LinkBuilder` and indicate which 
 parameters are not going to be replaced and will be left as template parameters. 
@@ -213,7 +205,7 @@ The following json will be generated:
     }
 }
 ```
-###**2.4 - Controlling link rendering via Spring SpEL**
+### 2.4 - Controlling link rendering via Spring SpEL
 
 Each link can have its rendering controlled through a SpEL expression. 
 The link builder has the `when()` method for defining the expression. 
