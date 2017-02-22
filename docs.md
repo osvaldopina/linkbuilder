@@ -17,6 +17,15 @@
 ### [**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
 ### [**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)
 
+
+# a
+## b
+### c
+#### d
+##### e
+###### f
+
+
 ## 1. Motivation
 The framework was created initially because we were desperate to use Uri tempates. Since
 then several other features have been added, notably the ability to create links via 
