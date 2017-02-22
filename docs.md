@@ -1,23 +1,23 @@
 
 
 # **Documentation**
-## [**1 - Motivation**](#Motivation)
-## [**2 - Classic Link Builder**](#2---Classic-Link-Builder)
-### [**2.1 - Methods With Template**](#2.1---Methods-With-Template)
-### [**2.2 - Simple Links**](#2.2---Simple-Links)
-### [**2.3 - Templated Links**](#2.3---Templated-Links)
-### [**2.4 - Controlling link rendering via Spring SpEL**](#2.4---Controlling-link-rendering-via-Spring-SpEL)
-### [**2.5 - Generating Self Link from Current Controoler Call**](#2.5---Generating-Self-Link-from-Current-Controoler-Call)
-## [**3 - Creating Links Using Annotations**](#3---Creating-Links-Using-Annotations)
-### [**3.1 - Controller Links**](#3.1---Controller-Links)
-### [**3.2 - Resource Links**](#3.2---Resource-Links)
-### [**3.3 - Composed Annotations**](#3.3---Composed-Annotations)
-## [**4 - Hal extensions to Spring Hateoas Links**](#4---Hal-extensions-to-Spring-Hateoas-Links)
-### [**4.1 - HAL specific link properties**](#4.1---HAL-specific-link-properties)
-### [**4.2 - knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
-### [**4.3 - How to render HAL links**](#4.3---How-to-render-HAL-links)
+## [**1. Motivation**](#1.-Motivation)
+## [**2. Classic Link Builder**](#2---Classic-Link-Builder)
+### [**2.1. Methods With Template**](#2.1---Methods-With-Template)
+### [**2.2. Simple Links**](#2.2---Simple-Links)
+### [**2.3. Templated Links**](#2.3---Templated-Links)
+### [**2.4. Controlling link rendering via Spring SpEL**](#2.4---Controlling-link-rendering-via-Spring-SpEL)
+### [**2.5. Generating Self Link from Current Controoler Call**](#2.5---Generating-Self-Link-from-Current-Controoler-Call)
+## [**3. Creating Links Using Annotations**](#3---Creating-Links-Using-Annotations)
+### [**3.1. Controller Links**](#3.1---Controller-Links)
+### [**3.2. Resource Links**](#3.2---Resource-Links)
+### [**3.3. Composed Annotations**](#3.3---Composed-Annotations)
+## [**4. Hal extensions to Spring Hateoas Links**](#4---Hal-extensions-to-Spring-Hateoas-Links)
+### [**4.1. HAL specific link properties**](#4.1---HAL-specific-link-properties)
+### [**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
+### [**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)
 
-##**Motivation**
+## 1.Motivation
 The framework was created initially because we were desperate to use Uri tempates. Since
 then several other features have been added, notably the ability to create links via 
 annotations and extensions to HAL documents.
