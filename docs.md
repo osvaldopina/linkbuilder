@@ -127,6 +127,9 @@ The following json will be generated:
     }
 }
 ```
+[package](tree/master/examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple
+examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple)
+
 ### 2.3. Templated Links
 
 For template links you should just call `templated()` on `LinkBuilder` and indicate which 
