@@ -19,12 +19,12 @@
 [**4.3. How to render HAL links**](#43---How-to-render-HAL-links)  
 
 
-## 1. Motivation
+### 1. Motivation
 The framework was created initially because we were desperate to use Uri tempates. Since
 then several other features have been added, notably the ability to create links via 
 annotations and extensions to HAL documents.
 
-## 2. Classic Link Builder
+### 2. Classic Link Builder
 
 Initially we chose to create a builder. A little different from what comes with Spring 
 Hateoas in terms of use, but functionally similar
@@ -213,7 +213,7 @@ Each link can have its rendering controlled through a SpEL expression.
 The link builder has the `when()` method for defining the expression. 
 Only if the expression evaluates to true will the link be included in the resource.
 
-###2.5. Generating Self Link from Current Controoler Call
+### 2.5. Generating Self Link from Current Controoler Call
 
 If the controller is annotated with @SelfFromCurrentCall a self link will be generated and 
 included in the resource returned by the controller.
@@ -244,11 +244,11 @@ Will generate de following json:
     }
 }
 ```
-##**3 - Creating Links Using Annotations**
+### 3. Creating Links Using Annotations
 The framework followed its natural evolution and allowed links to be created via annotations.
 Both controller and resource annotations are possible.
 
-###**3.1 - Controller Links**
+### 3.1. Controller Links
 To create links via annotations you must use `@Links` as containing annotation for 
 `@Link` that is used to generate each link individually.
 
@@ -366,7 +366,7 @@ The following json will be generated:
 }
 ```
 
-###**3.2 - Resource Links**
+### 3.2. Resource Links
 Another option is to annotate resources rather than controllers. The great advantage of 
 annotating the controllers is that it stays independent of the method that returns it. 
 Note that only the resources returned by controller methods annotated with `@GenerateUriTemplateFor`
@@ -457,7 +457,7 @@ public class Resource extends ResourceSupport {
 
 ```
 
-###**3.3 - Composed Annotations**
+### 3.3. Composed Annotations
 
 Annotations are a tremendous innovation in java but it has some limitations. The ideal would 
 be that all link destinations could be in enums, but how to make reference in the 
@@ -593,7 +593,7 @@ and `variables` as parameters
     }
 
 ```
-##**4 - Hal extensions to Spring Hateoas Links**
+### 4. Hal extensions to Spring Hateoas Links
 
 Although spring hateoas is a generic framework and, in theory, it can support several 
 formats, it currently supports only HAL. This framework has been designed to be able to 
@@ -602,11 +602,11 @@ support several formats. In this first version was created a specific extension 
 This extension comes on 2 fronts: HAL-specific link properties and knowledge of HAL document
 structure
 
-###**4.1 - HAL specific link properties**
+###  4.1. HAL specific link properties
 This feature is currently in development and the only implemented HAL link property is 
 `hreflang`. Other properties will be included in the next releases
 
-###**4.2 - knowledge of HAL document structure**
+###  4.2. knowledge of HAL document structure
 Hal documents have a defined structure with 2 properties: `_links` and `_embedded` whereas 
 _embedded contains other resources which, in turn, can have their `_links` and `_embedded`
 sections and so on. 
@@ -614,7 +614,7 @@ sections and so on.
 When creating HAL links, the framework will recursively search resources within _embedded 
 sessions and, if they are annotated, generate the respective links
 
-###**4.3 - How to render HAL links**
+###  4.3. How to render HAL links
 To create HAL Links the `@HalLinks` and `@HalLink` annotations must be used. For HAL Links
 are available the features of "composed" annotations and the possibility of annotation in 
 both controllers and resources.
