@@ -1,21 +1,22 @@
 
 
 # **Documentation**
-[**1. Motivation**](#1-motivation)
-[**2. Classic Link Builder**](#2---Classic-Link-Builder)
-[**2.1. Methods With Template**](#2.1---Methods-With-Template)
-### [**2.2. Simple Links**](#2.2---Simple-Links)
-### [**2.3. Templated Links**](#2.3---Templated-Lin ks)
-### [**2.4. Controlling link rendering via Spring SpEL**](#2.4---Controlling-link-rendering-via-Spring-SpEL)
-### [**2.5. Generating Self Link from Current Controoler Call**](#2.5---Generating-Self-Link-from-Current-Controoler-Call)
-## [**3. Creating Links Using Annotations**](#3---Creating-Links-Using-Annotations)
-### [**3.1. Controller Links**](#3.1---Controller-Links)
-### [**3.2. Resource Links**](#3.2---Resource-Links)
-### [**3.3. Composed Annotations**](#3.3---Composed-Annotations)
-## [**4. Hal extensions to Spring Hateoas Links**](#4---Hal-extensions-to-Spring-Hateoas-Links)
-### [**4.1. HAL specific link properties**](#4.1---HAL-specific-link-properties)
-### [**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)
-### [**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)
+
+[**1. Motivation**](#1-motivation)  
+[**2. Classic Link Builder**](#2---Classic-Link-Builder)  
+[**2.1. Methods With Template**](#2.1---Methods-With-Template)  
+[**2.2. Simple Links**](#2.2---Simple-Links)  
+[**2.3. Templated Links**](#2.3---Templated-Links)  
+[**2.4. Controlling link rendering via Spring SpEL**](#2.4---Controlling-link-rendering-via-Spring-SpEL)  
+[**2.5. Generating Self Link from Current Controoler Call**](#2.5---Generating-Self-Link-from-Current-Controoler-Call)  
+[**3. Creating Links Using Annotations**](#3---Creating-Links-Using-Annotations)  
+[**3.1. Controller Links**](#3.1---Controller-Links)  
+[**3.2. Resource Links**](#3.2---Resource-Links)  
+[**3.3. Composed Annotations**](#3.3---Composed-Annotations)  
+[**4. Hal extensions to Spring Hateoas Links**](#4---Hal-extensions-to-Spring-Hateoas-Links)  
+[**4.1. HAL specific link properties**](#4.1---HAL-specific-link-properties)  
+[**4.2. knowledge of HAL document structure**](#4.2---knowledge-of-HAL-document-structure)  
+[**4.3. How to render HAL links**](#4.3---How-to-render-HAL-links)  
 
 
 ## 1. Motivation
@@ -33,18 +34,19 @@ The main idea is to use the controller calls to generate links that correspond t
 Because we use calls to controller methods there is no way to chain multiple link creations
 into a single builder. Each link creation ends on a dead end.
 
-### 2.1 - Methods With Template
+### 2.1. Methods With Template
 To indicate that a method will have an associated template you should use the `@GenerateUriTemplateFor`
 annotation. Each annotated method will have an associated template and will be available for
 link and link template generation. Initially, for link generation via classic linkbuilder,
 you can use the empty annotation or inform a rel link that will be the default. Later on we 
 will see other ways of using this annotation when link generation is done via annotations
 
-### 2.2 - Simple Links
+### 2.2. Simple Links
 
 For a simple (non templated) link a simple exmple would be:
 
 Given this Controller:
+
 ```java
 @RestController
 public class ResourcesRestController {
@@ -76,29 +78,29 @@ To generate links for resource1 and resource2 you have to:
 * Create the `LinksBuilder` which is a builder for a set of links.
 
 ```java
-        LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
+    LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 ```
 Notice that you should pass the `Resource` instance that will hold the links.
 
 * For each link call `link()` on `LinksBulder` to create a builder for a link.
 
 ```java
-       ResourceSupport resource = new ResourceSupport();
+   ResourceSupport resource = new ResourceSupport();
 
-       LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
+   LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
 
-       linksBuilder.link()
-                .withRel("first-rel")
-                .fromControllerCall(ResourcesRestController.class)
-                .oneResource("path", "query");
-
-        linksBuilder.link()
-                .withRel("second-rel")
-                .fromControllerCall(ResourcesRestController.class)
-                .otherResource("path", "query");
+   linksBuilder.link()
+               .withRel("first-rel")
+               .fromControllerCall(ResourcesRestController.class)
+               .oneResource("path", "query")
+               
+   linksBuilder.link()
+               .withRel("second-rel")
+               .fromControllerCall(ResourcesRestController.class)
+               .otherResource("path", "query");
 
                 
-        linksBuilder.buildAndSetAll();
+   linksBuilder.buildAndSetAll();
 ```
 
 Notice that after `link()` call a builder for a single link will be created and added to the
@@ -125,7 +127,7 @@ The following json will be generated:
     }
 }
 ```
-### 2.3 - Templated Links
+### 2.3. Templated Links
 
 For template links you should just call `templated()` on `LinkBuilder` and indicate which 
 parameters are not going to be replaced and will be left as template parameters. 
@@ -205,13 +207,13 @@ The following json will be generated:
     }
 }
 ```
-### 2.4 - Controlling link rendering via Spring SpEL
+### 2.4. Controlling link rendering via Spring SpEL
 
 Each link can have its rendering controlled through a SpEL expression. 
 The link builder has the `when()` method for defining the expression. 
 Only if the expression evaluates to true will the link be included in the resource.
 
-###**2.5 - Generating Self Link from Current Controoler Call**
+###2.5. Generating Self Link from Current Controoler Call
 
 If the controller is annotated with @SelfFromCurrentCall a self link will be generated and 
 included in the resource returned by the controller.
