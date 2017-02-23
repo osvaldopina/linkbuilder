@@ -1031,6 +1031,9 @@ Create a RequestPartsFactory that looks for HTTP reader `my-custom-header` and u
 to create a `ChainedRequestParts`:
 
 ```java
+
+public class CustomHeaderPartsFactory implements RequestPartsFactory {
+
    @Override
     public ChainedRequestParts create(HttpServletRequest request) {
 
@@ -1054,18 +1057,63 @@ to create a `ChainedRequestParts`:
         }
 
     }
+}
 ```
 
-Note that if the reader is not in HTTP request a empty `ChainedRequestParts` is returned. The 
+Then create a custom `RequestPartsFactorylist` that returns a list with the former `CustomHeaderPartsFactory` and a regular `ServletRequestRequestPartsFactory` 
+
+```java
+public class CustomHeaderRequestPartsFactoryList implements RequestPartsFactoryList {
+
+    List<RequestPartsFactory> requestPartsFactories = Collections.unmodifiableList(Arrays.asList(
+            new CustomHeaderPartsFactory(),
+            new ServletRequestRequestPartsFactory()
+    ));
+
+
+    @Override
+    public List<RequestPartsFactory> getRequestPartsFactories() {
+        return requestPartsFactories;
+    }
+}
+
+```
+
+
+Note that if the header is not in HTTP request a empty `ChainedRequestParts` is returned. The 
 chain is develped in a way that if a `ChainedRequestParts` property is empty the next element in 
-the chain is used to provide the property.
+the chain is used to provide the property. So if the header is in the request it is used to 
+populate the `ChainRequestParts` and if not the next `ChainRequestParts`, which is a 
+`ServletRequestRequestPartsFactory` will get properties from HTTP request.
 
-Create a `RequestPartsFactoryList` with the former 
+Then provide this `CustomHeaderRequestPartsFactoryList` by extending `CustomLinkBuilderConfigurer`
+and overriding `requestPartsFactoryList`:
 
+```java
+@SpringBootApplication
+@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
+@Configuration
+public class Application extends CustomLinkBuilderConfigurer {
 
+    public static void main(String[] args) throws Exception {
+        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+    }
 
-acertar o chain...
+    @Override
+    public RequestPartsFactoryList requestPartsFactoryList() {
+        return new CustomHeaderRequestPartsFactoryList();
+    }
+}
+```
 
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist) you can find the complete code for this example.
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist/RootRestController.java), 
+[Custom reader factory](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist/CustomHeaderPartsFactory.java), 
+[Custom reader factory list] (examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist/CustomHeaderRequestPartsFactoryList.java), 
+[main class run and configure the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist/Application.java) and a 
+[integration test](examples/src/main/test/com/github/osvaldopina/linkbuilder/example/extensions/requestpartsfactorylist/RequestPartsFactoryListTest.java)
+)
 
 
 
