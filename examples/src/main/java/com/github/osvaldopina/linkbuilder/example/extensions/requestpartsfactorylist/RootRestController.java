@@ -11,25 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootRestController {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
-
     @RequestMapping("/")
     @SelfFromCurrentCall
     public ResourceSupport root() {
 
-        ResourceSupport resource = new ResourceSupport();
+        return new ResourceSupport();
 
-        LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
-
-        linksBuilder.link()
-                .withRel("rel")
-                .fromControllerCall(RootRestController.class)
-                .root();
-
-        linksBuilder.buildAndSetAll();
-
-        return resource;
     }
 
 }

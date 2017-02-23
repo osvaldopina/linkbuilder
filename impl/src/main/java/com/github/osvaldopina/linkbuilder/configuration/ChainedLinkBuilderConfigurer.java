@@ -23,11 +23,6 @@ public class ChainedLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public ExpressionExecutor spelExecutor() {
-        return getConfigurer().spelExecutor();
-    }
-
-    @Override
     public BaseUriDiscover baseUriDiscover() {
         return getConfigurer().baseUriDiscover();
     }

@@ -38,7 +38,7 @@ public class RequestPartsFactoryListTest {
         mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._links.rel.href").value("http://localhost/"));
+                .andExpect(jsonPath("$._links.self.href").value("http://localhost/"));
 
     }
 
@@ -48,7 +48,7 @@ public class RequestPartsFactoryListTest {
         mockMvc.perform(get("/").header("my-custom-header", "scheme:ftp,host:www.host.com,port:555,contextPath:/ctx-path"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._links.rel.href").value("ftp://www.host.com:555/ctx-path/"));
+                .andExpect(jsonPath("$._links.self.href").value("ftp://www.host.com:555/ctx-path/"));
 
     }
 

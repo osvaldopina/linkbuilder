@@ -18,10 +18,10 @@
 [**4.2. knowledge of HAL document structure**](#42-knowledge-of-hal-document-structure)  
 [**4.3. How to render HAL links**](#43-how-to-render-hal-links)  
 [**5. Extension points**](#5-extension-points)  
-[**5.1. User defined parameter types**](51-user-defined-parameter-types)
-[**5.2. Base uri**](52-base-uri)
-[**5.2.1. Base uri discover**](521-base-uri-discover)
-[**5.2.2. Request parts factory**](522-request-parts-factory)
+[**5.1. User defined parameter types**](#51-user-defined-parameter-types)   
+[**5.2. Base uri**](#52-base-uri)   
+[**5.2.1. Base uri discover**](#521-base-uri-discover)   
+[**5.2.2. Request parts factory**](#522-request-parts-factory)
 
 
 

@@ -16,6 +16,7 @@ import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderRegi
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.AnnotationReaderRegistryImpl;
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.ExpressionExecutorImpl;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactory;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.extension.impl.LinkBuilderExtensionFactoryRegistryImpl;
@@ -151,13 +152,7 @@ public class LinkBuilderAutoConfiguration {
 
 	@Bean
 	public ExpressionExecutor spelExecutor() {
-		if (customLinkBuilderConfigurer != null) {
-			ExpressionExecutor expressionExecutor = customLinkBuilderConfigurer.spelExecutor();
-			if (expressionExecutor != null) {
-				return expressionExecutor;
-			}
-		}
-		return defaultLinkBuilderConfigurer.spelExecutor();
+		return new ExpressionExecutorImpl();
 	}
 
 	@Bean

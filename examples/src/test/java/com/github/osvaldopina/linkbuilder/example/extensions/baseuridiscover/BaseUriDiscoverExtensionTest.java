@@ -38,7 +38,7 @@ public class BaseUriDiscoverExtensionTest {
         mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._links.rel.href").value("fixed-url/"));
+                .andExpect(jsonPath("$._links.self.href").value("fixed-url/"));
 
     }
 

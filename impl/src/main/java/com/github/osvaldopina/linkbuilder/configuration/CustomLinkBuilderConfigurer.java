@@ -12,11 +12,6 @@ public class CustomLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public ExpressionExecutor spelExecutor() {
-        return null;
-    }
-
-    @Override
     public BaseUriDiscover baseUriDiscover() {
         return null;
     }

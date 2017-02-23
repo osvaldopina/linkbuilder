@@ -8,8 +8,6 @@ public interface LinkBuilderConfigurer {
 
     RequestPartsFactoryList requestPartsFactoryList();
 
-    ExpressionExecutor spelExecutor();
-
     BaseUriDiscover baseUriDiscover();
 
 }

@@ -17,31 +17,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @SpringBootApplication
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @Configuration
-public class Application  extends WebSecurityConfigurerAdapter {
+public class Application  {
 
 
     public static void main(String[] args) throws Exception {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
     }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("ROLE");
-    }
-
-
-
 
 }

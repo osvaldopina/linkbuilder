@@ -15,11 +15,6 @@ public class DefaultLinkBuilderConfigurer implements LinkBuilderConfigurer {
     }
 
     @Override
-    public ExpressionExecutor spelExecutor() {
-        return new ExpressionExecutorImpl();
-    }
-
-    @Override
     public BaseUriDiscover baseUriDiscover() {
         return new BaseUriDiscoverImpl();
     }
