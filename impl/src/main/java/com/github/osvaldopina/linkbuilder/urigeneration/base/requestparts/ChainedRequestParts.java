@@ -1,13 +1,12 @@
-package com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl;
+package com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestParts;
 import org.springframework.util.Assert;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ChainedRequestParts implements RequestParts {
+public class ChainedRequestParts  {
 
 
     private String scheme;
@@ -18,7 +17,7 @@ public class ChainedRequestParts implements RequestParts {
 
     private String contextPath;
 
-    private RequestParts next;
+    private ChainedRequestParts next;
 
     public ChainedRequestParts() {
         this.scheme = null;
@@ -34,12 +33,11 @@ public class ChainedRequestParts implements RequestParts {
         this.contextPath = contextPath;
     }
 
-    public void setNext(RequestParts next) {
+    public void setNext(ChainedRequestParts next) {
         this.next = next;
     }
 
 
-    @Override
     public String getScheme() {
         if (scheme != null) {
             return scheme;
@@ -49,7 +47,6 @@ public class ChainedRequestParts implements RequestParts {
         }
     }
 
-    @Override
     public String getHost() {
         if (host != null) {
             return host;
@@ -57,7 +54,6 @@ public class ChainedRequestParts implements RequestParts {
         return getNext().getHost();
     }
 
-    @Override
     public int getPort() {
         if (port != -1) {
             return port;
@@ -65,7 +61,6 @@ public class ChainedRequestParts implements RequestParts {
         return getNext().getPort();
     }
 
-    @Override
     public String getContextPath() {
         if (contextPath != null) {
             return contextPath;
@@ -73,7 +68,7 @@ public class ChainedRequestParts implements RequestParts {
         return getNext().getContextPath();
     }
 
-    public RequestParts getNext() {
+    public ChainedRequestParts getNext() {
         Assert.notNull(next, "Next ChainedRequestParts must not be null");
         return next;
     }

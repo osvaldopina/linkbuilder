@@ -1,7 +1,6 @@
 package com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl;
 
-import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestParts;
-import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ChainedRequestParts;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.ChainedRequestParts;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
@@ -17,7 +16,7 @@ public class ChainedRequestPartsTest extends EasyMockSupport {
     public EasyMockRule mocks = new EasyMockRule(this);
 
     @Mock
-    RequestParts next;
+    ChainedRequestParts next;
 
     ChainedRequestParts chainedRequestParts;
 

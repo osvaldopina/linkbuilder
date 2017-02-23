@@ -1,5 +1,6 @@
 package com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl;
 
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.ChainedRequestParts;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactory;
 import org.springframework.util.StringUtils;
 

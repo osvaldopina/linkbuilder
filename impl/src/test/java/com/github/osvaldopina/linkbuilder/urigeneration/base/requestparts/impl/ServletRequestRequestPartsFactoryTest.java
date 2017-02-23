@@ -1,7 +1,6 @@
 package com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl;
 
-import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ChainedRequestParts;
-import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.impl.ServletRequestRequestPartsFactory;
+import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.ChainedRequestParts;
 import org.easymock.*;
 import org.junit.Rule;
 import org.junit.Test;
