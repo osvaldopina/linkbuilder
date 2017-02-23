@@ -17,6 +17,13 @@
 [**4.1. HAL specific link properties**](#41-hal-specific-link-properties)  
 [**4.2. knowledge of HAL document structure**](#42-knowledge-of-hal-document-structure)  
 [**4.3. How to render HAL links**](#43-how-to-render-hal-links)  
+[**5. Extension points**](#5-extension-points)  
+[**5.1. User defined parameter types**](51-user-defined-parameter-types)
+[**5.2. Base uri**](52-base-uri)
+[**5.2.1. Base uri discover**](521-base-uri-discover)
+[**5.2.2. Request parts factory**](522-request-parts-factory)
+
+
 
 
 ### 1. Motivation
@@ -127,7 +134,14 @@ The following json will be generated:
     }
 }
 ```
-[package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple) [controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple/ResourcesRestController.java)
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple) you can find the complete code for this example.
+(The files are:
+[controller methods to link to](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple/ResourcesRestController.java), 
+[controller using link builder](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple/RootRestController.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/simple/BuilderSimpleApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/builder/simple/BuilderSimpleApplicationTest.java)
+)
+
 
 ### 2.3. Templated Links
 
@@ -209,6 +223,15 @@ The following json will be generated:
     }
 }
 ```
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/templated) you can find the complete code for this example.
+(The files are:
+[controller methods to link to](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/templated/ResourcesRestController.java), 
+[controller using link builder](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/templated/RootRestController.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/builder/templated/BuilderTemplatedApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/builder/templated/BuilderTemplatedApplicationTest.java)
+)
+
+
 ### 2.4. Controlling link rendering via Spring SpEL
 
 Each link can have its rendering controlled through a SpEL expression. 
@@ -246,6 +269,13 @@ Will generate de following json:
     }
 }
 ```
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/selffromcurrentcall) you can find the complete code for this example.
+(The files are:
+[controller with @SelfFromCurrentCall annotation](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/selffromcurrentcall/RootRestController.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/selffromcurrentcall/EnableSelfFromCurrentCallApplication) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/selffromcurrentcall/SelfFromCurrentCallApplicationTest.java)
+)
+
 ### 3. Creating Links Using Annotations
 The framework followed its natural evolution and allowed links to be created via annotations.
 Both controller and resource annotations are possible.
@@ -368,6 +398,15 @@ The following json will be generated:
 }
 ```
 
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/simple) you can find the complete code for this example.
+(The files are:
+[annotated controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/simple/RootRestController.java), 
+[resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/simple/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/simple/AnnotationControllerSimpleApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/simple/AnnotationControllerSimpleTest.java)
+)
+
+
 ### 3.2. Resource Links
 Another option is to annotate resources rather than controllers. The great advantage of 
 annotating the controllers is that it stays independent of the method that returns it. 
@@ -458,6 +497,14 @@ public class Resource extends ResourceSupport {
 
 
 ```
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/simple) you can find the complete code for this example.
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/simple/RootRestController.java), 
+[annotated resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/simple/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/simple/AnnotationControllerSimpleApplication.java) and a 
+[integration test](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/simple/AnnotationResourceSimpleTest.java)
+)
+
 
 ### 3.3. Composed Annotations
 
@@ -595,6 +642,40 @@ and `variables` as parameters
     }
 
 ```
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link) you can find the 
+code that create composed annotations
+(The files are:
+[annotation with all link destintations](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link/Destination.java), 
+[composed annotation for @GenerateUriTemplateFor](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link/MyGenerateUriTemplateFor.java), 
+[composed annotation for @Links](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link/MyLinks.java), 
+[composed annotation for @Link](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link/MyLink.java), 
+) and in this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed) you can find the 
+complete code example for a composed annotation used in a controller 
+(The files are:
+[annotated controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/RootRestController.java), 
+[resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/AnnotationControllerComposedApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/AnnotationControllerComposedTest.java)
+)
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link) you can find the 
+code that create composed annotations
+(The files are:
+[annotation with all link destintations](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link/Destination.java), 
+[composed annotation for @GenerateUriTemplateFor](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link/MyGenerateUriTemplateFor.java), 
+[composed annotation for @Links](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link/MyLinks.java), 
+[composed annotation for @Link](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link/MyLink.java), 
+) and in this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link) you can find the 
+complete code example for a composed annotation used in a resource
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/RootRestController.java), 
+[anotated resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/AnnotationControllerComposedApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/AnnotationControllerComposedTest.java)
+)
+
+
 ### 4. Hal extensions to Spring Hateoas Links
 
 Although spring hateoas is a generic framework and, in theory, it can support several 
@@ -605,7 +686,7 @@ This extension comes on 2 fronts: HAL-specific link properties and knowledge of 
 structure
 
 ###  4.1. HAL specific link properties
-This feature is currently in development and the only implemented HAL link property is 
+This feature is currently under development and the only implemented HAL link property is 
 `hreflang`. Other properties will be included in the next releases
 
 ###  4.2. knowledge of HAL document structure
@@ -620,3 +701,371 @@ sessions and, if they are annotated, generate the respective links
 To create HAL Links the `@HalLinks` and `@HalLink` annotations must be used. For HAL Links
 are available the features of "composed" annotations and the possibility of annotation in 
 both controllers and resources.
+
+
+                    
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/simple) you can find the complete
+code for a exemple of a controller annotated with HAL link extension  
+(The files are:
+[annotated controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/simple/RootRestController.java), 
+[resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/simple/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/simple/HalAnnotationControllerSimpleApplication.java) and a 
+[integration test](examples/src/main/test/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/simple/HalAnnotationControllerSimpleTest.java)
+)
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/simple) you can find the complete
+code for a exemple of a resource annotated with HAL link extension  
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/simple/RootRestController.java), 
+[annotated resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/simple/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/simple/HalAnnotationControllerSimpleApplication.java) and a 
+[integration test](examples/src/main/test/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/simple/HalAnnotationControllerSimpleTest.java)
+)
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/link) you can find the 
+code that create composed annotations for HAL links 
+(The files are:
+[annotation with all link destintations](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/link/Destination.java), 
+[composed annotation for @GenerateUriTemplateFor](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/link/MyGenerateUriTemplateFor.java), 
+[composed annotation for @HalLinks](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/link/MyHalLinks.java), 
+[composed annotation for @HalLink](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed/link/MyHalLink.java), 
+) and in this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/controller/composed) you can find the 
+complete code example for a composed annotation used in a controller 
+(The files are:
+[annotated controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/RootRestController.java), 
+[resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/HalAnnotationControllerComposedApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/controller/composed/HalAnnotationControllerComposedApplication.java)
+)
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/link) you can find the 
+code that create composed annotations for HAL links 
+(The files are:
+[annotation with all link destintations](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/link/Destination.java), 
+[composed annotation for @GenerateUriTemplateFor](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/link/MyGenerateUriTemplateFor.java), 
+[composed annotation for @HalLinks](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/link/MyHalLinks.java), 
+[composed annotation for @HalLink](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed/link/MyHalLink.java), 
+) and in this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/annotation/resource/composed) you can find the 
+complete code example for a composed annotation used in a resource 
+(The files are:
+[annotated controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/RootRestController.java), 
+[resource returned by the controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/Resource.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/HalAnnotationControllerComposedApplication.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/hal/annotation/resource/composed/HalAnnotationResourceComposedApplication.java)
+)
+
+### 5. Extension points
+
+### 5.1. User defined parameter types
+The framework recognizes annotations that allow methods on controllers to respond to HTTP 
+calls (@RequestParam, @RequestParam), but Spring allows user-created types to be used as 
+parameters in the controller. A simple example is the Pageable type used for pagination.   
+
+There is no way to know how to use these types to create the templates associated with the 
+methods, nor how to know how to replace these types in the uri templates.
+
+In order for the framework to understand new user-defined types 2 interfaces must be 
+implemented:
+
+1. ArgumentResolver
+
+```java
+package com.github.osvaldopina.linkbuilder.template.generation.argumentresolver;
+
+public interface ArgumentResolver {
+
+    boolean resolveFor(Method method, int parameterIndex);
+
+    Variables create(Method method, int parameterIndex);
+}
+```
+It is used to, given a parameter, create a list of variables to be included in the 
+uri template.   
+
+The `resolveFor` method defines whether this class knows how to create template 
+variables for a given parameter 
+
+2. 
+
+```java
+package com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue;
+
+public interface ParameterVariableValueDiscover {
+
+
+    List<VariableValue> getVariableValues(
+            Variables variables, MethodCall methodCall, Object resource, int parameterIndex,
+            ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies);
+
+    boolean canDiscover(MethodCall methodCall, int parameterIndex);
+
+}
+```
+It is used, given a list of variables of a template, the call of the methods, the resource 
+to be returned, the index parameter and the substitution strategy of the variables in the 
+template, create a list with the values for the variables to be Replaced.   
+
+The canDiscover method defines whether this class knows how to create the values of the 
+variables to be overridden in the template.   
+
+For example, consider the folowing user defined type:
+
+```java
+public class UserDefinedType {
+
+    private String value1;
+
+    private String value2;
+
+    public UserDefinedType(String value1, String value2) {
+        this.value1 = value1;
+        this.value2 = value2;
+    }
+
+    public String getValue1() {
+        return value1;
+    }
+
+    public void setValue1(String value1) {
+        this.value1 = value1;
+    }
+
+    public String getValue2() {
+        return value2;
+    }
+
+    public void setValue2(String value2) {
+        this.value2 = value2;
+    }
+}
+```
+
+This `ArgumentResolver` includes 2 query parameters, with the names "variable1" and 
+"variable2", in the template variable list:
+
+```java
+@Component
+public class UserDefinedTypeArgumentResolver implements ArgumentResolver{
+
+    @Override
+    public boolean resolveFor(Method method, int parameterIndex) {
+        return UserDefinedType.class.isAssignableFrom(method.getParameterTypes()[parameterIndex]);
+    }
+
+    @Override
+    public Variables create(Method method, int parameterIndex) {
+        return VariablesFactory.INSTANCE.create(Arrays.asList(
+                new Variable("value1", VariableType.QUERY, method, parameterIndex),
+                new Variable("value2", VariableType.QUERY, method, parameterIndex)
+        ));
+    }
+
+}
+
+```
+
+And this This `ParameterVariableValueDiscover` retrieves the template variables corresponding 
+to the parameter, the value of the method parameter, tests whether the substitution strategy 
+indicates whether this parameter should be replaced or not, and returns a list with the values 
+for the template variables to be replaced.
+
+```java
+@Component
+public class UserDefinedTypeVariableValueDiscover implements ParameterVariableValueDiscover {
+
+    @Override
+    public List<VariableValue> getVariableValues(Variables variables, MethodCall methodCall, Object resource, int parameterIndex, ConditionalVariableSubstitutionStrategies conditionalVariableSubstitutionStrategies) {
+
+        List<VariableValue> variableValues = new ArrayList<VariableValue>();
+
+        UserDefinedType userDefinedType = (UserDefinedType) methodCall.getParam(parameterIndex);
+
+        Variable variable = variables.get("value1");
+
+        if (conditionalVariableSubstitutionStrategies.shouldSubstitute(variable, methodCall.getParam(parameterIndex))) {
+            variableValues.add(new VariableValue(variable, userDefinedType.getValue1()));
+        }
+
+        variable = variables.get("value2");
+
+        if (conditionalVariableSubstitutionStrategies.shouldSubstitute(variable, methodCall.getParam(parameterIndex))) {
+            variableValues.add(new VariableValue(variable, userDefinedType.getValue2()));
+        }
+
+        return variableValues;
+    }
+
+    @Override
+    public boolean canDiscover(MethodCall methodCall, int parameterIndex) {
+        return UserDefinedType.class.isAssignableFrom(methodCall.getMethod().getParameterTypes()[parameterIndex]);
+    }
+}
+
+```
+
+Note that you just need to include these classes in the spring context so that the framework 
+can create templates for methods that use this type.   
+
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype) you can find the complete code for this example.
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/RootRestController.java), 
+[user defined type](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/UserDefinedType.java), 
+[argument resolver](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/UserDefinedTypeArgumentResolver.java),
+[variable value discover](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/UserDefinedTypeVariableValueDiscover.java),
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/Application.java) and a 
+[integration test](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype/UserDefinedTypeTest.java)
+)
+
+
+### 5.2. Base uri
+HTTP requests often go through multiple network elements and may have many of their 
+characteristics changed by them. One aspect that is especially sensitive is the definition 
+of the base url.   
+The framework offers 2 mechanisms to act on the definition of the base url: url base discover
+and request parts factory
+
+### 5.2.1. Base uri discover
+The simplest mechanism is the ability to provide the framework with an implementation of the 
+`BaseUriDiscover` interface.
+
+```java
+package com.github.osvaldopina.linkbuilder.urigeneration.base;
+
+public interface BaseUriDiscover {
+
+    String getBaseUri();
+
+}
+```
+
+For example, to set the base url to "fixed-url":
+
+
+Implement BaseUriDiscover:
+
+```java
+public class FixedUrlBaseUriDiscover implements BaseUriDiscover {
+
+    @Override
+    public String getBaseUri() {
+        return "fixed-url";
+    }
+}
+```
+
+Extends `CustomLinkBuilderConfigurer` to provide a implementation of `FixedUrlBaseUriDiscover`:
+
+```java
+@SpringBootApplication
+@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
+@Configuration
+public class Application extends CustomLinkBuilderConfigurer {
+
+    public static void main(String[] args) throws Exception {
+        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+    }
+
+
+    @Override
+    public BaseUriDiscover baseUriDiscover() {
+        return new FixedUrlBaseUriDiscover();
+    }
+
+}
+```
+
+And considering the following controller:
+
+```java
+@RestController
+public class RootRestController {
+
+    @RequestMapping("/")
+    @SelfFromCurrentCall
+    public ResourceSupport root() {
+        return new ResourceSupport();
+    }
+
+}
+```
+
+The following json will be generated:
+
+```json
+{
+    "_links":{
+        "self":{
+            "href":"fixed-url/"
+        }
+    }
+}
+```
+
+> In this [package](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/baseuridiscover) you can find the complete code for this example.
+(The files are:
+[controller](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/baseuridiscover/RootRestController.java), 
+[url base discover](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/baseuridiscover/FixedUrlBaseUriDiscover.java), 
+[main class run the application](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/extensions/baseuridiscover/Application.java) and a 
+[integration test](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/extensions/baseuridiscover/BaseUriDiscoverExtensionTest.java)
+)
+
+### 5.2.2. Request parts factory
+One way to adjust the base url in a more specialized way is to act on an internal structure of 
+the framework responsible for inspection of the HTTP request and generate all parts of the base 
+url.
+
+The framework creates a list of `RequestPartsFactory`, each one is responsable for inspecting 
+the `HttpServletRequest` and return a `ChainedRequestParts`. Each `ChainedRequestParts` holds
+information necessary to create the base url. All `ChainedRequestParts` are chained in a way
+that each of then is responsable for extracting one of `RequestParts` (the properties are: 
+scheme, host, port, contextPath) or delegatin to the next `ChainedRequestParts` until you reach
+the last one in the chain. Then it creates the base uri just by contatenating its properties 
+(the concatenation code is: `new URI(getScheme(),null, getHost(), normalizedPort,getContextPath(), null, null)).toString();`)   
+
+The framework ofers a possibility of replacing the default `RequestPartsFactoryList`.   
+
+For example, to use a HTTP request reader `my-custom-header` to create the base url you have to:
+
+Create a RequestPartsFactory that looks for HTTP reader `my-custom-header` and use its value 
+to create a `ChainedRequestParts`:
+
+```java
+   @Override
+    public ChainedRequestParts create(HttpServletRequest request) {
+
+        String protocolHeader = request.getHeader("my-custom-header")==null?
+                "":
+                request.getHeaders("my-custom-header").nextElement().toString();
+
+        if (StringUtils.hasText(protocolHeader)) {
+            Map<String, String> headers = fromStringToMap(protocolHeader);
+
+            return new ChainedRequestParts(
+                    headers.get("scheme"),
+                    headers.get("host"),
+                    headers.get("port") == null?-1:Integer.valueOf(headers.get("port")),
+                    headers.get("contextPath")
+            );
+
+        }
+        else {
+            return new ChainedRequestParts();
+        }
+
+    }
+```
+
+Note that if the reader is not in HTTP request a empty `ChainedRequestParts` is returned. The 
+chain is develped in a way that if a `ChainedRequestParts` property is empty the next element in 
+the chain is used to provide the property.
+
+Create a `RequestPartsFactoryList` with the former 
+
+
+
+acertar o chain...
+
+
+
+
