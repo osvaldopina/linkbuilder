@@ -38,15 +38,12 @@ Hateoas in terms of use, but functionally similar
 
 The main idea is to use the controller calls to generate links that correspond to the call made
 
-Because we use calls to controller methods there is no way to chain multiple link creations
-into a single builder. Each link creation ends on a dead end.
 
 ### 2.1. Methods With Template
 To indicate that a method will have an associated template you should use the `@GenerateUriTemplateFor`
 annotation. Each annotated method will have an associated template and will be available for
-link and link template generation. Initially, for link generation via classic linkbuilder,
-you can use the empty annotation or inform a rel link that will be the default. Later on we 
-will see other ways of using this annotation when link generation is done via annotations
+link and link template generation. This annotation has a `rel` property. If it is informed 
+it will be used as link rel.
 
 ### 2.2. Simple Links
 
@@ -89,7 +86,7 @@ To generate links for resource1 and resource2 you have to:
 ```
 Notice that you should pass the `Resource` instance that will hold the links.
 
-* For each link call `link()` on `LinksBulder` to create a builder for a link.
+* Each method call `link()` on `LinksBulder` creates a builder for a link.
 
 ```java
    ResourceSupport resource = new ResourceSupport();
@@ -109,9 +106,6 @@ Notice that you should pass the `Resource` instance that will hold the links.
                 
    linksBuilder.buildAndSetAll();
 ```
-
-Notice that after `link()` call a builder for a single link will be created and added to the
-`LinksBuilder`
 
 * Then when you call `buildAndSetAll()` in the `LinksBuilder` all links will be created and
 added to `Resouce` instance.
@@ -150,7 +144,7 @@ parameters are not going to be replaced and will be left as template parameters.
 The substitution control is done by the following methods:  
 
 * `dontSubstituteParameterIndex(int paramIndex)`  
-Indicates that the nth parameter should not be kept as a variable in the uri template
+Indicates that the nth parameter must be kept as a variable in the uri template
 
 * `dontSubstitute(String variableName)`  
 Indicates that the variable with the given name must be kept as a variable in the template
@@ -294,10 +288,10 @@ Use to overload link rel property
 
 * `String when()`  
 Boolean SpEL expression that will be evaluated when generating the link. 
-If its value is false, the link will not be generated.
+If it evaluate for false, the link will not be generated.
 
 * `boolean templated()`  
-Indicates whether the link will be a Uri Template or simple link.
+Indicates whether the link will be a uri template or simple link.
 
 * `Variable[] variables()`  
 Used to configure each link parameter variable subustitution.
@@ -408,8 +402,8 @@ The following json will be generated:
 
 
 ### 3.2. Resource Links
-Another option is to annotate resources rather than controllers. The great advantage of 
-annotating the controllers is that it stays independent of the method that returns it. 
+Another option is to annotate resources rather than controllers. The big advantage is that, 
+regardless of the me method that is returned, the resource will have the same link settings 
 Note that only the resources returned by controller methods annotated with `@GenerateUriTemplateFor`
 are inspected.
 
@@ -513,12 +507,12 @@ be that all link destinations could be in enums, but how to make reference in th
 annotation to an enum that will be created by you and a posteriori?
 
 The framework response was to create what we call "composite annotations". The basic idea is 
-that you create your own annotations, with the same parameters of the annotation of the 
-framework, and use these annotations.
+that you create your own annotations, with the same parameters of the framework annotation and 
+use them.
 
 An example will make this approach clearer:
 
-* Create a annotation to map the link destinations 
+* Create a enum to map the link destinations 
 
 ```java
 public enum Destination {
@@ -542,7 +536,7 @@ public enum Destination {
 It is mandatory that the enum elements have a `getRel` method with no parameters. A `toString()`
 will be called on the return of this method and used as link rel attribute.
 
-* Create a "composed" annotation to replace `@GenerateUriTemplateFor`
+* Create an annotation to replace `@GenerateUriTemplateFor`
 
 ```java
 @GenerateUriTemplateFor
@@ -555,7 +549,7 @@ public @interface MyGenerateUriTemplateFor {
 This annotation should be annotated with `@GenerateUriTemplateFor` and have a destionation 
 property with the created enum type
 
-* Create a "composed" annotation to replace `@Links` to be used as a container for "composed"
+* Create an annotation to replace `@Links` to be used as a container for composed
 `@Link` annotation. 
 
 ```java
@@ -567,10 +561,10 @@ public @interface MyLinks {
 
 }
 ```
-This annotation should be annotated with `@Links` and must have a array of "composed" 
+This annotation should be annotated with `@Links` and must have a array of composed 
 `@Link` annotation.
 
-* Create a "composed" annotaion to replace `@Link`
+* Create an annotaion to replace `@Link`
 
 ```java
 @Link
@@ -593,7 +587,7 @@ This annotation should be annotated with `@Link` and must have a `destination` p
 enum `Destination` as its type. It is madatory also to have `overridedRel`, `when`, `templated`
 and `variables` as parameters 
 
-* Use the newly created "composed" annotations on destination controller methods:
+* Use the newly created annotations on destination controller methods:
 
 ```java
     @RequestMapping("/direct-link/{path}")
@@ -611,7 +605,7 @@ and `variables` as parameters
     }
 
 ```
-* And use the newly created "composed" annotations to control link rendering:
+* And use the newly created annotations to control link rendering:
 
 ```java
    @RequestMapping("/")
@@ -680,7 +674,7 @@ complete code example for a composed annotation used in a resource
 
 Although spring hateoas is a generic framework and, in theory, it can support several 
 formats, it currently supports only HAL. This framework has been designed to be able to 
-support several formats. In this first version was created a specific extension for HAL.
+support several formats. In this first version a specific extension for HAL was created.
 
 This extension comes on 2 fronts: HAL-specific link properties and knowledge of HAL document
 structure
@@ -690,16 +684,16 @@ This feature is currently under development and the only implemented HAL link pr
 `hreflang`. Other properties will be included in the next releases
 
 ###  4.2. knowledge of HAL document structure
-Hal documents have a defined structure with 2 properties: `_links` and `_embedded` whereas 
-_embedded contains other resources which, in turn, can have their `_links` and `_embedded`
-sections and so on. 
+HAL documents have a defined structure with 2 properties: `_links` and `_embedded` whereas 
+`_embedded` contains other resources which, in turn, can have their `_links` and `_embedded`
+properties and so on. 
 
-When creating HAL links, the framework will recursively search resources within _embedded 
-sessions and, if they are annotated, generate the respective links
+When creating HAL links, the framework will recursively search resources within `_embedded` 
+properties and, if they are annotated, generate the respective links
 
 ###  4.3. How to render HAL links
 To create HAL Links the `@HalLinks` and `@HalLink` annotations must be used. For HAL Links
-are available the features of "composed" annotations and the possibility of annotation in 
+are available the features of composed annotations and the possibility of annotation in 
 both controllers and resources.
 
 
@@ -759,7 +753,7 @@ complete code example for a composed annotation used in a resource
 ### 5.1. User defined parameter types
 The framework recognizes annotations that allow methods on controllers to respond to HTTP 
 calls (@RequestParam, @RequestParam), but Spring allows user-created types to be used as 
-parameters in the controller. A simple example is the Pageable type used for pagination.   
+parameters in the controller. An example is the Pageable type used for pagination.   
 
 There is no way to know how to use these types to create the templates associated with the 
 methods, nor how to know how to replace these types in the uri templates.
@@ -782,10 +776,10 @@ public interface ArgumentResolver {
 It is used to, given a parameter, create a list of variables to be included in the 
 uri template.   
 
-The `resolveFor` method defines whether this class knows how to create template 
+The `resolveFor` is used to indicate whether this class knows how to create template 
 variables for a given parameter 
 
-2. 
+2. ParameterVariableValueDiscover
 
 ```java
 package com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue;
@@ -801,11 +795,11 @@ public interface ParameterVariableValueDiscover {
 
 }
 ```
-It is used, given a list of variables of a template, the call of the methods, the resource 
+It is used to, given a list of variables of a template, the call of the methods, the resource 
 to be returned, the index parameter and the substitution strategy of the variables in the 
-template, create a list with the values for the variables to be Replaced.   
+template, create a list with the values for the variables to be replaced.   
 
-The canDiscover method defines whether this class knows how to create the values of the 
+The `canDiscover` method defines whether this class knows how to create the values of the 
 variables to be overridden in the template.   
 
 For example, consider the folowing user defined type:
