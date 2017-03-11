@@ -14,7 +14,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 
 ```
@@ -25,162 +25,214 @@ Or the following dependency for the version under development:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
 </dependency>
 
 ```
-## New in 0.2.0
 
-### Generating links using only annotations
+### Purpose
 
-Indicate the  target method  using ```@LinkTarget```:
+The framework was created to generate links and links templates for Spring Hateoas web 
+applications. In this new version, besides the builder, you can create the links using only annotations.
 
+
+In the [complete documentation](https://github.com/osvaldopina/linkbuilder/wiki/Documentation) 
+you will find instructions for 
+[creating links via builder](https://github.com/osvaldopina/linkbuilder/wiki/Documentation#2-classic-link-builder), 
+via annotations made on the 
+[controller](https://github.com/osvaldopina/linkbuilder/wiki/Documentation#31-controller-links) and / or 
+[resources](https://github.com/osvaldopina/linkbuilder/wiki/Documentation#32-resource-links).
+
+Below is a summary of link building via builder and resource annotation
+
+
+
+
+
+### Creating links with a classic builder
+
+* Indicate the methods that will be destiny of the links with ``@GenerateUriTemplateFor``
 ```java
-    @RequestMapping("/direct-link/{path}")
-    @LinkTarget("direct")
-    public void directLink(@RequestParam(value = "query", required = false) String query,
-                           @PathVariable("path") String path) {
+@RestController
+public class ResourcesRestController {
 
+    @RequestMapping("/resource1/{path_param}")
+    @GenerateUriTemplateFor
+    public ResourceSupport oneResource(
+            @PathVariable("path_param") String pathParam,@RequestParam("query_param") String queryParam) {
+        return null;
     }
+
+    @RequestMapping("/resource2/{path_param}")
+    @GenerateUriTemplateFor
+    public ResourceSupport otherResource(
+            @PathVariable("path_param") String pathParam,@RequestParam("query_param") String queryParam) {
+        return null;
+    }
+}
 ```
-Then  use ```@Links, @Link``` to point to a target method:
+
+* Inject the `LinksBuilderFactory`
+
 ```java
-    @RequestMapping("/")
-    @EnableSelfFromCurrentCall
-    @Links({
-            @Link(destination = RootRestController.class, target = "direct", relation = "direct", params = {
-                    @Param(name = "query",value = "#resource.queryValue"),
-                    @Param(name = "path",value = "#resource.pathValue")
-            })
-    })
-    public Resource root() {
-...
+    @Autowired
+    private LinksBuilderFactory linksBuilderFactory;
 ```
-Then when perform a GET on previous controller (GET http://localhost:8080/ calling ```public Resource root()```)
-you get the following reponse:
+
+* Create the `LinksBuilder` which is a builder for a set of links.
+
+```java
+    LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
+```
+
+
+* For each link call `link()` on `LinksBulder` to create a builder for a link.
+
+```java
+   ResourceSupport resource = new ResourceSupport();
+
+   LinksBuilder linksBuilder = linksBuilderFactory.create(resource);
+
+   linksBuilder.link()
+               .withRel("first-rel")
+               .fromControllerCall(ResourcesRestController.class)
+               .oneResource("path", "query")
+
+   linksBuilder.link()
+               .withRel("second-rel")
+               .fromControllerCall(ResourcesRestController.class)
+               .otherResource("path", "query");
+
+
+   linksBuilder.buildAndSetAll();
+```
+
+* Then when you call `buildAndSetAll()` in the `LinksBuilder` all links will be created and
+added to `Resouce` instance.
+
+```java
+       linksBuilder.buildAndSetAll();
+```
+
+The following json will be generated:
+
 ```json
 {
-    "queryValue": "anyQueryValue",
-    "pathValue": "anyPathValue",
-    "_links": {
-        "self": {
-            "href": "http://localhost:8080/"
-        },
-        "direct": {
-            "href": "http://localhost:8080/direct-link/anyPathValue?query=anyQueryValue"
+    "_links":{
+        "first-rel":{
+            "href":"http://localhost/resource1/path?query_param=query"
+         },
+        "second-rel":{
+            "href":"http://localhost/resource2/path?query_param=query"
         }
     }
 }
 ```
 
-[Here](examples/src/main/java/com/github/osvaldopina/linkbuilder/example/directlink) the code for a complete example and
-[here](examples/src/test/java/com/github/osvaldopina/linkbuilder/example/userdefinedtype) the example integration test
 
+### Use annotations to generate links
 
-### New in 0.1.3
-
-## Spel expressions for link conditional rendering
-
- ```java
-         ResourceSupport resource = new ResourceSupport();
-
-         LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
-
-         linksBuilder.link()
-                 .withRel("link-for-authenticated-users")
-                 .when("isAuthenticated()" )
-                 .fromControllerCall(ARestController.class)
-                 .someControllerMethod();
-
-         linksBuilder.buildAndSetAll());
-
-         return reosurce;
- ```
-
-## Resource acessible via Spel expressions
-
- ```java
-         ResourceSupport resource = new ResourceSupport();
-
-         LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
-
-         linksBuilder.link()
-                 .withRel("link-for-authenticated-users")
-                 .when("#resource.someProperty && isAuthenticated()" )
-                 .fromControllerCall(ARestController.class)
-                 .someControllerMethod();
-
-         linksBuilder.buildAndSetAll());
-
-         return resource;
- ```
-
-
-### Annotate controller methods
-
-```@EnableSelfFromCurrentCall``` If you want to use the annotated method to generate links, link templates and use the current call to generate a self link:
+* Leave the controller methods you want to point in the same way:
 
 ```java
-@RestController
-public class RootRestController {
+    @RequestMapping("/direct-link/{path}")
+    @GenerateUriTemplateFor(rel = "direct-link")
+    public void directLink(@RequestParam(value = "query", required = false) String query,
+                           @PathVariable("path") String path) {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
+    }
 
+    @RequestMapping("/direct-link/templated")
+    @GenerateUriTemplateFor(rel = "direct-link-templated")
+    public void directLinkTemplated(
+            @RequestParam(value = "non_templated", required = false) String nonTemplated,
+            @RequestParam(value = "templated", required = false) String templated) {
+    }
+
+```
+
+* Annotate the controller method with `@GenerateUriTemplateFor`:
+
+```java
     @RequestMapping("/")
-    @EnableSelfFromCurrentCall
-    public ResourceSupport root(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+    @GenerateUriTemplateFor(rel = "root")
+    public Resource root() {
+        Resource resource = new Resource();
+
+        resource.setQueryValue("anyQueryValue");
+        resource.setPathValue("anyPathValue");
+
+        return resource;
+    }
 
 ```
 
-Or ```@GenerateUriTemplateFor``` If you just want to use the annotated method to generate links and link templates:
+* And annotate the resource:
 
 ```java
-@RestController
-public class RootRestController {
+@Links({
+	@Link(controller = RootRestController.class, rel = "root", overridedRel = "self"),
+	@Link(controller = RootRestController.class, rel = "direct-link",
+		variables = {
+			@Variable(name = "query", value = "#resource.queryValue"),
+			@Variable(name = "path", value = "#resource.pathValue")
+		}),
+	@Link(controller = RootRestController.class, rel = "direct-link", overridedRel = "direct-link-overrided",
+		variables = {
+			@Variable(name = "query", value = "#resource.queryValue"),
+			@Variable(name = "path", value = "#resource.pathValue")
+		}),
+	@Link(controller = RootRestController.class, rel = "direct-link-templated",
+                templated = true,
+                variables = {
+			@Variable(name = "templated", value = "'templated-value'")
+	    })
+})
+public class Resource extends ResourceSupport {
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
+	private String queryValue;
 
-    @RequestMapping("/")
-    @GenerateUriTemplateFor
-    public ResourceSupport root(
-            @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+	private String pathValue;
 
+	public String getQueryValue() {
+		return queryValue;
+	}
+
+	public void setQueryValue(String queryValue) {
+		this.queryValue = queryValue;
+	}
+
+	public String getPathValue() {
+		return pathValue;
+	}
+
+	public void setPathValue(String pathValue) {
+		this.pathValue = pathValue;
+	}
+}
 ```
 
-### Inject ```LinksBuilderFactory```
 
-```java
+The following json will be generated:
 
-    @Autowired
-    private LinksBuilderFactory linksBuilderFactory;
-
+```json
+ {
+     "queryValue":"anyQueryValue",
+     "pathValue":"anyPathValue",
+     "_links":{
+         "direct-link":{
+             "href":"http://localhost/direct-link/anyPathValue?query=anyQueryValue"
+         },
+         "direct-link-overrided":{
+             "href":"http://localhost/direct-link/anyPathValue?query=anyQueryValue"
+         },
+         "direct-link-templated":{
+             "href":"http://localhost/direct-link/templated?templated=templated-value{&non_templated}",
+             "templated":true
+         },
+         "self":{
+             "href":"http://localhost/"
+         }
+    }
+}
 ```
-
-### Create the ```LinksBuilder``` than the ```LinkBuilder```, configure them, and then build the links.
-
-```java
-        LinksBuilder  linksBuilder = linksBuilderFactory.create(resource);
-
-        linksBuilder
-              .link()
-              .withSelfRel()
-              .fromCurrentCall();
-
-        linksBuilder
-              .link()
-              .withRel("no-query-parameter")
-              .fromControllerCall(RootRestController.class)
-              .methodWithoutQueryParameter("value", null);
-
-        linksBuilder
-              .link()
-              .withRel("user-defined-type")
-              .fromControllerCall(RootRestController.class)
-              .queryParameterForUserDefinedType(new UserDefinedType("v1", "v2"));
-
-        linksBuilder.buildAndSetAll());
- ```
-
