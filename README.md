@@ -30,7 +30,7 @@ Or the following dependency for the version under development:
 <dependency>
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
 </dependency>
 
 ```
