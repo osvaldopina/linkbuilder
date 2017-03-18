@@ -4,6 +4,11 @@
 
 [![Join the chat at https://gitter.im/osvaldopina/linkbuilder](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/osvaldopina/linkbuilder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+
+# Changes from 0.3.0
+
+Before 0.4.0-SNAPSHOT the annotation @LinkDestination was named @GenerateUriTemplateFor
+
 # How to use it.
 
 ## Include the dependency
@@ -51,7 +56,7 @@ Below is a summary of link building via builder and resource annotation
 
 ### Creating links with a classic builder
 
-* Indicate the methods that will be destiny of the links with ``@LinkDestination``
+* Indicate the methods that will be destiny of the links with ``@LinkDestination`` (or ``@GanerateUriTemplateFor`` in 0.3.0 and before)
 ```java
 @RestController
 public class ResourcesRestController {
@@ -151,7 +156,7 @@ The following json will be generated:
 
 ```
 
-* Annotate the controller method with `@LinkDestination`:
+* Annotate the controller method with `@LinkDestination` (or ``@GanerateUriTemplateFor`` in 0.3.0 and before):
 
 ```java
     @RequestMapping("/")
