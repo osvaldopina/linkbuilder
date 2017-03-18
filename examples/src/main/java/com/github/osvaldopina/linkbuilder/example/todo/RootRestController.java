@@ -3,7 +3,7 @@ package com.github.osvaldopina.linkbuilder.example.todo;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +68,7 @@ public class RootRestController {
 
     @RequestMapping("/no-query-parameter/{id}")
     @SelfFromCurrentCall
-    @GenerateUriTemplateFor(rel = "rel")
+    @LinkDestination(rel = "rel")
     public void methodWithoutQueryParameter(@PathVariable("id") String id, @RequestBody String payload) {
 
     }

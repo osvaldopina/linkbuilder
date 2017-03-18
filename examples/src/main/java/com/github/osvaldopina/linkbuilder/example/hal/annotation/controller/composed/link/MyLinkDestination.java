@@ -1,12 +1,12 @@
 package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link;
 
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@GenerateUriTemplateFor
+@LinkDestination
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MyGenerateUriTemplateFor {
+public @interface MyLinkDestination {
 
     Destination destination();
 }

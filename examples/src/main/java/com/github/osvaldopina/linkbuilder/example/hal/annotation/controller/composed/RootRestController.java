@@ -3,7 +3,7 @@ package com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.com
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.Destination;
-import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyGenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyLinkDestination;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyHalLink;
 import com.github.osvaldopina.linkbuilder.example.hal.annotation.controller.composed.link.MyHalLinks;
 import com.github.osvaldopina.linkbuilder.hal.annotation.Variable;
@@ -49,14 +49,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK)
+    @MyLinkDestination(destination = Destination.DIRECT_LINK)
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @MyGenerateUriTemplateFor(destination = Destination.DIRECT_LINK_TEMPLATED)
+    @MyLinkDestination(destination = Destination.DIRECT_LINK_TEMPLATED)
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

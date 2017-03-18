@@ -3,7 +3,7 @@ package com.github.osvaldopina.linkbuilder.example.commom.annotatedlinkrel;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +43,13 @@ public class RootRestController {
     }
 
     @RequestMapping("/resource1")
-    @GenerateUriTemplateFor
+    @LinkDestination
     public ResourceSupport resource1() {
         return null;
     }
 
     @RequestMapping("/resource2")
-    @GenerateUriTemplateFor(rel = "annotated-rel")
+    @LinkDestination(rel = "annotated-rel")
     public ResourceSupport resource2() {
         return null;
     }

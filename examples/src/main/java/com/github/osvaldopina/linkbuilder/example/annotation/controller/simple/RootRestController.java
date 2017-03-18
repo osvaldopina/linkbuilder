@@ -1,8 +1,6 @@
 package com.github.osvaldopina.linkbuilder.example.annotation.controller.simple;
 
-import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,14 +38,14 @@ public class RootRestController {
     }
 
     @RequestMapping("/direct-link/{path}")
-    @GenerateUriTemplateFor(rel = "direct-link")
+    @LinkDestination(rel = "direct-link")
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @GenerateUriTemplateFor(rel = "direct-link-templated")
+    @LinkDestination(rel = "direct-link-templated")
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {

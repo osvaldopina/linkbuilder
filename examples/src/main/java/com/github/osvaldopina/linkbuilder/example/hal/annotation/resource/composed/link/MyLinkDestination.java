@@ -3,11 +3,11 @@ package com.github.osvaldopina.linkbuilder.example.hal.annotation.resource.compo
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 
-@GenerateUriTemplateFor
+@LinkDestination
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MyGenerateUriTemplateFor {
+public @interface MyLinkDestination {
 
     Destination destination();
 }

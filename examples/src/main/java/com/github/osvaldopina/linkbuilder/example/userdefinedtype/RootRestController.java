@@ -3,8 +3,7 @@ package com.github.osvaldopina.linkbuilder.example.userdefinedtype;
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import com.github.osvaldopina.linkbuilder.annotation.Link;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ public class RootRestController {
     private LinksBuilderFactory linksBuilderFactory;
 
     @RequestMapping("/")
-    @GenerateUriTemplateFor
+    @LinkDestination
     public ResourceSupport root() {
 
         ResourceSupport resource = new ResourceSupport();
@@ -37,7 +36,7 @@ public class RootRestController {
     }
 
     @RequestMapping("/user-defined-type")
-    @GenerateUriTemplateFor
+    @LinkDestination
     public void queryParameterForUserDefinedType(UserDefinedType userDefinedType) {
 
     }

@@ -51,20 +51,20 @@ Below is a summary of link building via builder and resource annotation
 
 ### Creating links with a classic builder
 
-* Indicate the methods that will be destiny of the links with ``@GenerateUriTemplateFor``
+* Indicate the methods that will be destiny of the links with ``@LinkDestination``
 ```java
 @RestController
 public class ResourcesRestController {
 
     @RequestMapping("/resource1/{path_param}")
-    @GenerateUriTemplateFor
+    @LinkDestination
     public ResourceSupport oneResource(
             @PathVariable("path_param") String pathParam,@RequestParam("query_param") String queryParam) {
         return null;
     }
 
     @RequestMapping("/resource2/{path_param}")
-    @GenerateUriTemplateFor
+    @LinkDestination
     public ResourceSupport otherResource(
             @PathVariable("path_param") String pathParam,@RequestParam("query_param") String queryParam) {
         return null;
@@ -136,14 +136,14 @@ The following json will be generated:
 
 ```java
     @RequestMapping("/direct-link/{path}")
-    @GenerateUriTemplateFor(rel = "direct-link")
+    @LinkDestination(rel = "direct-link")
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @GenerateUriTemplateFor(rel = "direct-link-templated")
+    @LinkDestination(rel = "direct-link-templated")
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {
@@ -151,11 +151,11 @@ The following json will be generated:
 
 ```
 
-* Annotate the controller method with `@GenerateUriTemplateFor`:
+* Annotate the controller method with `@LinkDestination`:
 
 ```java
     @RequestMapping("/")
-    @GenerateUriTemplateFor(rel = "root")
+    @LinkDestination(rel = "root")
     public Resource root() {
         Resource resource = new Resource();
 

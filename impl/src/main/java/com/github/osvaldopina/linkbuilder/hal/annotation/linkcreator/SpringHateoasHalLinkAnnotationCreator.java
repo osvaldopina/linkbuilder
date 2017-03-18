@@ -76,20 +76,21 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
 
     @Override
     public void createAndSetForResourceAnnotations(MethodCall methodCall, Object resource) {
-        List<LinkAnnotationProperties> linksProperties = annotationReader.read(resource.getClass());
+        if (resource != null && annotationReader.canRead(resource.getClass())) {
+            List<LinkAnnotationProperties> linksProperties = annotationReader.read(resource.getClass());
 
-        for (LinkAnnotationProperties linkProperties : linksProperties) {
-            createAndSet(linkProperties, methodCall, resource);
+            for (LinkAnnotationProperties linkProperties : linksProperties) {
+                createAndSet(linkProperties, methodCall, resource);
+            }
         }
 
         Set<Object> embeddedResources = embeddedValuesDiscover.getEmbeddedValues(objectMapper, resource);
 
-        for(Object embeddedResource : embeddedResources) {
+        for (Object embeddedResource : embeddedResources) {
             if (embeddedResource instanceof ResourceSupport) {
                 createAndSetForResourceAnnotations(methodCall, embeddedResource);
             }
         }
-
     }
 
     private void createAndSet(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {

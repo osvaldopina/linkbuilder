@@ -2,11 +2,12 @@ package com.github.osvaldopina.linkbuilder.utils.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.ReflectionUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,7 +59,7 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
     public boolean haveToGenerateTemplateFor(Method method) {
         return !method.getDeclaringClass().getPackage().getName().startsWith("org.springframework") &&
                 (AnnotationUtils.findAnnotation(method, SelfFromCurrentCall.class) != null ||
-                        AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class) != null);
+                        AnnotationUtils.findAnnotation(method, LinkDestination.class) != null);
     }
 
     @Override
@@ -85,13 +86,13 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
     public String getMethodRel(Method method) {
-        GenerateUriTemplateFor generateUriTemplateFor =
-                AnnotationUtils.findAnnotation(method, GenerateUriTemplateFor.class);
+        LinkDestination linkDestination =
+                AnnotationUtils.findAnnotation(method, LinkDestination.class);
 
-        if (generateUriTemplateFor != null &&
-                generateUriTemplateFor.rel() != null &&
-                (!"".equals(generateUriTemplateFor.rel().trim()))) {
-            return generateUriTemplateFor.rel();
+        if (linkDestination != null &&
+                linkDestination.rel() != null &&
+                (!"".equals(linkDestination.rel().trim()))) {
+            return linkDestination.rel();
         } else {
             return null;
         }
@@ -99,14 +100,14 @@ public class StringHateoasIntrospectionUtilsImpl implements IntrospectionUtils {
 
     @Override
         public String getMethodDestination(Method method) {
-        GenerateUriTemplateFor generateUriTemplateFor = method.getAnnotation(GenerateUriTemplateFor.class);
+        LinkDestination linkDestination = method.getAnnotation(LinkDestination.class);
 
-        if (generateUriTemplateFor != null) {
-            return generateUriTemplateFor.destination();
+        if (linkDestination != null) {
+            return linkDestination.destination();
         }
 
         for (Annotation annotation : method.getAnnotations()) {
-            if (annotation.annotationType().getAnnotation(GenerateUriTemplateFor.class) != null) {
+            if (annotation.annotationType().getAnnotation(LinkDestination.class) != null) {
                 if (reflectionUtils.hasMethod(annotation, "destination")) {
                     Object destination = reflectionUtils.callMethod(Object.class, annotation, "destination");
                     if (destination != null) {

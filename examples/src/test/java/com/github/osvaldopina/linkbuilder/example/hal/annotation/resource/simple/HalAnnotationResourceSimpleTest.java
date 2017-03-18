@@ -54,6 +54,12 @@ public class HalAnnotationResourceSimpleTest {
                         .value("http://localhost/direct-link/templated?templated=templated-value{&non_templated}"))
                 .andExpect(jsonPath("$._links.direct-link-templated.hreflang").
                         value("href-lang-3"))
+
+                .andExpect(jsonPath("$._embedded.first._links.self.href").
+                        value("http://localhost/first-embedded/1"))
+
+                .andExpect(jsonPath("$._embedded.first._embedded.forthEmbeddeds[0]._links.self.href").
+                        value("http://localhost/third-embedded/2"))
         ;
 
     }

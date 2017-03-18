@@ -2,7 +2,7 @@ package com.github.osvaldopina.linkbuilder.utils.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.SelfFromCurrentCall;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +27,9 @@ public class StringHateoasIntrospectionUtilsImplTest {
 
     private StringHateoasIntrospectionUtilsImpl springHateoasIntrospectionUtilsImpl;
 
-    private Method nonAnnotatedMethodGenerateUriTemplateFor;
-    private Method annotatedMethodGenerateUriTemplateFor;
-    private Method composedAnnotatedMethodGenerateUriTemplateFor;
+    private Method nonAnnotatedMethodLinkDestination;
+    private Method annotatedMethodLinkDestination;
+    private Method composedAnnotatedMethodLinkDestination;
 
     private Method nonAnnotatedMethodEnableSelfFromCurrentCall;
     private Method annotatedMethodEnableSelfFromCurrentCall;
@@ -38,9 +38,9 @@ public class StringHateoasIntrospectionUtilsImplTest {
     private Method annotatedMethodComposedAnnotationClass;
     private Method composedAnnotatedMethodComposedAnnotationClass;
 
-    private Method nonAnnotatedMethodGenerateUriTemplateForDestinationClass;
-    private Method annotatedMethodGenerateUriTemplateForDestinationClass;
-    private Method composedAnnotatedMethodGenerateUriTemplateForDestinationClass;
+    private Method nonAnnotatedMethodLinkDestinationDestinationClass;
+    private Method annotatedMethodLinkDestinationDestinationClass;
+    private Method composedAnnotatedMethodLinkDestinationDestinationClass;
 
 
 
@@ -49,9 +49,9 @@ public class StringHateoasIntrospectionUtilsImplTest {
     public void setUp() throws Exception {
         method = StringHateoasIntrospectionUtilsImplTest.class.getMethod("method", String.class, String.class, String.class);
 
-        annotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getMethod("annotatedMethod");
-        nonAnnotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getDeclaredMethod("nonAnnotatedMethod");
-        composedAnnotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getDeclaredMethod("composedAnnotatedMethod");
+        annotatedMethodLinkDestination = LinkDestinationClass.class.getMethod("annotatedMethod");
+        nonAnnotatedMethodLinkDestination = LinkDestinationClass.class.getDeclaredMethod("nonAnnotatedMethod");
+        composedAnnotatedMethodLinkDestination = LinkDestinationClass.class.getDeclaredMethod("composedAnnotatedMethod");
 
         annotatedMethodEnableSelfFromCurrentCall = EnableSelfFromCurrentCallClass.class.getMethod("annotatedMethod");
         nonAnnotatedMethodEnableSelfFromCurrentCall = EnableSelfFromCurrentCallClass.class.getMethod("nonAnnotatedMethod");
@@ -60,14 +60,14 @@ public class StringHateoasIntrospectionUtilsImplTest {
         annotatedMethodComposedAnnotationClass = ComposedAnnotationClass.class.getMethod("annotatedMethod");
         composedAnnotatedMethodComposedAnnotationClass = ComposedAnnotationClass.class.getMethod("composedAnnotatedMethod");
 
-        annotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getMethod("annotatedMethod");
-        nonAnnotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getDeclaredMethod("nonAnnotatedMethod");
-        composedAnnotatedMethodGenerateUriTemplateFor = GenerateUriTemplateForClass.class.getDeclaredMethod("composedAnnotatedMethod");
+        annotatedMethodLinkDestination = LinkDestinationClass.class.getMethod("annotatedMethod");
+        nonAnnotatedMethodLinkDestination = LinkDestinationClass.class.getDeclaredMethod("nonAnnotatedMethod");
+        composedAnnotatedMethodLinkDestination = LinkDestinationClass.class.getDeclaredMethod("composedAnnotatedMethod");
 
 
-        nonAnnotatedMethodGenerateUriTemplateForDestinationClass = GenerateUriTemplateForDestinationClass.class.getMethod("nonAnnotatedMethod");
-        annotatedMethodGenerateUriTemplateForDestinationClass  = GenerateUriTemplateForDestinationClass.class.getMethod("annotatedMethod");
-        composedAnnotatedMethodGenerateUriTemplateForDestinationClass  = GenerateUriTemplateForDestinationClass.class.getMethod("composedAnnotatedMethod");
+        nonAnnotatedMethodLinkDestinationDestinationClass = LinkDestinationDestinationClass.class.getMethod("nonAnnotatedMethod");
+        annotatedMethodLinkDestinationDestinationClass = LinkDestinationDestinationClass.class.getMethod("annotatedMethod");
+        composedAnnotatedMethodLinkDestinationDestinationClass = LinkDestinationDestinationClass.class.getMethod("composedAnnotatedMethod");
 
 
         springHateoasIntrospectionUtilsImpl = new StringHateoasIntrospectionUtilsImpl();
@@ -133,17 +133,17 @@ public class StringHateoasIntrospectionUtilsImplTest {
 
     @Test
     public void haveToGenerateTemplateForNonAnnotatedMethod() throws Exception {
-        assertFalse(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(nonAnnotatedMethodGenerateUriTemplateFor));
+        assertFalse(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(nonAnnotatedMethodLinkDestination));
     }
 
     @Test
     public void haveToGenerateTemplateForAnnotatedMethod() throws Exception {
-        assertTrue(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(annotatedMethodGenerateUriTemplateFor));
+        assertTrue(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(annotatedMethodLinkDestination));
     }
 
     @Test
     public void haveToGenerateTemplateForComposedAnnotatedMethod() throws Exception {
-        assertTrue(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(composedAnnotatedMethodGenerateUriTemplateFor));
+        assertTrue(springHateoasIntrospectionUtilsImpl.haveToGenerateTemplateFor(composedAnnotatedMethodLinkDestination));
     }
 
     @Test
@@ -207,14 +207,14 @@ public class StringHateoasIntrospectionUtilsImplTest {
 
     @Test
     public void getAnnotatedMethod() {
-        GenerateUriTemplateForClass bean = new GenerateUriTemplateForClass();
+        LinkDestinationClass bean = new LinkDestinationClass();
 
         Set<Method> annotatedMethods = springHateoasIntrospectionUtilsImpl.getAnnotatedMethods(bean,
-                GenerateUriTemplateFor.class);
+                LinkDestination.class);
 
         assertThat(annotatedMethods, hasSize(2));
-        assertThat(annotatedMethods, hasItems(annotatedMethodGenerateUriTemplateFor,
-                composedAnnotatedMethodGenerateUriTemplateFor));
+        assertThat(annotatedMethods, hasItems(annotatedMethodLinkDestination,
+                composedAnnotatedMethodLinkDestination));
 
     }
 
@@ -237,42 +237,42 @@ public class StringHateoasIntrospectionUtilsImplTest {
     @Test
     public void getMethodRelAnnotatedMethod() {
 
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(annotatedMethodGenerateUriTemplateFor), is("any-rel"));
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(annotatedMethodLinkDestination), is("any-rel"));
 
     }
 
     @Test
     public void getMethodRelNonAnnotatedMethod() {
 
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(nonAnnotatedMethodGenerateUriTemplateFor), is(nullValue()));
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(nonAnnotatedMethodLinkDestination), is(nullValue()));
 
     }
 
     @Test
     public void getMethodRelComposedAnnotatedMethod() {
 
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(composedAnnotatedMethodGenerateUriTemplateFor), is(nullValue()));
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodRel(composedAnnotatedMethodLinkDestination), is(nullValue()));
 
     }
 
 
     @Test
     public void getMethodDestinationNonAnnotatedMethod() {
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(nonAnnotatedMethodGenerateUriTemplateForDestinationClass),
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(nonAnnotatedMethodLinkDestinationDestinationClass),
                 is(nullValue()));
 
     }
 
     @Test
     public void getMethodDestinationAnnotatedMethod() {
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(annotatedMethodGenerateUriTemplateForDestinationClass),
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(annotatedMethodLinkDestinationDestinationClass),
                 is("any-destination"));
 
     }
 
     @Test
     public void getMethodDestinationComposedAnnotatedMethod() {
-        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(composedAnnotatedMethodGenerateUriTemplateForDestinationClass),
+        assertThat(springHateoasIntrospectionUtilsImpl.getMethodDestination(composedAnnotatedMethodLinkDestinationDestinationClass),
                 is("any-composed-destination"));
 
     }
@@ -285,42 +285,42 @@ public class StringHateoasIntrospectionUtilsImplTest {
             @RequestBody String requestBody) {
     }
 
-    public static class GenerateUriTemplateForClass {
+    public static class LinkDestinationClass {
 
         public void nonAnnotatedMethod() {
         }
 
-        @GenerateUriTemplateFor(rel = "any-rel")
+        @LinkDestination(rel = "any-rel")
         public void annotatedMethod() {
         }
 
-        @MyGenerateUriTemplateFor(rel = "any-composed-rel")
+        @MyLinkDestination(rel = "any-composed-rel")
         public void composedAnnotatedMethod() {
 
         }
     }
 
 
-    public static class GenerateUriTemplateForDestinationClass {
+    public static class LinkDestinationDestinationClass {
 
         public void nonAnnotatedMethod() {
         }
 
-        @GenerateUriTemplateFor(destination = "any-destination")
+        @LinkDestination(destination = "any-destination")
         public void annotatedMethod() {
         }
 
-        @MyGenerateUriTemplateFor(destination = "any-composed-destination")
+        @MyLinkDestination(destination = "any-composed-destination")
         public void composedAnnotatedMethod() {
 
         }
     }
 
 
-    @GenerateUriTemplateFor
+    @LinkDestination
     @Target({ElementType.METHOD, ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    public static @interface MyGenerateUriTemplateFor {
+    public static @interface MyLinkDestination {
 
         String rel() default  "";
 

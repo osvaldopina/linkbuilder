@@ -135,6 +135,7 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
     @Test
     public void createAndSetForResourceAnnotations_noEmbeddedResource() throws Exception {
+		expect(halLinkAnnotationReader.canRead(resourceSupport.getClass())).andReturn(true);
         expect(halLinkAnnotationReader.read(resourceSupport.getClass())).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
         expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, resourceSupport)).andReturn("link-uri");
         expect(halLinkAnnotationProperties.getRel()).andReturn("rel");
@@ -156,14 +157,42 @@ public class SpringHateoasHalLinkAnnotationCreatorTest extends EasyMockSupport {
 
     }
 
-    @Test
+	// TODO implement!!!
+	public void createAndSetForResourceAnnotations_embeddedResource_notAnnotated() throws Exception {
+		expect(halLinkAnnotationReader.canRead(resourceSupport.getClass())).andReturn(true);
+		expect(halLinkAnnotationReader.read(resourceSupport.getClass())).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
+		expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, resourceSupport)).andReturn("link-uri");
+		expect(halLinkAnnotationProperties.getRel()).andReturn("rel");
+		expect(halLinkAnnotationProperties.getHreflang()).andReturn("href-lang");
+		expect(embeddedValuesDiscover.getEmbeddedValues(objectMapper, resourceSupport)).andReturn(Collections.emptySet());
+
+		replayAll();
+
+		springHateoasHalLinkAnnotationCreator.createAndSetForResourceAnnotations(methodCall, resourceSupport);
+
+		verifyAll();
+
+		assertThat(resourceSupport.getLinks(),  hasSize(1));
+		HalLink halLink = (HalLink) resourceSupport.getLinks().get(0);
+		assertThat(halLink.getHreflang(),is("href-lang"));
+		assertThat(halLink.getRel(),is("rel"));
+		assertThat(halLink.getHref(),is("link-uri"));
+
+
+	}
+
+
+
+	@Test
     public void createAndSetForResourceAnnotations_embeddedResource() throws Exception {
+		expect(halLinkAnnotationReader.canRead(resourceSupport.getClass())).andReturn(true);
         expect(halLinkAnnotationReader.read(resourceSupport.getClass())).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
         expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, resourceSupport)).andReturn("link-uri");
         expect(halLinkAnnotationProperties.getRel()).andReturn("rel");
         expect(halLinkAnnotationProperties.getHreflang()).andReturn("href-lang");
         expect(embeddedValuesDiscover.getEmbeddedValues(objectMapper, resourceSupport)).andReturn(new HashSet<Object>(Arrays.asList(embeddedResource)));
 
+		expect(halLinkAnnotationReader.canRead(resourceSupport.getClass())).andReturn(true);
         expect(halLinkAnnotationReader.read(embeddedResource.getClass())).andReturn(Arrays.asList((LinkAnnotationProperties) halLinkAnnotationProperties));
         expect(annotationUriGenerator.generateUri(halLinkAnnotationProperties, methodCall, embeddedResource)).andReturn("other-link-uri");
         expect(halLinkAnnotationProperties.getRel()).andReturn("other-rel");

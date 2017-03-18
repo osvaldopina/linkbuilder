@@ -2,9 +2,7 @@ package com.github.osvaldopina.linkbuilder.example.hal.annotation.resource.simpl
 
 import java.util.Arrays;
 
-import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
-import com.github.osvaldopina.linkbuilder.annotation.GenerateUriTemplateFor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.osvaldopina.linkbuilder.annotation.LinkDestination;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootRestController {
 
     @RequestMapping("/")
-    @GenerateUriTemplateFor(rel = "root")
+    @LinkDestination(rel = "root")
     public Resource root() {
         Resource resource = new Resource();
 
@@ -41,38 +39,38 @@ public class RootRestController {
     }
 
     @RequestMapping("/first-embedded/{id}")
-    @GenerateUriTemplateFor(rel = "first")
+    @LinkDestination(rel = "first")
     public FirstEmbedded getFirstEmbedded(@PathVariable("id") int id) {
         return null;
     }
 
     @RequestMapping("/second-embedded/{name}")
-    @GenerateUriTemplateFor(rel = "second")
+    @LinkDestination(rel = "second")
     public SecondEmbedded getSecondEmbedded(@PathVariable("name") int name) {
         return null;
     }
 
     @RequestMapping("/third-embedded/{name}")
-    @GenerateUriTemplateFor(rel = "third")
+    @LinkDestination(rel = "third")
     public SecondEmbedded getThirdEmbedded(@PathVariable("name") int name) {
         return null;
     }
 
     @RequestMapping("/forth-embedded/{key}")
-    @GenerateUriTemplateFor(rel = "forth")
+    @LinkDestination(rel = "forth")
     public SecondEmbedded getForthEmbedded(@PathVariable("key") int key) {
         return null;
     }
 
     @RequestMapping("/direct-link/{path}")
-    @GenerateUriTemplateFor(rel = "direct-link")
+    @LinkDestination(rel = "direct-link")
     public void directLink(@RequestParam(value = "query", required = false) String query,
                            @PathVariable("path") String path) {
 
     }
 
     @RequestMapping("/direct-link/templated")
-    @GenerateUriTemplateFor(rel = "direct-link-templated")
+    @LinkDestination(rel = "direct-link-templated")
     public void directLinkTemplated(
             @RequestParam(value = "non_templated", required = false) String nonTemplated,
             @RequestParam(value = "templated", required = false) String templated) {
