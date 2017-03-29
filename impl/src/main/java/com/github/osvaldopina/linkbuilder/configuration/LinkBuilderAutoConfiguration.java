@@ -17,6 +17,10 @@ import com.github.osvaldopina.linkbuilder.annotation.reader.impl.AnnotationReade
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.expression.springhateoas.ExpressionExecutorImpl;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.ExpressionHandler;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.ExpressionHandlerDiscover;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.bare.BareContextExpressionHandler;
+import com.github.osvaldopina.linkbuilder.expression.springhateoas.impl.ExpressionHandlerDiscoverImpl;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactory;
 import com.github.osvaldopina.linkbuilder.extension.LinkBuilderExtensionFactoryRegistry;
 import com.github.osvaldopina.linkbuilder.extension.impl.LinkBuilderExtensionFactoryRegistryImpl;
@@ -41,7 +45,6 @@ import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.A
 import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.core.PathParameterArgumentResolver;
 import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.core.QueryParameterArgumentResolver;
 import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.core.RequestBodyArgumentResolver;
-import com.github.osvaldopina.linkbuilder.template.generation.argumentresolver.springhateoas.PageableArgumentResolver;
 import com.github.osvaldopina.linkbuilder.template.generation.springhateoas.TemplateGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.template.springhateoas.TemplateRegistryImpl;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.annotation.AnnotationVariableValuesDiscover;
@@ -54,7 +57,6 @@ import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodc
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.core.QueryParameterVariableValueDiscover;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.core.RequestBodyParameterVariableValueDiscover;
 import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.impl.ParameterValueDiscoverRegistryImpl;
-import com.github.osvaldopina.linkbuilder.template.variablevaluediscover.methodcall.parametervalue.springhateoas.PageableVariableValueDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.annotation.AnnotationUriGenerator;
@@ -65,15 +67,12 @@ import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.impl.StringHateoasIntrospectionUtilsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @Configuration
-@ConditionalOnWebApplication
 @Order
 public class LinkBuilderAutoConfiguration {
 
@@ -121,19 +120,9 @@ public class LinkBuilderAutoConfiguration {
 
 
 	@Bean
-	@Autowired
-	 LinksBuilderFactory linksBuilderFactory(
-			LinkPropertiesLinkCreators linkPropertiesLinkCreators,
-			LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry) {
-		return new LinksBuilderFactoryImpl(linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
+	public AnnotationReader halLinkAnnotationReader() {
+		return new HalLinkAnnotationReader();
 	}
-
-	@Bean
-	@Autowired
-	public LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry(List<LinkBuilderExtensionFactory> linkBuilderExtensionFactories) {
-		return new LinkBuilderExtensionFactoryRegistryImpl(linkBuilderExtensionFactories);
-	}
-
 	@Bean
 	public LinkBuilderExtensionFactory springHateoasHalLinkBuilderExtensionFactory() {
 		return new SpringHateoasHalLinkBuilderExtensionFactoryImpl();
@@ -151,11 +140,6 @@ public class LinkBuilderAutoConfiguration {
 	}
 
 	@Bean
-	public ExpressionExecutor spelExecutor() {
-		return new ExpressionExecutorImpl();
-	}
-
-	@Bean
 	public BaseUriDiscover baseUriDiscover() {
 		if (customLinkBuilderConfigurer != null) {
 			BaseUriDiscover baseUriDiscover = customLinkBuilderConfigurer.baseUriDiscover();
@@ -168,6 +152,52 @@ public class LinkBuilderAutoConfiguration {
 
 
 	@Bean
+	public IntrospectionUtils introspectionUtils() {
+		return new StringHateoasIntrospectionUtilsImpl();
+	}
+
+	@Bean
+	public ExpressionHandler bareExpressionHandler() {
+		return new BareContextExpressionHandler();
+	}
+
+	@Bean
+	@Autowired
+	public ExpressionHandlerDiscover expressionHandlerDiscove(List<ExpressionHandler> expressionHandlers) {
+		return new ExpressionHandlerDiscoverImpl(expressionHandlers);
+	}
+
+	@Bean
+	@Autowired
+	public ExpressionExecutor expressionExcutor(ExpressionHandlerDiscover expressionHandlerDiscover,
+								  ApplicationContext applicationContext) {
+		return new ExpressionExecutorImpl(expressionHandlerDiscover, applicationContext);
+	}
+
+	@Bean
+	@Autowired
+	public LinkAnnotationReader linkAnnotationReader(IntrospectionUtils introspectionUtils) {
+		return new LinkAnnotationReader(introspectionUtils);
+	}
+
+
+	@Bean
+	@Autowired
+	 LinksBuilderFactory linksBuilderFactory(
+			LinkPropertiesLinkCreators linkPropertiesLinkCreators,
+			LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry) {
+		return new LinksBuilderFactoryImpl(linkPropertiesLinkCreators, linkBuilderExtensionFactoryRegistry);
+	}
+
+	@Bean
+	@Autowired
+	public LinkBuilderExtensionFactoryRegistry linkBuilderExtensionFactoryRegistry(List<LinkBuilderExtensionFactory> linkBuilderExtensionFactories) {
+		return new LinkBuilderExtensionFactoryRegistryImpl(linkBuilderExtensionFactories);
+	}
+
+
+
+	@Bean
 	@Autowired
 	public LinkDestinationRegistry destinationRegistry(ResourceMethodRegistry resourceMethodRegistry,
 													   IntrospectionUtils introspectionUtils) {
@@ -176,9 +206,11 @@ public class LinkBuilderAutoConfiguration {
 
 	@Bean
 	@Autowired
-	public ResourceMethodRegistry methodRegistry(@Lazy RequestMappingHandlerMapping handlerMapping,
-												 IntrospectionUtils introspectionUtils) {
-		return new ResourceMethodRegistryImpl(handlerMapping, introspectionUtils);
+	public ResourceMethodRegistry methodRegistry(//@Lazy RequestMappingHandlerMapping handlerMapping,
+												 IntrospectionUtils introspectionUtils, ApplicationContext applicationContext) {
+//		return new ResourceMethodRegistryImpl(handlerMapping, introspectionUtils);
+		// TODO remover RequestMappingHandlerMapping
+		return new ResourceMethodRegistryImpl(introspectionUtils, applicationContext);
 	}
 
 
@@ -228,11 +260,6 @@ public class LinkBuilderAutoConfiguration {
 	}
 
 	@Bean
-	public PageableArgumentResolver pageableArgumentResolver() {
-		return new PageableArgumentResolver();
-	}
-
-	@Bean
 	@Autowired
 	public PathParameterVariableValueDiscover pathParameterVariableValueDiscover(IntrospectionUtils introspectionUtils) {
 		return new PathParameterVariableValueDiscover(introspectionUtils);
@@ -250,10 +277,6 @@ public class LinkBuilderAutoConfiguration {
 		return new RequestBodyParameterVariableValueDiscover(introspectionUtils);
 	}
 
-	@Bean
-	PageableVariableValueDiscover pageableVariableValueDiscover() {
-		return new PageableVariableValueDiscover();
-	}
 
 	@Bean
 	@Autowired
@@ -269,10 +292,6 @@ public class LinkBuilderAutoConfiguration {
 		return new MethodCallUriGeneratorImpl(templateRegistry, baseUriDiscover, methodCallVariableValuesDiscover);
 	}
 
-	@Bean
-	public IntrospectionUtils introspectionUtils() {
-		return new StringHateoasIntrospectionUtilsImpl();
-	}
 
 	@Bean
 	@Autowired
@@ -304,14 +323,12 @@ public class LinkBuilderAutoConfiguration {
 
 	@Bean
 	@Autowired
-	public LinkAnnotationCreator annotatedLinkCreator(BaseUriDiscover baseUriDiscover,
+	public LinkAnnotationCreator annotatedLinkCreator(ExpressionExecutor expressionExecutor,
 													  AnnotationUriGenerator annotationUriGenerator,
 													  IntrospectionUtils introspectionUtils,
-													  MethodCallUriGenerator methodCallUriGenerator,
 													  LinkAnnotationReader linkAnnotationReader) {
-		return new SpringHateoasLinkAnnotationCreator(baseUriDiscover, annotationUriGenerator,
-				introspectionUtils, methodCallUriGenerator,
-				linkAnnotationReader);
+		return new SpringHateoasLinkAnnotationCreator(expressionExecutor, annotationUriGenerator,
+				introspectionUtils, linkAnnotationReader);
 	}
 
 	@Bean
@@ -333,11 +350,6 @@ public class LinkBuilderAutoConfiguration {
 		return new LinkAnnotationCreatorRegistryImpl(linkAnnotationCreators);
 	}
 
-	@Bean
-	@Autowired
-	public LinkAnnotationReader linkAnnotationReader(IntrospectionUtils introspectionUtils) {
-		return new LinkAnnotationReader(introspectionUtils);
-	}
 
 	@Bean
 	@Autowired
@@ -363,9 +375,5 @@ public class LinkBuilderAutoConfiguration {
 				introspectionUtils, methodCallUriGenerator,new AnnotationReaderCache(halLinkAnnotationReader), objectMapper);
 	}
 
-	@Bean
-	public AnnotationReader halLinkAnnotationReader() {
-		return new HalLinkAnnotationReader();
-	}
 }
 

@@ -1,8 +1,8 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.flatnizer;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
+import java.util.List;
 
-import java.util.Set;
+import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 
 class EmptyFlatnizer implements Flatnizer{
 
@@ -14,7 +14,7 @@ class EmptyFlatnizer implements Flatnizer{
     }
 
     @Override
-    public void flatAndAddToSet(Object target, Set<Object> objects) {
+    public void flatAndAddToSet(Object target, List<Object> objects) {
        objects.add(target);
     }
 }

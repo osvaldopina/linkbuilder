@@ -21,6 +21,7 @@ import com.github.osvaldopina.linkbuilder.urigeneration.link.methodcall.MethodCa
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.UrlPathContatenator;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.http.ResponseEntity;
 
 public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCreator {
 
@@ -84,7 +85,7 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
             }
         }
 
-        Set<Object> embeddedResources = embeddedValuesDiscover.getEmbeddedValues(objectMapper, resource);
+        List<Object> embeddedResources = embeddedValuesDiscover.getEmbeddedValues(objectMapper, resource);
 
         for (Object embeddedResource : embeddedResources) {
             if (embeddedResource instanceof ResourceSupport) {
@@ -95,6 +96,9 @@ public class SpringHateoasHalLinkAnnotationCreator implements LinkAnnotationCrea
 
     private void createAndSet(LinkAnnotationProperties linkAnnotationProperties, MethodCall currentMethodCall, Object resource) {
         HalLinkAnnotationProperties halLinkAnnotationProperties = (HalLinkAnnotationProperties) linkAnnotationProperties;
+        if (resource instanceof ResponseEntity) {
+            resource = ((ResponseEntity<Object>) resource).getBody();
+        }
         if (resource instanceof ResourceSupport) {
             String uri = annotationUriGenerator.generateUri(linkAnnotationProperties, currentMethodCall, resource);
             ((ResourceSupport) resource).add(

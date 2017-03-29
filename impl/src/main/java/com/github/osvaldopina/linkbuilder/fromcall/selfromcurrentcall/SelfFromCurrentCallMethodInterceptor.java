@@ -9,6 +9,7 @@ import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.context.ApplicationContext;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Method;
 
@@ -33,8 +34,16 @@ public class SelfFromCurrentCallMethodInterceptor implements AfterReturningAdvic
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
 
          if (returnValue != null) {
+
+             Object resource;
+             if (returnValue instanceof ResponseEntity) {
+                 resource = ((ResponseEntity<Object>) returnValue).getBody();
+             }
+             else {
+                 resource = returnValue;
+             }
              linkCreatorForAnnotations.createAndSetSelfLinkIfNeeded(methodCallUriGenerator, introspectionUtils,
-                     methodCallFactory.create(method, args), returnValue);
+                     methodCallFactory.create(method, args), resource);
          }
     }
 

@@ -7,10 +7,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
@@ -60,7 +57,7 @@ public class MapFlatnizerTest  extends EasyMockSupport {
     @Test
     public void flatAndAddToSet() throws Exception {
 
-        Set<Object> values = new HashSet<Object>();
+        List<Object> values = new ArrayList<Object>();
 
         expect(flatnizerRegistry.get("value-1")).andReturn(emptyFlatnizer);
         emptyFlatnizer.flatAndAddToSet("value-1",values);

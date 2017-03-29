@@ -22,13 +22,13 @@ public class EmbeddedValuesDiscover {
     EmbeddedValuesDiscover() {
     }
 
-    public Set<Object> getEmbeddedValues(ObjectMapper objectMapper, Object resource) {
-        Set<Object> embeddedValues = new HashSet<Object>();
+    public List<Object> getEmbeddedValues(ObjectMapper objectMapper, Object resource) {
+        List<Object> embeddedValues = new ArrayList<Object>();
         getEmbeddedValuesAndAdToSet(objectMapper, resource, embeddedValues);
         return embeddedValues;
     }
 
-    private void getEmbeddedValuesAndAdToSet(ObjectMapper objectMapper, Object resource, Set<Object> embeddedResources) {
+    private void getEmbeddedValuesAndAdToSet(ObjectMapper objectMapper, Object resource, List<Object> embeddedResources) {
         List<MethodChain> methodChains = embeddedPropertyReaderCache.
                 getReaderMethodForHalEmbedded(objectMapper, resource.getClass());
 

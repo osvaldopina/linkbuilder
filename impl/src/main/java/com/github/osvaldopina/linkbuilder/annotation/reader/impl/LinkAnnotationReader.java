@@ -70,11 +70,13 @@ public class LinkAnnotationReader implements AnnotationReader {
         String destination = destinationExtractor.extract(linkAnnotation);
         String rel = linkRelExtractor.extract(linkAnnotation);
         boolean templated = reflectionUtils.callMethod(boolean.class,linkAnnotation, "templated");
+        String when = reflectionUtils.callMethod(String.class, linkAnnotation, "when");
+        when = when ==null||"".equals(when.trim())?null:when;
         List<LinkAnnotationVariable> linkVariables = new ArrayList<LinkAnnotationVariable>();
         for(Variable linkVariable : reflectionUtils.callMethod(Variable[].class,linkAnnotation, "variables")) {
             linkVariables.add(new LinkAnnotationVariable(linkVariable.name(), linkVariable.value(), linkVariable.when()));
         }
-        return new LinkAnnotationProperties(destination, rel, templated, linkVariables);
+        return new LinkAnnotationProperties(destination, rel, when, templated, linkVariables);
 
     }
 

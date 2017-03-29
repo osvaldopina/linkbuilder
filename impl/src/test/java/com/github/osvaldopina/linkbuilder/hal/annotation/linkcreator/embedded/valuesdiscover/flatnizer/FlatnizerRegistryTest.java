@@ -1,22 +1,19 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.flatnizer;
 
-import org.easymock.EasyMockRule;
-import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.same;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class FlatnizerRegistryTest extends EasyMockSupport {
 
@@ -57,7 +54,6 @@ public class FlatnizerRegistryTest extends EasyMockSupport {
 
     @Test
     public void getEmptyFlatnizer() throws Exception {
-        Set<Object> values = new HashSet<Object>();
 
         expect(anyFlatnizer.canFlat(target)).andReturn(false);
         expectLastCall();

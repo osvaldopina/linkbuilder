@@ -12,11 +12,12 @@ public class HalLinkAnnotationProperties extends LinkAnnotationProperties {
     public HalLinkAnnotationProperties(
             String destination,
             String rel,
+            String when,
             boolean templated,
             String hreflang,
             List<LinkAnnotationVariable> parameters) {
 
-        super(destination, rel, templated, parameters);
+        super(destination, rel, when, templated, parameters);
         if (!"".equals(hreflang.trim())) {
             this.hreflang = hreflang;
         }

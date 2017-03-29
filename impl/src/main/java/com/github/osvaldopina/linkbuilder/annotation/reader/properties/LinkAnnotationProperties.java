@@ -9,13 +9,16 @@ public class LinkAnnotationProperties {
 
     private String rel;
 
+    private String when;
+
     private boolean templated;
 
     private List<LinkAnnotationVariable> parameters = new ArrayList<LinkAnnotationVariable>();
 
-    public LinkAnnotationProperties(String destination, String rel, boolean templated, List<LinkAnnotationVariable> parameters) {
+    public LinkAnnotationProperties(String destination, String rel, String when, boolean templated, List<LinkAnnotationVariable> parameters) {
         this.destination = destination;
         this.rel = rel;
+        this.when = when;
         this.templated = templated;
         this.parameters.addAll(parameters);
     }
@@ -27,6 +30,10 @@ public class LinkAnnotationProperties {
 
     public String getRel() {
         return rel;
+    }
+
+    public String getWhen() {
+        return when;
     }
 
     public boolean isTemplated() {

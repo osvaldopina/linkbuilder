@@ -2,10 +2,12 @@ package com.github.osvaldopina.linkbuilder.annotation.intercept.controller;
 
 import java.lang.reflect.Method;
 
+import com.github.osvaldopina.linkbuilder.annotation.linkcreator.LinkAnnotationCreator;
 import com.github.osvaldopina.linkbuilder.annotation.reader.AnnotationReaderRegistry;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCallFactory;
 import com.github.osvaldopina.linkbuilder.annotation.linkcreator.LinkAnnotationCreatorRegistry;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.http.ResponseEntity;
 
 class AnnotatedLinksMethodInterceptor implements AfterReturningAdvice {
 
@@ -26,8 +28,19 @@ class AnnotatedLinksMethodInterceptor implements AfterReturningAdvice {
 			return;
 		}
 
-		linkCreatorRegistry.get(method).
-				createAndSetForMethodAnnotations(methodCallFactory.create(method, args), returnValue);
+		Object resource;
+		if (returnValue instanceof ResponseEntity) {
+			resource = ((ResponseEntity<Object>) returnValue).getBody();
+		}
+		else {
+			resource = returnValue;
+		}
+
+		LinkAnnotationCreator linkAnnotationCreator = linkCreatorRegistry.get(method);
+
+		if (linkAnnotationCreator != null) {
+			linkAnnotationCreator.createAndSetForMethodAnnotations(methodCallFactory.create(method, args), returnValue);
+		}
 	}
 
 }

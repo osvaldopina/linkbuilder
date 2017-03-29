@@ -1,19 +1,18 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.flatnizer;
 
+import static org.easymock.EasyMock.*;
+import static org.hamcrest.core.Is.*;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
 public class ObjectFlatinizerTest  extends EasyMockSupport {
 
@@ -27,9 +26,9 @@ public class ObjectFlatinizerTest  extends EasyMockSupport {
     private Flatnizer anyFlatnizer;
 
     @Mock
-    private SetFactory setFactory;
+    private ListFactory listFactory;
 
-    private Set<Object> set = new HashSet<Object>();
+    private List<Object> set = new ArrayList<Object>();
 
     private Object target = new Object();
 
@@ -38,7 +37,7 @@ public class ObjectFlatinizerTest  extends EasyMockSupport {
 
     @Test
     public void flatnize() throws Exception {
-        expect(setFactory.create()).andReturn(set);
+        expect(listFactory.create()).andReturn(set);
         expect(flatnizerRegistry.get(target)).andReturn(anyFlatnizer);
         anyFlatnizer.flatAndAddToSet(target, set);
 

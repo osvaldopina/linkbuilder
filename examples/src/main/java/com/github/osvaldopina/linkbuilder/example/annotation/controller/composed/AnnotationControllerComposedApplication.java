@@ -14,7 +14,4 @@ public class AnnotationControllerComposedApplication {
        SpringApplication.run(AnnotationControllerComposedApplication.class, args);
     }
 
-
-
-
 }

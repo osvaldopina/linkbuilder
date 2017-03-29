@@ -29,7 +29,7 @@ public class LinkAnnotationCreatorRegistryImpl implements LinkAnnotationCreatorR
                 return linkAnnotationCreator;
             }
         }
-        throw new LinkBuilderException("Could not find LinkAnnotationPropertiesLinkCreator for method " + method);
+        return null;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LinkAnnotationCreatorRegistryImpl implements LinkAnnotationCreatorR
                 return linkAnnotationCreator;
             }
         }
-        throw new LinkBuilderException("Could not find LinkAnnotationPropertiesLinkCreator for resource type" + resource.getClass());
+        return null;
     }
 
  }

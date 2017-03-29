@@ -1,7 +1,7 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.flatnizer;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class MapFlatnizer implements Flatnizer {
 
@@ -18,7 +18,7 @@ class MapFlatnizer implements Flatnizer {
     }
 
     @Override
-    public void flatAndAddToSet(Object target, Set<Object> objects) {
+    public void flatAndAddToSet(Object target, List<Object> objects) {
         for(Object item : ((Map<Object, Object>) target).values()) {
             flatnizerRegistry.get(item).flatAndAddToSet(item, objects);
         }

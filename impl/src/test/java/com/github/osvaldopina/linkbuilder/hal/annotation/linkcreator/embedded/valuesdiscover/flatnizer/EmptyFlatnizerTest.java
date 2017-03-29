@@ -3,7 +3,9 @@ package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.v
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -22,7 +24,7 @@ public class EmptyFlatnizerTest {
     @Test
     public void flatAndAddToSet() throws Exception {
 
-        Set<Object> values = new HashSet<Object>();
+        List<Object> values = new ArrayList<Object>();
 
         emptyFlatnizer.flatAndAddToSet("value", values);
 

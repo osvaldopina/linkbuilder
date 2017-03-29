@@ -57,7 +57,7 @@ public class CollectionFlatnizerTest extends EasyMockSupport {
 
     @Test
     public void flatAndAddToSet() throws Exception {
-        Set<Object> values = new HashSet<Object>();
+        List<Object> values = new ArrayList<Object>();
 
         expect(flatnizerRegistry.get("value-1")).andReturn(emptyFlatnizer);
         emptyFlatnizer.flatAndAddToSet("value-1",values);

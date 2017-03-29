@@ -1,7 +1,6 @@
 package com.github.osvaldopina.linkbuilder.hal.annotation.linkcreator.embedded.valuesdiscover.flatnizer;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class ObjectFlatinizer {
 
@@ -9,10 +8,10 @@ public class ObjectFlatinizer {
 
     private FlatnizerRegistry flatnizerRegistry = FlatnizerRegistry.INSTANCE;
 
-    private SetFactory setFactory = SetFactory.INSTANCE;
+    private ListFactory listFactory = ListFactory.INSTANCE;
 
-    public Set<Object> flatnize(Object target) {
-        Set<Object> values = setFactory.create();
+    public List<Object> flatnize(Object target) {
+        List<Object> values = listFactory.create();
         flatnizerRegistry.get(target).flatAndAddToSet(target, values);
         return values;
     }

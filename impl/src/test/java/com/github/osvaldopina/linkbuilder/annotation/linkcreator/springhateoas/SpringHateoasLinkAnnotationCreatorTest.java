@@ -14,6 +14,7 @@ import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.hal.annotation.HalLinks;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
@@ -55,6 +56,9 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	@Mock
 	private LinkAnnotationProperties linkAnnotationProperties;
 
+	@Mock
+	private ExpressionExecutor expressionExecutor;
+
 	private List<LinkAnnotationProperties> linkAnnotationPropertiesList;
 
 	ResourceSupport resource = new ResourceSupport();
@@ -66,7 +70,7 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 
 	@TestSubject
 	private SpringHateoasLinkAnnotationCreator springHateoasLinkAnnotationCreator =
-			new SpringHateoasLinkAnnotationCreator(null, null, null, null, null);
+			new SpringHateoasLinkAnnotationCreator(null, null, null, null);
 
 
 	@Before
@@ -103,7 +107,7 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	public void createAndSetForMethodAnnotations() {
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(linkAnnotationReader.read(method)).andReturn(linkAnnotationPropertiesList);
-		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+		linkCreatorForAnnotations.createAndSetForAnnotations(expressionExecutor, annotationUriGenerator, linkAnnotationProperties,
 				methodCall, resource);
 		expectLastCall();
 
@@ -118,7 +122,7 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	public void canCreateLinkAnnotationPropertiesResource_linkPropertiesIsLinkAnnotationPropertiesClassAndResourceIsNotResourceSupport() {
 		expect(methodCall.getMethod()).andReturn(method);
 		expect(linkAnnotationReader.read(method)).andReturn(linkAnnotationPropertiesList);
-		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+		linkCreatorForAnnotations.createAndSetForAnnotations(expressionExecutor, annotationUriGenerator, linkAnnotationProperties,
 				methodCall, resource);
 		expectLastCall();
 
@@ -174,7 +178,7 @@ public class SpringHateoasLinkAnnotationCreatorTest extends EasyMockSupport {
 	@Test
 	public void createAndSetForResourceAnnotations() {
 		expect(linkAnnotationReader.read(resource.getClass())).andReturn(linkAnnotationPropertiesList);
-		linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkAnnotationProperties,
+		linkCreatorForAnnotations.createAndSetForAnnotations(expressionExecutor, annotationUriGenerator, linkAnnotationProperties,
 				methodCall, resource);
 		expectLastCall();
 

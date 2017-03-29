@@ -17,6 +17,14 @@ public class ReflectionUtils {
 
     }
 
+    public Class<?> classForName(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
     public <E> E callMethod(Class<E> type, Object target, String methodName, Object... args) {
         try {
             Method method =  target.getClass().getMethod(methodName, getArgsTypes(args));

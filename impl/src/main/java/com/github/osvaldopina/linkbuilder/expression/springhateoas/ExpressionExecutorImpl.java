@@ -2,56 +2,38 @@ package com.github.osvaldopina.linkbuilder.expression.springhateoas;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
-import org.springframework.security.access.expression.ExpressionUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 
-public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationContextAware {
 
-    private EvaluationContextCreator evaluationContextCreator = EvaluationContextCreator.INSTANCE;
 
-    private SecurityExpressionParser securityExpressionParser = SecurityExpressionParser.INSTANCE;
+public class ExpressionExecutorImpl implements ExpressionExecutor {
+
+    private ExpressionHandlerDiscover expressionHandlerDiscover;
 
     private ApplicationContext applicationContext;
+
+    public ExpressionExecutorImpl(ExpressionHandlerDiscover expressionHandlerDiscover,
+                                  ApplicationContext applicationContext) {
+        this.expressionHandlerDiscover = expressionHandlerDiscover;
+        this.applicationContext = applicationContext;
+    }
 
     @Override
     public boolean isTrue(String expression, Object resource, Object[] params) {
 
-        EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
-
-        if (resource != null) {
-            ctx.setVariable("resource", resource);
-        }
-
-        if (params != null) {
-            ctx.setVariable("variables", params);
-        }
-
-        Expression parsedExpression = securityExpressionParser.parse(applicationContext, expression);
-
-        return ExpressionUtils.evaluateAsBoolean(parsedExpression, ctx);
+        return (Boolean) getValue(expression, resource, params);
     }
 
     @Override
     public Object getValue(String expression, Object resource, Object[] params) {
 
-        EvaluationContext ctx = evaluationContextCreator.create(applicationContext);
+        EvaluationContext ctx = createEvaluationContext(resource, params);
 
-        if (resource != null) {
-            ctx.setVariable("resource", resource);
-        }
-
-        if (params != null) {
-            ctx.setVariable("variables", params);
-        }
-
-        Expression parsedExpression = securityExpressionParser.parse(applicationContext, expression);
+        Expression parsedExpression = expressionHandlerDiscover.getExpressionHandler(applicationContext).
+                parse(applicationContext, expression);
 
         try {
             return parsedExpression.getValue(ctx);
@@ -62,8 +44,18 @@ public class ExpressionExecutorImpl implements ExpressionExecutor, ApplicationCo
         }
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    private EvaluationContext createEvaluationContext(Object resource, Object[] params) {
+        EvaluationContext ctx =  expressionHandlerDiscover.getExpressionHandler(applicationContext).
+                createEvalutationContext(applicationContext);
+
+        if (resource != null) {
+            ctx.setVariable("resource", resource);
+        }
+
+        if (params != null) {
+            ctx.setVariable("variables", params);
+        }
+        return ctx;
     }
+
 }

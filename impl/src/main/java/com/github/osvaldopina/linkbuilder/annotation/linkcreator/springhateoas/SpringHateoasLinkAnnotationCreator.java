@@ -7,6 +7,7 @@ import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.annotation.linkcreator.LinkAnnotationCreator;
 import com.github.osvaldopina.linkbuilder.annotation.reader.impl.LinkAnnotationReader;
 import com.github.osvaldopina.linkbuilder.annotation.reader.properties.LinkAnnotationProperties;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.MethodCall;
 import com.github.osvaldopina.linkbuilder.urigeneration.base.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.urigeneration.link.annotation.AnnotationUriGenerator;
@@ -19,21 +20,22 @@ import org.springframework.hateoas.ResourceSupport;
 public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator {
 
 
+	private ExpressionExecutor expressionExecutor;
+
 	private AnnotationUriGenerator annotationUriGenerator;
 
 	private IntrospectionUtils introspectionUtils;
-
 
 	private LinkAnnotationReader linkAnnotationReader;
 
 	private LinkCreatorForAnnotations linkCreatorForAnnotations = LinkCreatorForAnnotations.INSTANCE;
 
-	public SpringHateoasLinkAnnotationCreator(BaseUriDiscover baseUriDiscover,
+	public SpringHateoasLinkAnnotationCreator(ExpressionExecutor expressionExecutor,
 											  AnnotationUriGenerator annotationUriGenerator,
 											  IntrospectionUtils introspectionUtils,
-											  MethodCallUriGenerator methodCallUriGenerator,
 											  LinkAnnotationReader linkAnnotationReader) {
 
+		this.expressionExecutor = expressionExecutor;
 		this.annotationUriGenerator = annotationUriGenerator;
 		this.introspectionUtils = introspectionUtils;
 		this.linkAnnotationReader = linkAnnotationReader;
@@ -51,8 +53,8 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(methodCall.getMethod());
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkProperties, methodCall,
-					resource);
+			linkCreatorForAnnotations.createAndSetForAnnotations(expressionExecutor, annotationUriGenerator,
+					linkProperties, methodCall, resource);
 		}
 
 	}
@@ -63,8 +65,8 @@ public class SpringHateoasLinkAnnotationCreator implements LinkAnnotationCreator
 		List<LinkAnnotationProperties> linksProperties = linkAnnotationReader.read(resource.getClass());
 
 		for (LinkAnnotationProperties linkProperties : linksProperties) {
-			linkCreatorForAnnotations.createAndSetForAnnotations(annotationUriGenerator, linkProperties, methodCall,
-					resource);
+			linkCreatorForAnnotations.createAndSetForAnnotations(expressionExecutor, annotationUriGenerator,
+					linkProperties, methodCall, resource);
 		}
 	}
 
