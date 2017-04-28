@@ -45,7 +45,7 @@ public class QueryVariableAnnotationArgumentResolver implements ArgumentResolver
         String variableName = introspectionUtils.getQueryVariableName(method, parameterIndex);
 
         if (variableSubstitutionController.substitute(method, 0, variableName, parameter)) {
-            if (Arrays.binarySearch(template.getVariables(), variableName) != -1) {
+            if (Arrays.asList(template.getVariables()).contains(variableName)) {
                 template.set(variableName, parameter);
             }
             else {
