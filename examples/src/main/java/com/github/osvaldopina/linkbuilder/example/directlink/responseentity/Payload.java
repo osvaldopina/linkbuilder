@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.directlink;
+package com.github.osvaldopina.linkbuilder.example.directlink.responseentity;
 
 import org.springframework.hateoas.ResourceSupport;
 

@@ -1,8 +1,10 @@
-package com.github.osvaldopina.linkbuilder.example.directlink;
+package com.github.osvaldopina.linkbuilder.example.directlink.responseentity;
 
 import com.github.osvaldopina.linkbuilder.LinksBuilderFactory;
 import com.github.osvaldopina.linkbuilder.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,13 +35,13 @@ public class RootRestController {
                             @Param(name = "templated", value = "'templated-value'")
                     })
     })
-    public Payload root() {
+    public ResponseEntity<Payload> root() {
         Payload payload = new Payload();
 
         payload.setQueryValue("anyQueryValue");
         payload.setPathValue("anyPathValue");
 
-        return payload;
+        return new ResponseEntity<Payload>(payload, HttpStatus.OK);
     }
 
     @RequestMapping("/direct-link/{path}")

@@ -1,4 +1,4 @@
-package com.github.osvaldopina.linkbuilder.example.directlink;
+package com.github.osvaldopina.linkbuilder.example.directlink.responseentity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

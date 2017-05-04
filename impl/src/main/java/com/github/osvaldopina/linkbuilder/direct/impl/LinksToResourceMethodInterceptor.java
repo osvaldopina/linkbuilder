@@ -5,6 +5,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedM
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerators;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -29,36 +30,51 @@ public class LinksToResourceMethodInterceptor<T> implements AfterReturningAdvice
 
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        if (returnValue != null) {
 
-            if (! introspectionUtils.isLinksAnnotatedMethod(method)) {
+        Object returnedResource = null;
+
+        if (returnValue == null) {
+            return;
+        }
+        else {
+            returnedResource = returnValue;
+        }
+
+
+        if (returnedResource instanceof ResponseEntity) {
+            returnedResource = ((ResponseEntity) returnedResource).getBody();
+
+            if (returnedResource == null) {
                 return;
             }
-
-            AnnotatedMethodUriGenerator annotatedMethodUriGenerator =
-                    annotatedMethodUriGenerators.getAnnotatedMethodUriGenerator(method);
-
-
-            String uri;
-            List<T> linkList = new ArrayList<T>();
-            T link;
-            for(Annotation linkAnnotation : annotatedMethodUriGenerator.getLinksAnnotation(method)) {
-                uri = annotatedMethodUriGenerator.generate(method, linkAnnotation,returnValue, args);
-                link = annotatedLinkCreator.createLink(method, linkAnnotation, uri, returnValue, args);
-                if (link != null) {
-                    linkList.add(link);
-                }
-            }
-            Annotation selfLinkAnnotion = annotatedMethodUriGenerator.getSelfLinkAnnotaiton(method);
-            if (selfLinkAnnotion != null) {
-                uri = annotatedMethodUriGenerator.generate(method, selfLinkAnnotion, returnValue, args);
-                if (uri != null) {
-                    linkList.add(annotatedLinkCreator.createLink(method, selfLinkAnnotion, uri, returnValue, args));
-                }
-            }
-            annotatedLinkCreator.setLinks(returnValue, linkList);
-
         }
+
+        if (!introspectionUtils.isLinksAnnotatedMethod(method)) {
+            return;
+        }
+
+        AnnotatedMethodUriGenerator annotatedMethodUriGenerator =
+                annotatedMethodUriGenerators.getAnnotatedMethodUriGenerator(method);
+
+
+        String uri;
+        List<T> linkList = new ArrayList<T>();
+        T link;
+        for (Annotation linkAnnotation : annotatedMethodUriGenerator.getLinksAnnotation(method)) {
+            uri = annotatedMethodUriGenerator.generate(method, linkAnnotation, returnedResource, args);
+            link = annotatedLinkCreator.createLink(method, linkAnnotation, uri, returnedResource, args);
+            if (link != null) {
+                linkList.add(link);
+            }
+        }
+        Annotation selfLinkAnnotion = annotatedMethodUriGenerator.getSelfLinkAnnotaiton(method);
+        if (selfLinkAnnotion != null) {
+            uri = annotatedMethodUriGenerator.generate(method, selfLinkAnnotion, returnedResource, args);
+            if (uri != null) {
+                linkList.add(annotatedLinkCreator.createLink(method, selfLinkAnnotion, uri, returnedResource, args));
+            }
+        }
+        annotatedLinkCreator.setLinks(returnedResource, linkList);
     }
 
 
