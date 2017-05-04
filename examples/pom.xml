@@ -4,7 +4,7 @@
 
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder-examples</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.2.3</version>
     <name>Linkbuilder-examples</name>
 
     <parent>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.github.osvaldopina</groupId>
             <artifactId>linkbuilder</artifactId>
-            <version>0.2.3-SNAPSHOT</version>
+            <version>0.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
@@ -56,6 +56,6 @@
         </plugins>
     </build>
   <scm>
-    <tag>v0.2.0</tag>
+    <tag>v0.2.3</tag>
   </scm>
 </project>
