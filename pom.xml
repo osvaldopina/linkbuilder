@@ -4,7 +4,7 @@
 
     <groupId>com.github.osvaldopina</groupId>
     <artifactId>linkbuilder-pom</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://github.com/osvaldopina/linkbuilder</url>
 
@@ -37,7 +37,7 @@
         <connection>scm:git:git@github.com:osvaldopina/linkbuilder</connection>
         <developerConnection>scm:git:git@github.com:osvaldopina/linkbuilder</developerConnection>
         <url>git@github.com:osvaldopina/linkbuilder</url>
-        <tag>v0.2.3</tag>
+        <tag>v0.2.0</tag>
     </scm>
 
     <modules>
