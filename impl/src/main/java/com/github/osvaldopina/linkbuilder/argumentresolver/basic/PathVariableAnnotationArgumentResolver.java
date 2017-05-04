@@ -44,8 +44,10 @@ public class PathVariableAnnotationArgumentResolver implements ArgumentResolver 
 
 
         if (variableSubstitutionController.substitute(method, parameterIndex, variableName, parameter)) {
-            if (Arrays.binarySearch(template.getVariables(), variableName) != -1) {
-                template.set(variableName, parameter);
+            if (Arrays.asList(template.getVariables()).contains(variableName)) {
+                if (parameter != null) {
+                    template.set(variableName, parameter);
+                }
             }
             else {
                 throw new LinkBuilderException(

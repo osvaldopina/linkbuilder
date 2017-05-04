@@ -46,7 +46,9 @@ public class QueryVariableAnnotationArgumentResolver implements ArgumentResolver
 
         if (variableSubstitutionController.substitute(method, 0, variableName, parameter)) {
             if (Arrays.asList(template.getVariables()).contains(variableName)) {
-                template.set(variableName, parameter);
+                if (parameter != null) {
+                    template.set(variableName, parameter);
+                }
             }
             else {
                 throw new LinkBuilderException(

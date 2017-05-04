@@ -42,8 +42,7 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
 
         if (links == null) {
             return Collections.emptyList();
-        }
-        else {
+        } else {
             return Arrays.asList(links.value());
         }
     }
@@ -101,7 +100,10 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
                                 " in method " + method
                 );
             }
-            template.set(param.name(), expressionExecutor.getValue(param.value(), payLoad, params));
+            Object value = expressionExecutor.getValue(param.value(), payLoad, params);
+            if (value != null) {
+                template.set(param.name(), value);
+            }
         }
 
         return link.templated() ? template.expandPartial() : template.expand();
