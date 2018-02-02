@@ -4,7 +4,7 @@
 
     <groupId>com.github.osvaldopina</groupId>
 	<artifactId>linkbuilder</artifactId>
-    <version>0.2.4</version>
+    <version>0.2.4_1-SNAPSHOT</version>
 	<name>Linkbuilder-impl</name>
     <description>Link builder for Spring Hateoas projects.</description>
     <url>https://github.com/osvaldopina/linkbuilder</url>

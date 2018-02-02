@@ -62,7 +62,7 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
         if (annotation instanceof Link) {
             return getLink(method, (Link) annotation, payLoad, params);
         } else if (annotation instanceof EnableSelfFromCurrentCall) {
-            return selfLink((EnableSelfFromCurrentCall) annotation);
+            return selfLink(method, params);
         } else {
             throw new LinkBuilderException(
                     "The annotation must be a " + Link.class.getName()
@@ -73,12 +73,10 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
 
     }
 
-    private String selfLink(EnableSelfFromCurrentCall annotation) {
-        CurrentCallLocator currentCallLocator = applicationContext.getBean(CurrentCallLocator.class);
+    private String selfLink(Method method, Object[] params) {
         MethodCallUriGenerator methodCallUriGenerator = applicationContext.getBean(MethodCallUriGenerator.class);
 
-        MethodCall methodCall = currentCallLocator.getCurrentCall();
-        return methodCallUriGenerator.generate(methodCall, false);
+        return methodCallUriGenerator.generate(new MethodCall(method, params), false);
     }
 
     private String getLink(Method method, Link link, Object payLoad, Object[] params) {
@@ -108,6 +106,8 @@ public class SpringLinkAnnotatedMethodUriGeneratorImpl implements AnnotatedMetho
 
         return link.templated() ? template.expandPartial() : template.expand();
     }
+
+
 
     private boolean templateHasVariable(UriTemplate template, String name) {
         return Arrays.asList(template.getVariables()).contains(name);
