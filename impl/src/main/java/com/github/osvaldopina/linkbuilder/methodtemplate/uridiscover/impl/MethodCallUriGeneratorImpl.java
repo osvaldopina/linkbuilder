@@ -45,15 +45,16 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
         MethodParameters methodParameters = new MethodParameters(methodCall.getMethod());
 
         ArgumentResolver argumentResolver;
+
+        log.append(" method: ");
+        log.append(methodCall.getMethod());
+
         for (MethodParameter methodParameter : methodParameters.getParameters()) {
 
             argumentResolver = argumentResolvers.getArgumentResolverFor(
                     methodParameter.getMethod(),
                     methodParameter.getParameterIndex()
             );
-
-            log.append(" method: ");
-            log.append(methodParameter.getMethod());
 
             log.append(" parameterIndex: ");
             log.append(methodParameter.getParameterIndex());
