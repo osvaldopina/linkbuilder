@@ -39,7 +39,6 @@ class LinksBuilderImpl implements LinksBuilder {
     public LinkBuilder link() {
         ExpressionExecutor expressionExecutor = applicationContext.getBean(ExpressionExecutor.class);
         MethodCallUriGenerator methodCallUriGenerator = applicationContext.getBean(MethodCallUriGenerator.class);
-        CurrentCallLocator currentCallLocator = applicationContext.getBean(CurrentCallLocator.class);
         LinkCreators linkCreators = applicationContext.getBean(LinkCreators.class);
         IntrospectionUtils introspectionUtils = applicationContext.getBean(IntrospectionUtils.class);
 
@@ -47,7 +46,6 @@ class LinksBuilderImpl implements LinksBuilder {
                 this,
                 expressionExecutor,
                 methodCallUriGenerator,
-                currentCallLocator,
                 linkCreators,
                 payload,
                 introspectionUtils

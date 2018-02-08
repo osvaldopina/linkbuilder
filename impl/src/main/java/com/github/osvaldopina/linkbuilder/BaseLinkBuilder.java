@@ -4,7 +4,6 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutionc
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
@@ -21,14 +20,12 @@ import java.util.List;
 public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     private String rel;
-    private boolean fromCurrentCall;
     private LinksBuilder linksBuilder;
     private VariableSubstitutionControllers variableSubstitutionControllers = new VariableSubstitutionControllers();
     private Object payload;
     private MethodCallUriGenerator methodCallUriGenerator;
     private MethodCall methodCall;
     private ExpressionExecutor expressionExecutor;
-    private CurrentCallLocator currentCallLocator;
     private LinkCreators linkCreators;
     private IntrospectionUtils introspectionUtils;
 
@@ -38,7 +35,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
             LinksBuilder linksBuilder,
             ExpressionExecutor expressionExecutor,
             MethodCallUriGenerator methodCallUriGenerator,
-            CurrentCallLocator currentCallLocator,
             LinkCreators linkCreators,
             Object payload,
             IntrospectionUtils introspectionUtils) {
@@ -46,7 +42,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
         this.linksBuilder = linksBuilder;
         this.expressionExecutor = expressionExecutor;
         this.methodCallUriGenerator = methodCallUriGenerator;
-        this.currentCallLocator = currentCallLocator;
         this.linkCreators = linkCreators;
         this.payload = payload;
         this.introspectionUtils = introspectionUtils;
@@ -73,12 +68,6 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     @Override
     public LinkBuilder when(String expression) {
         this.expression = expression;
-        return this;
-    }
-
-    @Override
-    public LinkBuilder fromCurrentCall() {
-        this.fromCurrentCall = true;
         return this;
     }
 
@@ -126,8 +115,9 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 
     @Override
     public Object build() {
-        if (fromCurrentCall) {
-            methodCall = currentCallLocator.getCurrentCall();
+
+        if (methodCall == null) {
+            throw new LinkBuilderException("Must set a method call to gerenerate link");
         }
 
         String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);
@@ -139,8 +129,8 @@ public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
     }
 
     public void builAndSet() {
-        if (fromCurrentCall) {
-            methodCall = currentCallLocator.getCurrentCall();
+        if (methodCall == null) {
+            throw new LinkBuilderException("Must set a method call to gerenerate link");
         }
 
         String uri = methodCallUriGenerator.generate(methodCall, isTemplated(), variableSubstitutionControllers);

@@ -42,16 +42,7 @@ public interface LinkBuilder {
 
     boolean whenExpressionIsTrue();
 
-        /**
-         * Sets the link href from current call parameters. Methods annotated with <code>@EnableSelfFromCurrentCall</code>
-         * are changed with a aspect that records the method and the list of parameters.
-         *
-         * @return LinkBuilder link builder.
-         * @see com.github.osvaldopina.linkbuilder.annotation.EnableSelfFromCurrentCall
-         */
-    LinkBuilder fromCurrentCall();
-
-    /**
+     /**
      * Indicates that the nth method parameter should not be substituted by the parameter value and leaved
      * as a template variable. The resulted link will be a template.
      *

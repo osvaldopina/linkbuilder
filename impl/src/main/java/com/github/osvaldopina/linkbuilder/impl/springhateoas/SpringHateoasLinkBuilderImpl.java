@@ -15,7 +15,6 @@ public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
             LinksBuilder linksBuilder,
             ExpressionExecutor expressionExecutor,
             MethodCallUriGenerator methodCallUriGenerator,
-            CurrentCallLocator currentCallLocator,
             LinkCreators linkCreators,
             Object payload,
             IntrospectionUtils introspectionUtils) {
@@ -23,7 +22,6 @@ public class SpringHateoasLinkBuilderImpl extends BaseLinkBuilder  {
         super(linksBuilder,
                 expressionExecutor,
                 methodCallUriGenerator,
-                currentCallLocator,
                 linkCreators,
                 payload,
                 introspectionUtils);

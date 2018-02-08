@@ -25,8 +25,6 @@ public class RootRestController {
 
         LinksBuilder linksBuilder = linksBuilderFactory.create();
 
-        linksBuilder.link().withSelfRel().fromCurrentCall();
-
         linksBuilder.link()
                 .setExpressionPayload(payload)
                 .withRel("a-link-with-expression-payload-check")
