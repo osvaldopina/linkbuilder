@@ -1,7 +1,5 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator;
 
-import org.springframework.hateoas.Link;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;

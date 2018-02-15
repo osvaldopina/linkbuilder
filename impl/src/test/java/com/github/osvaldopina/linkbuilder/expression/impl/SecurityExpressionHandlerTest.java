@@ -1,6 +1,10 @@
 package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import org.easymock.*;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +19,9 @@ import org.springframework.security.web.access.expression.WebSecurityExpressionR
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class SecurityExpressionHandlerTest extends EasyMockSupport {
 

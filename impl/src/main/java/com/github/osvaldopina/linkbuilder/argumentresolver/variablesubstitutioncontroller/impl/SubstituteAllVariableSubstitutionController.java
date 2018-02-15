@@ -1,7 +1,6 @@
 package com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl;
 
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
-import org.springframework.core.MethodParameter;
 
 import java.lang.reflect.Method;
 

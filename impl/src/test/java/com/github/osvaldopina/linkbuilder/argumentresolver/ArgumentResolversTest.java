@@ -1,6 +1,9 @@
 package com.github.osvaldopina.linkbuilder.argumentresolver;
 
-import org.easymock.*;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,7 +12,9 @@ import org.springframework.core.MethodParameter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class ArgumentResolversTest  extends EasyMockSupport {
 

@@ -3,17 +3,19 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactory;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.ChainedRequestParts;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.ForwardedHostHeaderPartsFactory;
-import org.easymock.*;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BaseUriDiscoverImplTest  extends EasyMockSupport {
 

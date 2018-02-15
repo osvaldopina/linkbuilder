@@ -4,7 +4,6 @@ import com.github.osvaldopina.linkbuilder.LinkBuilderException;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestParts;
 import org.springframework.util.Assert;
 
-
 import java.net.URI;
 import java.net.URISyntaxException;
 

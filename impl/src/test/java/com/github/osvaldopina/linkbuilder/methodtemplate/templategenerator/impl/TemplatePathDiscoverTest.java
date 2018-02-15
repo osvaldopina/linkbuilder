@@ -1,8 +1,11 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.TemplatePathDiscover;
-import org.easymock.*;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

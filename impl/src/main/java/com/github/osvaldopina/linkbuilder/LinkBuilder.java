@@ -1,7 +1,5 @@
 package com.github.osvaldopina.linkbuilder;
 
-import java.util.List;
-
 /**
  * Builder to configure and create a <code>Link</code>
  */

@@ -1,6 +1,10 @@
 package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import org.easymock.*;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

@@ -1,9 +1,7 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestParts;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactory;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.ChainedRequestParts;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;

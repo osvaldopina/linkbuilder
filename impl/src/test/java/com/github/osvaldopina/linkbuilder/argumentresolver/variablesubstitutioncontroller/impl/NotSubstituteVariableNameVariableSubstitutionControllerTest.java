@@ -2,15 +2,14 @@ package com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitution
 
 import org.easymock.EasyMockRule;
 import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.core.MethodParameter;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class NotSubstituteVariableNameVariableSubstitutionControllerTest   extends EasyMockSupport {
 

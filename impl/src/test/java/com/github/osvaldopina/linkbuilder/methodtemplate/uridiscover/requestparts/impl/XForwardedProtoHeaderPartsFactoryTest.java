@@ -1,22 +1,18 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl;
 
-import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUriDiscoverImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.HttpRequestDiscover;
-import org.easymock.*;
-import org.junit.Ignore;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Enumeration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class XForwardedProtoHeaderPartsFactoryTest  extends EasyMockSupport {
 

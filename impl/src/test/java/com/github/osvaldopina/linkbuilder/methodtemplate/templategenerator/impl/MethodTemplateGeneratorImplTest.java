@@ -2,12 +2,14 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.LinkBuilderException;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.MethodTemplateGeneratorImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.TemplatePathDiscover;
-import org.easymock.*;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 @Ignore
 public class MethodTemplateGeneratorImplTest extends EasyMockSupport {

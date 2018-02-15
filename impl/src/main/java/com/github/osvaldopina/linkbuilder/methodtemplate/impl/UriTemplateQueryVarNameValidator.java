@@ -1,7 +1,5 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
 
-import org.springframework.util.Assert;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -1,9 +1,5 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover;
 
-import org.springframework.context.ApplicationContext;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Discovers the base uri for rest calls
  */

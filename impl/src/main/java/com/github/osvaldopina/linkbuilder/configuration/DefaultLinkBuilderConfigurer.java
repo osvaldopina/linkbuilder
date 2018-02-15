@@ -1,6 +1,7 @@
 package com.github.osvaldopina.linkbuilder.configuration;
 
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
+import com.github.osvaldopina.linkbuilder.expression.impl.ExpressionExecutorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.impl.MethodTemplateGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
@@ -8,8 +9,7 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.BaseUr
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.impl.MethodCallUriGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl.RequestPartsFactoryListImpl;
-import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.expression.impl.ExpressionExecutorImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 
 public class DefaultLinkBuilderConfigurer implements LinkBuilderConfigurer {
 

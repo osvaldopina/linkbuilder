@@ -1,14 +1,18 @@
 package com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.impl;
 
-import org.easymock.*;
-import org.junit.Ignore;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Rule;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class XForwardedPortHeaderPartsFactoryTest  extends EasyMockSupport {
 

@@ -4,8 +4,6 @@ import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestpart
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class XForwardedHostHeaderPartsFactory implements RequestPartsFactory {
 

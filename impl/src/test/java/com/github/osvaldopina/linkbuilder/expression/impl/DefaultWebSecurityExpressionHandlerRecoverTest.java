@@ -11,7 +11,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DefaultWebSecurityExpressionHandlerRecoverTest extends EasyMockSupport {
 

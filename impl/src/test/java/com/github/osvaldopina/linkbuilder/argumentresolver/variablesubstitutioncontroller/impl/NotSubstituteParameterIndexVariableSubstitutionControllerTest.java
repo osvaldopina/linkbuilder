@@ -1,15 +1,12 @@
 package com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl;
 
-import org.easymock.*;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.core.MethodParameter;
 
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class NotSubstituteParameterIndexVariableSubstitutionControllerTest  {
 

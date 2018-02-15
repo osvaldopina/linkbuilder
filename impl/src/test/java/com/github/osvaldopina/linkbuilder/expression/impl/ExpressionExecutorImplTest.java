@@ -1,6 +1,10 @@
 package com.github.osvaldopina.linkbuilder.expression.impl;
 
-import org.easymock.*;
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRule;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +14,7 @@ import org.springframework.expression.Expression;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class ExpressionExecutorImplTest extends EasyMockSupport {
 

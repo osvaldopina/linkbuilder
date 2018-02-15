@@ -2,10 +2,10 @@ package com.github.osvaldopina.linkbuilder.methodtemplate.impl;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
-import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
+import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

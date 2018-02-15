@@ -1,11 +1,9 @@
 package com.github.osvaldopina.linkbuilder.impl.springhateoas;
 
 
-
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
 import com.github.osvaldopina.linkbuilder.LinksBuilder;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;

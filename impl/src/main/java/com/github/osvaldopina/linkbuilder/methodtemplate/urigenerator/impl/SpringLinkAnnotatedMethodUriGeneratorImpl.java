@@ -7,7 +7,6 @@ import com.github.osvaldopina.linkbuilder.annotation.Link;
 import com.github.osvaldopina.linkbuilder.annotation.Links;
 import com.github.osvaldopina.linkbuilder.annotation.Param;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;

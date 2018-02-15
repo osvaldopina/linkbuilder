@@ -5,9 +5,9 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolvers;
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.SubstituteAllVariableSubstitutionController;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.MethodCall;
 import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -29,16 +29,12 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
 
     @Override
     public String generate(MethodCall methodCall, boolean templated,
-                         VariableSubstitutionController variableSubstitutionController) {
-
-        StringBuffer log = new StringBuffer();
+                           VariableSubstitutionController variableSubstitutionController) {
 
         UriTemplateMethodMappings uriTemplateMethodMappings =
                 applicationContext.getBean(UriTemplateMethodMappings.class);
 
         UriTemplate template = uriTemplateMethodMappings.createTemplateForMethod(methodCall.getMethod());
-        log.append("template: ");
-        log.append(template.getTemplate());
 
         ArgumentResolvers argumentResolvers = applicationContext.getBean(ArgumentResolvers.class);
 
@@ -46,22 +42,12 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
 
         ArgumentResolver argumentResolver;
 
-        log.append(" method: ");
-        log.append(methodCall.getMethod());
-
         for (MethodParameter methodParameter : methodParameters.getParameters()) {
 
             argumentResolver = argumentResolvers.getArgumentResolverFor(
                     methodParameter.getMethod(),
                     methodParameter.getParameterIndex()
             );
-
-            log.append(" parameterIndex: ");
-            log.append(methodParameter.getParameterIndex());
-
-            log.append(" parameterValue: ");
-            log.append(methodCall.getParam(methodParameter.getParameterIndex()));
-
 
             argumentResolver.setTemplateVariables(template,
                     methodParameter.getMethod(),
@@ -71,8 +57,6 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
         }
 
 
-        System.out.println("########$$$$$$$$ LOG " + log);
-
         return templated ? template.expandPartial() : template.expand();
     }
 
@@ -80,7 +64,6 @@ public class MethodCallUriGeneratorImpl implements MethodCallUriGenerator, Appli
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
 
 }
 

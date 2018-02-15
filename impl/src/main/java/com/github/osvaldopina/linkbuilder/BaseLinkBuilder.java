@@ -1,6 +1,10 @@
 package com.github.osvaldopina.linkbuilder;
 
-import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.*;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.NotSubstituteNullValueVariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.NotSubstituteParameterIndexVariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.NotSubstituteVariableNameVariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.SubstituteNoneVariableSubstitutionController;
+import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.impl.VariableSubstitutionControllers;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.CallRecorder;
 import com.github.osvaldopina.linkbuilder.fromcall.controllercallrecorder.ControllerProxy;
@@ -15,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public class BaseLinkBuilder implements LinkBuilder, CallRecorder {
 

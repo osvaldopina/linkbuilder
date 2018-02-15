@@ -5,7 +5,6 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.ArgumentResolver;
 import com.github.osvaldopina.linkbuilder.argumentresolver.variablesubstitutioncontroller.VariableSubstitutionController;
 import com.github.osvaldopina.linkbuilder.utils.UriTemplateAugmenter;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 

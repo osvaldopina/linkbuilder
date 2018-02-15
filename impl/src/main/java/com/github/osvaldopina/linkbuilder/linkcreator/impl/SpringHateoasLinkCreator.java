@@ -1,11 +1,10 @@
 package com.github.osvaldopina.linkbuilder.linkcreator.impl;
 
 import com.github.osvaldopina.linkbuilder.LinkBuilder;
-import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
 import com.github.osvaldopina.linkbuilder.impl.springhateoas.SpringHateoasLinkBuilderImpl;
+import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
 public class SpringHateoasLinkCreator implements LinkCreator {

@@ -9,26 +9,22 @@ import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.Pagea
 import com.github.osvaldopina.linkbuilder.argumentresolver.custom.pageable.PageableClassIsPresent;
 import com.github.osvaldopina.linkbuilder.direct.impl.DirectLinkTargetBeanPostProcessor;
 import com.github.osvaldopina.linkbuilder.expression.ExpressionExecutor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.CurrentCallLocator;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCall;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallBeanPostProcessor;
-import com.github.osvaldopina.linkbuilder.fromcall.currentcallrecorder.impl.CurrentCallLocatorImpl;
+import com.github.osvaldopina.linkbuilder.impl.springhateoas.LinksBuilderFactoryImpl;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreator;
 import com.github.osvaldopina.linkbuilder.linkcreator.LinkCreators;
 import com.github.osvaldopina.linkbuilder.linkcreator.impl.LinkCreatorsImpl;
-import com.github.osvaldopina.linkbuilder.impl.springhateoas.LinksBuilderFactoryImpl;
-import com.github.osvaldopina.linkbuilder.methodtemplate.*;
-import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.impl.SpringHateoasLinkCreator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.SpringLinkAnnotatedMethodUriGeneratorImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.UriTemplateMethodMappings;
 import com.github.osvaldopina.linkbuilder.methodtemplate.impl.UriTemplateMethodMappingsImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.AnnotatedLinkCreator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.linkcreator.impl.SpringHateoasLinkCreator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.templategenerator.MethodTemplateGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.BaseUriDiscover;
 import com.github.osvaldopina.linkbuilder.methodtemplate.uridiscover.requestparts.RequestPartsFactoryList;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerator;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.AnnotatedMethodUriGenerators;
-import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.AnnotatedMethodUriGeneratorsImpl;
 import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.MethodCallUriGenerator;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.AnnotatedMethodUriGeneratorsImpl;
+import com.github.osvaldopina.linkbuilder.methodtemplate.urigenerator.impl.SpringLinkAnnotatedMethodUriGeneratorImpl;
 import com.github.osvaldopina.linkbuilder.utils.IntrospectionUtils;
 import com.github.osvaldopina.linkbuilder.utils.impl.StringHateoasIntrospectionUtilsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,21 +110,21 @@ public class LinkBuilderAutoConfiguration {
         return defaultLinkBuilderConfigurer.linkGenerator();
     }
 
-    @Bean
-    public CurrentCall currentCall() {
-        return new CurrentCall();
-    }
+//    @Bean
+//    public CurrentCall currentCall() {
+//        return new CurrentCall();
+//    }
 
 
     @Bean
     public IntrospectionUtils introspectionUtils() {
         return new StringHateoasIntrospectionUtilsImpl();
     }
-
-    @Bean
-    public CurrentCallLocator currentCallLocator() {
-        return new CurrentCallLocatorImpl();
-    }
+// TODO remove
+//    @Bean
+//    public CurrentCallLocator currentCallLocator() {
+//        return new CurrentCallLocatorImpl();
+//    }
 
     @Bean
     public LinkCreator linkCreator() {
@@ -201,10 +197,11 @@ public class LinkBuilderAutoConfiguration {
         return new DirectLinkTargetBeanPostProcessor();
     }
 
-    @Bean
-    public static BeanPostProcessor currentCallBeanPostProcessor() {
-        return new CurrentCallBeanPostProcessor();
-    }
+    // TODO remove
+//    @Bean
+//    public static BeanPostProcessor currentCallBeanPostProcessor() {
+//        return new CurrentCallBeanPostProcessor();
+//    }
 
 
 }
